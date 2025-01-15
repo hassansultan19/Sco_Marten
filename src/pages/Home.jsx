@@ -217,14 +217,14 @@ const Home = () => {
             </div>
 
             {/* Dropdown 2 */}
-            <div className="text-start drop">
+            {/* <div className="text-start drop">
               <p className="text-white mx-1">{language === 'en' ? 'Area' : 'Område'}</p>
               <select className="dropdown w-48 bg-black text-white">
                 <option value="">{language === 'en' ? 'Select Area' : 'Vælg Område'}</option>
                 <option value="Area1">{language === 'en' ? 'Area 1' : 'Område 1'}</option>
                 <option value="Area2">{language === 'en' ? 'Area 2' : 'Område 2'}</option>
               </select>
-            </div>
+            </div> */}
 
             {/* Dropdown 3 */}
             <div className="text-start drop">
