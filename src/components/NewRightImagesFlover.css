@@ -1,0 +1,37 @@
+.new-flower-right-img {
+    position: absolute;
+    right: 0;
+
+}
+
+.new-flower-right-img img {
+    overflow: hidden; /* Prevent overflow */
+}
+
+@media(max-width:510px){
+    /* Adjust the size and positioning as needed */
+   .new-flower-right-img img {
+    width: 80px;
+   }
+}
+
+@media(max-width:445px){
+    /* Adjust the size and positioning as needed */
+   .new-flower-right-img img {
+    width: 60px;
+   }
+}
+
+@media(max-width:379px){
+    /* Adjust the size and positioning as needed */
+   .new-flower-right-img img {
+    width: 40px;
+   }
+}
+
+@media(max-width:320px){
+    /* Adjust the size and positioning as needed */
+   .new-flower-right-img img {
+    width: 30px;
+   }
+}

@@ -1,0 +1,169 @@
+*{
+    font-family: "Quicksand", sans-serif;
+  }
+  body{
+    overflow-x: hidden;
+  }
+.drop-down-main{
+    width: 100%;
+    margin: 0 auto;
+    border-color: 1px solid red;
+    padding: 30px;
+    border-radius: 15px;
+    background-color: rgb(40, 40, 40);
+    flex-direction: column;
+
+}
+.wrap-isp{
+    flex-wrap: wrap;
+}
+
+.btun{
+    padding: 0px 50px;
+}
+
+.main{
+    display: flex;
+    justify-content: space-around;
+    
+}
+
+.list{
+    background-color: black;
+}
+
+.dropin{
+    align-content: center;
+}
+
+.btun:hover{
+    background-color: rgb(182, 0, 0) !important; /* Change background color on hover */
+    transform: scale(1.05);
+    border: none;
+}
+@media screen and (max-width: 1285px){
+    .rec-img {
+       width: 330px;
+    }
+    .txt-size{
+        height: 25vw;
+        width: auto;
+    }
+    .txt-size h1{
+        font-size: 30px;
+    }
+    .txt-size p{
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 1245px){
+.drop {
+    margin-bottom: 40px;
+}
+
+.drop-down-main{
+    margin: 0 auto;
+    border-color: 1px solid red;
+    padding: 30px;
+    border-radius: 15px;
+    background-color: rgb(40, 40, 40);
+    flex-direction: column;
+}
+}
+
+@media screen and (max-width: 1100px){
+.coloumm{
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.drop-down-main{
+    height: max-content;
+    width: 100%;
+}
+}
+
+@media screen and (max-width: 1020px){
+.chota h2{
+    font-size: 26px;
+}
+
+.chota p{
+    font-size: 14px;
+}
+
+.drop {
+    margin-bottom: 50px;
+}
+
+.img-index{
+ right: 40%;
+}
+}
+@media screen and (max-width: 850px){
+    .drop {
+        margin-bottom: 45px;
+    }
+    .txt-size{
+        height: max-content;
+        width: auto;
+    }
+ }
+
+@media screen and (max-width: 750px){
+    .drop {
+        margin-bottom: 55px;
+        margin: 0 auto;
+    }
+    .drop-down-main{
+        margin: 0 auto;
+        height: auto;
+        border-color: 1px solid red;
+        padding: 30px;
+        border-radius: 15px;
+        background-color: rgb(40, 40, 40);
+        box-shadow: 0px -1px 0px #990000, 0px 1px 0px #990000;
+        
+
+    }
+
+    .btun{
+        width: 200px;
+    }
+ }
+    
+ @media screen and (max-width:540px){
+.drop{
+    margin: 0 auto;
+    margin-bottom: 60px;
+}
+ }
+
+ @media screen and (max-width:530px) {
+    .img-index{
+        right: 35%;
+        top: -25%;
+       }
+ }
+ @media screen and (max-width:465px) {
+    .chota h2{
+        font-size: 20px;
+    }
+    
+    .chota p{
+        font-size: 13px;
+    }
+ }
+
+
+
+
+section.filterNew select {
+    padding: 13px 10px;
+    margin: 10px;
+    border-radius: 10px;
+    color: gray;
+    font-weight: 800;
+}

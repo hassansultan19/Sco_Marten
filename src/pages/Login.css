@@ -1,0 +1,307 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Quicksand", sans-serif;
+      
+}
+body{
+    background-color: #111111;
+}
+
+.login-container {
+    width: 100%;
+    min-height: 100vh;
+    background-image: url('../assests/bg-1.png');
+    background-size: cover; /* Ensures the image covers the entire screen */
+    background-repeat: no-repeat;
+    background-position: center center; /* Centers the image both horizontally and vertically */
+    object-fit: cover; 
+    margin: auto 0; 
+    position: relative;
+    overflow: hidden;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    z-index: 2; 
+    color: white;
+}
+
+/* Left text area */
+.left-text {
+    color: white;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+}
+
+.left-text .logo {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.left-text h2 {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.left-text p {
+    font-size: 18x;
+    line-height: 1.6;
+}
+
+/* Login box with higher z-index and more transparency */
+.login-box {
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    width: 500px;
+    z-index: 3; /* Ensure form stays on top of the overlay */
+    position: relative; /* Ensures z-index works */
+    text-align: start;
+}
+
+/* Bigger login heading */
+.login-box h1 {
+    margin-bottom: 20px;
+    font-size: 36px; /* Increased heading size */
+}
+
+/* Input fields */
+.login-box .otp-inputs span {
+    display: none;
+}
+.login-box .otp-inputs>div {
+    gap: 10px;
+}
+.login-box input {
+    padding: 14px 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+    background: transparent;
+    box-sizing: border-box;
+    position: relative; /* Ensures z-index applies */
+}
+
+/* Add focus styles for better UX */
+.login-box input:focus {
+    outline: none;
+    border: 1px solid #555; /* Slightly darker border on focus */
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1); /* Add a shadow effect on focus */
+}
+
+/* Forgot Password */
+.forgot-password {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.forgot-password a {
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+}
+
+/* Main Login Button */
+.login-btn {
+    background-color: red;
+    color: white;
+    padding: 14px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+}
+
+/* Social Login Buttons */
+.social-login {
+    display: flex; /* Use flexbox to align the buttons in a row */
+    justify-content: space-between; /* Adds space between the buttons */
+    gap: 10px; /* Optional: Adds space between the buttons */
+    margin-top: 20px;
+}
+
+/* Social Button */
+.social-btn {
+    flex: 1; /* Ensures buttons take equal space */
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+}
+.left-text p {
+    font-size: 17px;
+    line-height: 1.6;
+}
+/* Specific button styles */
+.google-btn {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 14px 10px;
+}
+
+.facebook-btn {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 14px 10px;
+}
+
+/* Responsive Styles */
+
+@media (max-width: 1075px) {
+    .overlay{
+        gap: 20px;
+    }
+    .left-text {
+        width: 30%;
+    }
+}
+
+@media (max-width: 878px) {
+    .overlay{
+        gap: 10px;
+    }
+    .login-box {
+        width: 400px;
+    }
+
+    .login-box h1{
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 745px) {
+    .overlay{
+        gap: 5px;
+    }
+    .login-box {
+        width: 300px;
+    }
+    .login-box h1{
+        font-size: 18px;
+    }
+    .google-btn{
+        font-size: 10px;
+    }
+    .social-btn{
+        font-size: 10px;
+    }
+    .left-text h2{
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 560px) {
+    .overlay{
+        gap: 3px;
+    }
+    .left-text h2{
+        font-size: 20px;
+    }
+    .left-text p{
+        font-size: 12px;
+    }
+    .login-box h1{
+        font-size: 16px;
+    }
+    .login-box input {
+        font-size: 10px;
+    }
+    .login-btn,.social-btn {
+        font-size: 12px;
+    }
+   
+}
+
+@media (max-width: 505px){
+    .overlay{
+        margin-top: 50px;
+        flex-direction: column;
+        text-align: start;
+        justify-content: start;
+        align-items:center;
+    }
+    .left-text{
+        display: none;
+    }
+    .login-box {
+        width: 90%;
+        padding: 20px;
+    }
+    .login-box h1{
+        font-size: 24px;
+    }
+}
+.otp-inputs {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.otp-inputs input {
+    width: 40px !important;
+    height: 40px;
+    text-align: center;
+    font-size: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.user-dropdown {
+    background: white;
+}
+
+.user-dropdown span {
+    color: black !important;
+    padding: 10px 15px;
+    font-weight: 600;
+}
+
+.user-dropdown .user-dropdown-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 96px;
+    text-align: center;
+}
+ /* Custom styles for SweetAlert2 */
+.swal-popup {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+}
+
+.swal-title {
+  color: rgb(153, 0, 0); /* Green color */
+  font-family: 'Recoleta-Regular', sans-serif;
+}
+
+.swal-content {
+  color: #333;
+}
+
+.swal-confirm-button {
+  background-color: rgb(153, 0, 0);
+  color: white;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+}

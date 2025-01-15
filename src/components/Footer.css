@@ -1,0 +1,356 @@
+/* General Footer Styling */
+*{
+  font-family: "Quicksand", sans-serif;
+}
+
+.footer-container {
+    background-color: #111;
+    color: white;
+    padding: 30px 20px;
+    width: 100%;
+  }
+  
+  .newsletter {
+    text-align: center;
+    background-color: #990000;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+  }
+  
+  .newsletter p {
+    font-size: 1.2rem;
+  }
+  
+  .newsletter span {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1rem;
+  }
+  
+  .newsletter-form {
+    display: flex;
+    justify-content: center;
+    padding: 5px 10px;
+    background-color: white;
+    border-radius: 12px;
+    padding-left : 20px;
+  }
+  
+  .newsletter-form input {
+    border-radius: 4px;
+    border: none;
+    width: 300px;
+    outline: none;
+  }
+  
+  .newsletter-form button {
+    padding: 3px 26px;
+    background-color: white;
+    color: red;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+ 
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+ 
+  
+  .footer-section {
+    flex: 1;
+    width: 100%;
+
+  }
+
+
+  
+  .footer-section h4, .footer-section h3 {
+    font-size: 25px;
+    margin-bottom: 15px;
+  }
+  
+  .footer-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-section ul li {
+    margin-bottom: 18px;
+  }
+  
+  
+  .footer-section ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .footer-section ul li a:hover {
+    color: white;
+  }
+  
+  .company-info p {
+    margin-bottom: 15px;
+    width: 500px;
+    font-size: 18px;
+  }
+
+  .contact-info p{
+    cursor: pointer;
+
+  }
+  
+  .subscribe-now form {
+    display: flex;
+    gap: 5px;
+  }
+  
+ 
+  .footer-input-inner {
+    width: 50%;
+    padding: 10px;
+    background-color: transparent; 
+    border: none;                  
+    border-bottom: 2px solid white;  
+    color: white;                  
+    outline: none;  
+  }
+  
+  .footer-input-inner::placeholder {
+    color: rgba(255, 255, 255, 0.6);  /* Makes the placeholder text a lighter shade of white */
+  }
+  
+  .footer-input-inner:focus {
+    border-bottom: 2px solid white; 
+      /* Keeps the white bottom border on focus */
+  }
+  
+  .contact-info .social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+  }
+  
+  .social-icons i {
+    font-size: 1rem;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    padding-top: 15px;
+    border-top: 1px solid #333;
+  }
+  
+  .footer-bottom p {
+    font-size: 0.9rem;
+    color: white;
+  }
+  
+.social-icons img:hover{
+  cursor: pointer;
+}
+
+.contact-info h4{
+  margin-bottom: 30px;
+}
+
+.contact-info p{
+  margin-bottom: 30px;
+}
+
+.pader{
+  margin-top: -20px;
+}
+
+ 
+  /* Responsive Styling */
+  @media (max-width: 1300px) {
+    .company-info p {
+      margin-bottom: 15px;
+      width: 350px;
+      font-size: 18px;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+  
+  }
+
+  @media (max-width: 1025px){
+.pader{
+  margin-top: 30px;
+}
+  }
+  @media (max-width: 900px) {
+    .company-info p {
+      margin-bottom: 15px;
+      width: 350px;
+      font-size: 18px;
+    }
+  }
+  @media (max-width: 790px) {
+    .company-info p {
+      margin-bottom: 15px;
+      width: 330px;
+      font-size: 18px;
+    }
+  }
+  @media (max-width: 768px) {
+    .newsletter{
+        flex-direction: column;
+        margin-bottom: 10px;
+        justify-content: start;
+        align-items: start;
+    }
+    .text-start{
+        text-align: start;
+        margin-bottom: 10px;
+    }
+
+  
+    .footer-content {
+      align-items: center;
+      justify-content: flex-start;
+    }
+  
+    .contact-info .social-icons {
+      justify-content: flex-start;
+    }
+
+    
+    /* .contact-info p{
+      margin-bottom: 16px;
+    } */
+    .company-info p {
+      margin-bottom: 15px;
+      width: 400px;
+      font-size: 16px;
+    }
+    
+
+    .footer-section h4, .footer-section h3 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+    
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .footer-section ul li {
+      margin-bottom: 18px;
+    }
+    
+    
+    .footer-section ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+  
+   
+   
+    
+  }
+
+  @media (max-width: 655px){
+   .pader{
+    margin-top: -20px;
+   }
+    .footer-content {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 20px;
+    }
+  }
+  @media (max-width: 520px){
+    .footer-content {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+      }
+
+      .contact-info .social-icons {
+        justify-content: flex-start;
+      }
+      /* .contact-info h4{
+        margin-bottom: 15px;
+      }
+        .contact-info p{
+          margin-bottom: 22px;
+        } */
+  }
+  
+  @media (max-width: 480px) {
+    .newsletter-form input {
+      width: 125px;
+    }
+  
+    .footer-section h4 {
+      font-size: 1rem;
+    }
+  
+    .footer-section ul li {
+      font-size: 0.9rem;
+    }
+    .newsletter-form button {
+      padding: 2px 20px;
+      background-color: white;
+      color: red;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+   
+    }
+
+    .company-info p{
+      width: 310px;
+    }
+  }
+  
+  @media (max-width: 355px){
+    .newsletter-form input {
+        width: 100px;
+      }
+
+  }
+
+  @media (max-width: 311px){
+    .newsletter-form input {
+        width: 100px;
+      }
+
+  }
+  @media (max-width: 300px){
+    .newsletter-form input {
+        width: 70px;
+      }
+
+  }

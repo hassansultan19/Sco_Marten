@@ -1,0 +1,293 @@
+*{
+  font-family: "Quicksand", sans-serif;
+}
+body{
+  background-color: #111111;
+}
+
+
+.detail-us-img{
+    width: 100%;
+    height: 100vh;
+    background-image: url('../assests/Rectangle 1724.png');
+    background-size: cover;
+    background-position: center center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+
+}
+
+
+.profile-container {
+    background-color: #1d1d1d;
+    color: white;
+    padding: 20px;
+  }
+  
+  .profile-image img {
+    border-radius: 10px;
+  }
+  
+  .profile-details h2 {
+    margin-top: 20px;
+  }
+  
+  .profile-info div {
+    margin: 10px 0;
+  }
+  
+  
+  
+  .contact-form input, .contact-form textarea {
+    margin-top: 10px;
+    background-color: #333;
+    color: white;
+    border: 1px solid #444;
+  }
+  
+  .contact-form input::placeholder, .contact-form textarea::placeholder {
+    color: #bbb;
+  }
+  
+  .contact-form button {
+    background-color: #e91e63;
+    border: none;
+    
+  }
+  
+  .image-gallery img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .location-info, .contact-info {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+  
+  .location-info svg, .contact-info svg {
+    margin-right: 10px;
+  }
+  
+
+  .profile{
+    background-color: black;
+    color: #000;
+    border-radius: 10px;
+    margin: 10px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .profile div{
+    text-align: center;
+    color: white;
+  }
+
+  .profile strong{
+    color: #e91e63;
+  }
+
+
+  .one ,.sec{
+    display: flex;
+    justify-content: center;
+    gap: 4vw;
+
+  }
+
+  .text-area{
+    position: relative;
+  }
+
+  .text-area textarea{
+    height: 250px;
+  }
+
+  .text-area button{
+    position: absolute;
+    right: 0;
+    bottom: 3%;
+    background-color: #e91e63;
+    color: white;
+    padding: 20px 6px;
+    width: 80px;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+
+  /* .d-img img:hover{
+    background-color:rgb(255 35 35 / 38%) !important;
+
+  } */
+
+  .d-img {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .d-img img {
+    transition: transform 0.3s ease;
+    width: 100%;
+    height: auto;
+  }
+  
+  .d-img:hover img {
+    transform: scale(1.1);
+  }
+  
+  .d-img .ma-nhi-bataon-ga {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 35, 35, 0.38);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .d-img:hover .ma-nhi-bataon-ga {
+    opacity: 1;
+  }
+  
+  .overlay-batadun-text {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+      .re{
+        border :1px solid white ;
+         padding:15px;
+         border-radius:8px
+      }
+
+
+  @media screen and  (max-width: 855px) {
+    .contact-form input, .contact-form textarea {
+        margin-top: 10px;
+        background-color: #333;
+        color: white;
+        border: 1px solid #444;
+        width: 100%;
+      }
+
+      .re{
+        border :1px solid white ;
+         padding:8px;
+         border-radius:8px;
+         font-size: 13px;
+      }
+  }
+  @media (max-width: 600px) {
+    .text-area button{
+        position: absolute;
+        right: 0;
+        bottom: 3%;
+        background-color: #e91e63;
+        color: white;
+        padding: 10px;
+        width: 70px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+
+      .location{
+        font-size: 14px;
+      }
+
+      .text-area textarea{
+        height: 200px;
+      }
+
+      .re{
+        border :1px solid white ;
+         padding:8px;
+         border-radius:8px;
+        }
+        
+        .re span{
+          
+          font-size: 13px;
+        }
+        
+  }
+
+
+  @media (max-width: 400px) {
+    .text-area button{
+        position: absolute;
+        right: 0;
+        bottom: 3%;
+        background-color: #e91e63;
+        color: white;
+        padding: 10px;
+        width: 70px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+
+      .location{
+        font-size: 12px;
+      }
+
+      .re{
+        border :1px solid white ;
+         padding:4px;
+         border-radius:8px;
+        }
+        
+        .re span{
+          font-size: 12px;
+
+        }
+        
+        .overlay-batadun-text{
+        font-size: 14px;
+
+      }
+
+  }
+  
+  /* Custom styles for SweetAlert2 */
+.swal-popup {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+}
+
+.swal-title {
+  color: rgb(153, 0, 0); /* Green color */
+  font-family: 'Recoleta-Regular', sans-serif;
+}
+
+.swal-content {
+  color: #333;
+}
+
+.swal-confirm-button {
+  background-color: rgb(153, 0, 0);
+  color: white;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.image-container-new-component:hover img.img-new-component {
+  opacity: 0.4;
+}

@@ -1,0 +1,48 @@
+
+.new-flower-left-img {
+    position: absolute; /* Allows for precise positioning */
+    left: 0; /* Aligns the left edge with the screen edge */
+    margin-top: 650px;
+}
+
+.new-flower-left-img img {
+    overflow: hidden; /* Prevent overflow */
+}
+@media(max-width: 1280px){
+    .new-flower-left-img {
+        margin-top: 1000px;
+    }
+}
+@media(max-width: 608px){
+    .new-flower-left-img {
+        margin-top: 3000px;
+    }
+}
+
+@media(max-width: 510px) {
+    /* Adjust the size and positioning as needed */
+    .new-flower-left-img img {
+        width: 80px; /* Smaller size for medium screens */
+    }
+}
+
+@media(max-width: 445px) {
+    /* Adjust the size and positioning as needed */
+    .new-flower-left-img img {
+        width: 60px; /* Smaller size for small screens */
+    }
+}
+
+@media(max-width: 379px) {
+    /* Adjust the size and positioning as needed */
+    .new-flower-left-img img {
+        width: 40px; /* Smaller size for very small screens */
+    }
+}
+
+@media(max-width: 320px) {
+    /* Adjust the size and positioning as needed */
+    .new-flower-left-img img {
+        width: 30px; /* Smallest size for tiny screens */
+    }
+}

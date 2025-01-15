@@ -1,0 +1,255 @@
+*{
+    font-family: "Quicksand", sans-serif;
+  }
+
+  .about-page{
+    padding: 0px 20px;
+  }
+.about-us{
+    width: 100%;
+    height: 100vh;
+    background-image: url('../assests/about.png');
+    background-size: cover;
+    background-position: center center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.aboutus-hero-section{
+    width: 100%;
+    height: 100vh;
+    background-image: url('../assests/about_bg_2 1.png');
+    background-size: cover;
+    background-position: center center;
+    display: flex;
+    text-align: start;
+    align-items: center;
+    padding: 20px 0px;
+}
+
+.inner-about-sec{
+    display: flex;
+    flex-direction: column;
+    position:absolute;
+    right: 10%;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.inner-about-sec h1{
+    font-size: 3.5vw;
+}
+
+.inner-about-sec p{
+    font-size: 1.1vw;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+
+.quote{
+    width: 100%;
+    height: 100vh;
+    background-image: url('../assests/blockquote-bg 1.png');
+    background-size: cover;
+    background-position: center center;
+    display: flex;
+    text-align: start;
+    align-items: center;
+}
+
+.quote-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    margin: 0 auto;
+    text-align: center;
+    gap: 20px;
+}
+
+.quote-text p{
+    line-height: 25px;
+}
+
+@media screen and (max-width: 1310px) {
+    .quote-text p{
+        line-height: 20px;
+    }
+    .quote-text{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 48%;
+        margin: 0 auto;
+        text-align: center;
+        gap: 20px;
+    }
+}
+@media screen and (max-width: 900px) {
+   
+.inner-about-sec h1{
+    font-size: 3.5vw;
+}
+
+.inner-about-sec p{
+    font-size: 1.4vw;
+    line-height: 1.6;
+    margin-bottom: 10px;
+} 
+
+.inner-about-sec{
+    display: flex;
+    flex-direction: column;
+    position:absolute;
+    right: 5%;
+}
+
+.quote-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+    gap: 2vw;
+}
+
+.quote-text p{
+    line-height: 2.5vw;
+    font-size: 14px;
+}
+}
+
+
+@media screen and (max-width: 768px) {
+    .inner-about-sec p{
+        font-size: 1.5vw;
+        line-height: 1.6;
+        margin-bottom: 10px;
+    } 
+
+    .quote-text{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 70%;
+        margin: 0 auto;
+        text-align: center;
+        gap: 2vw;
+    }
+    
+}
+
+
+@media screen and (max-width: 670px) {
+   
+    .inner-about-sec p{
+        font-size: 1.7vw;
+        line-height: 1.6;
+        margin-bottom: 10px;
+    } 
+
+    .inner-about-sec h1{
+        font-size: 3.7vw;
+    }
+
+    .quote-text p{
+        line-height: 2.8vw;
+        font-size: 13px;
+    }
+}
+
+
+@media screen and (max-width: 545px) {
+    .inner-about-sec p{
+        font-size: 1.9vw;
+        line-height: 1.6;
+        margin-bottom: 10px;
+    } 
+
+    .inner-about-sec{
+        display: flex;
+        flex-direction: column;
+        position:absolute;
+        right: 0%;
+    }
+
+    .aboutus-hero-section{
+        width: 100%;
+        height: 100vh;
+        background-image: url('../assests/about_bg_2 1.png');
+        background-size: cover;
+        background-position:calc(45%);
+        display: flex;
+        text-align: start;
+        align-items: center;
+    }
+
+    .quote-text{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+        margin: 0 auto;
+        text-align: center;
+        gap: 2.5vw;
+    }
+
+    .quote-text p{
+        letter-spacing: 1px;
+        line-height: 3vw;
+    }
+}
+
+
+@media screen and (max-width: 470px) {
+    .inner-about-sec h1{
+        font-size: 3.9vw;
+    }
+    .inner-about-sec p{
+        font-size: 2.1vw;
+        line-height: 1.6;
+        margin-bottom: 10px;
+    } 
+
+    .quote-text{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+        margin: 0 auto;
+        text-align: center;
+        gap: 2.8vw;
+    }
+
+    .quote-text p{
+        letter-spacing: 1px;
+        line-height: 3.5vw;
+    }
+  
+}
+
+
+.right-img img{
+    float: right;
+    margin-right: -9vw;
+}
+
+.para-img{
+   position: absolute;
+   right: 0%;
+}
+
+.r-img img{
+    float: right;
+    margin-top: 14vw;
+}

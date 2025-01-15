@@ -1,0 +1,122 @@
+*{
+    font-family: "Quicksand", sans-serif;
+  }
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+        padding: 28px 18px;
+    align-items: center;
+    gap: 40px;
+    background-color:#111 ;
+    /* margin-bottom: 2vw; */
+}
+.all-btn-hover:hover {
+    background-color: rgb(182, 0, 0)  !important;
+    transform: scale(1.05); 
+    border: none;
+  }
+
+.text-1 .link.logoLink{
+    margin-left: 0px;
+}
+.text-2 {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: max-height 0.3s ease; /* Smooth transition for dropdown */
+}
+
+.link {
+    text-decoration: none;
+    font-size: 18px;
+    color:white;
+    padding: 0px 6px;
+}
+
+/* Hamburger Menu Button */
+.menu-toggle {
+    display: none; /* Initially hide the menu toggle button */
+    background-color: transparent; /* Transparent background */
+    border: none; /* No border */
+    font-size: 18px; /* Font size for button */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 1000px) {
+    .navbar{
+        justify-content: space-between;
+        padding: 28px 18px;
+    }
+    .text-2 {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        transition: max-height 0.3s ease; /* Smooth transition for dropdown */
+    }
+
+    .link{
+        margin-left: 15vw;
+    }
+
+    .icon-img{
+        margin-left: 15vw;
+        
+    }
+    .language-dropdown{
+        margin-left: 15vw;
+
+    }
+    .text-2 {
+        display: none; /* Hide the links by default */
+        flex-direction: column; /* Stack links vertically */
+        position: absolute; /* Position absolutely */
+        top: 90px; /* Position below the navbar */
+        left: 0; /* Align left */
+        background-color: black; /* White background for dropdown */
+        width: 100%; /* Full width */
+        padding: 10px 0; /* Vertical padding */
+        border: 1px solid #ddd; /* Optional border */
+        border-radius: 5px; /* Rounded corners */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Shadow for dropdown */
+        z-index: 999; /* Keep dropdown above other elements */
+    }
+
+    .text-2.open {
+        display: flex; /* Show links when dropdown is open */
+    }
+
+    .menu-toggle {
+        display: block;
+
+         /* Show the toggle button on small screens */
+    }
+    
+}
+.text-2flags {
+    position: absolute;
+    transform: translate(-50%);
+    left: 50%;
+}
+.language-dropdown .dropdown-menu {
+    /* position: absolute; */
+    display: flex;
+    flex-direction: row;
+    /* transform: translate(0px, 30px); */
+    background: rgba(255, 255, 255, 0);
+    color: black;
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-weight: 700;
+    z-index: 99;
+    margin: auto 0 0;
+    gap: 10px;
+}
+.language-dropdown {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

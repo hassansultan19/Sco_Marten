@@ -1,0 +1,215 @@
+/* General styles */
+* {
+    font-family: "Quicksand", sans-serif;
+}
+
+body {
+    width: 100%;
+   
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #111;
+    color: white;
+}
+
+.bookimg{
+    width: 95%;
+    margin: 0 auto;
+}
+
+.bookimg img{
+    width: 100%;
+    border-radius: 10px;
+    object-fit: contain;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.booking-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.booking-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Left Side - Image */
+
+
+/* Right Side - Form */
+.booking-form {
+    flex: 1;
+    text-align: left;
+
+}
+
+.booking-form h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.booking-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+/* Floating label container */
+.input-container {
+    position: relative;
+    width: 100%;
+}
+
+.input-container input,
+.input-container textarea {
+    width: 100%;
+    padding: 18px;
+    background: transparent;
+    border-radius: 10px;
+    outline: none;
+    color: white;
+    font-size: 1rem;
+    border: 1px solid gray;
+}
+
+.input-container input:focus,
+.input-container textarea:focus,
+.input-container input:not(:placeholder-shown),
+.input-container textarea:not(:placeholder-shown) {
+    background-color: #111;
+}
+
+.input-container label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    transition: 0.2s;
+    padding: 0 5px;
+    color: #aaa;
+    pointer-events: none;
+    background: black;
+}
+
+.input-container input:focus + label,
+.input-container textarea:focus + label,
+.input-container input:not(:placeholder-shown) + label,
+.input-container textarea:not(:placeholder-shown) + label {
+    top: 1%;
+    left: 15px;
+    color: white;
+    font-size: 1rem;
+    background-color: #111;
+}
+
+.textarea:not(:placeholder-shown) + label {
+    top: 0%;
+    left: 10px;
+    color: white;
+    font-size: 1rem;
+    background-color: #111;
+}
+
+textarea {
+    resize: none;
+    height: 14vw;
+}
+
+.submit-btn {
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+@media (max-width: 850px) {
+    .booking-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    
+.input-container input,
+.input-container textarea {
+    width: 100%;
+    padding: 12px 10vw;
+    background: transparent;
+    border-radius: 10px;
+    outline: none;
+    color: white;
+    font-size: 1rem;
+    border: 1px solid gray;
+}
+}
+
+@media (max-width: 500px) {
+   
+
+    .input-container input,
+.input-container textarea {
+    width: 100%;
+    padding: 12px 10vw;
+    background: transparent;
+    border-radius: 10px;
+    outline: none;
+    color: white;
+    font-size: 1rem;
+    border: 1px solid gray;
+}
+
+    .input-container input:focus + label,
+    .input-container textarea:focus + label,
+    .input-container input:not(:placeholder-shown) + label,
+    .input-container textarea:not(:placeholder-shown) + label {
+       
+        color: white;
+        font-size: 14px;
+        background-color: #111;
+    }
+}
+
+@media (max-width: 420px) {
+    .input-container input,
+    .input-container textarea {
+        width: 100%;
+        padding: 12px 16vw;
+        background: transparent;
+        border-radius: 10px;
+        outline: none;
+        color: white;
+        font-size: 1rem;
+        border: 1px solid gray;
+    }
+    .input-container input:focus + label,
+    .input-container textarea:focus + label,
+    .input-container input:not(:placeholder-shown) + label,
+    .input-container textarea:not(:placeholder-shown) + label {
+       
+        color: white;
+        font-size: 14px;
+        background-color: #111;
+    }
+}
