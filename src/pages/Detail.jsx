@@ -46,7 +46,7 @@ const Detail = () => {
     if (guid) {
       try {
         const response = await axios.get(
-          `https://escorts.themerchantinc.com/api/escort/getById/${guid}`
+          `https://escort.odhostestingweblinks.com/api/escort/getById/${guid}`
         );
         console.log("response", response.data.data.escort);
         setModelDetail(response.data.data.escort);
@@ -64,7 +64,7 @@ const Detail = () => {
   const fetchAllData = async () => {
     try {
       const response = await fetch(
-        `https://escorts.themerchantinc.com/api/escort/getRelated/${guid}`
+        `https://escort.odhostestingweblinks.com/api/escort/getRelated/${guid}`
       );
       const jsonData = await response.json();
       console.log(jsonData); // Log the full response for debugging
@@ -126,7 +126,7 @@ const Detail = () => {
 
     try {
       const response = await axios.post(
-        "https://escorts.themerchantinc.com/api/feedback/store",
+        "https://escort.odhostestingweblinks.com/api/feedback/store",
         payload
       );
       if (response.data && response.data.status) {
@@ -168,7 +168,7 @@ const Detail = () => {
     const fetchTestimonials = async () => {
       try {
         const response = await fetch(
-          `https://escorts.themerchantinc.com/api/feedback/user/${modelDetailId}`
+          `https://escort.odhostestingweblinks.com/api/feedback/user/${modelDetailId}`
         );
         const data = await response.json();
         if (data.status && data.data.feedbacks) {

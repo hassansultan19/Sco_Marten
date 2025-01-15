@@ -217,14 +217,14 @@ const Home = () => {
             </div>
 
             {/* Dropdown 2 */}
-            {/* <div className="text-start drop">
+            <div className="text-start drop">
               <p className="text-white mx-1">{language === 'en' ? 'Area' : 'Område'}</p>
               <select className="dropdown w-48 bg-black text-white">
                 <option value="">{language === 'en' ? 'Select Area' : 'Vælg Område'}</option>
                 <option value="Area1">{language === 'en' ? 'Area 1' : 'Område 1'}</option>
                 <option value="Area2">{language === 'en' ? 'Area 2' : 'Område 2'}</option>
               </select>
-            </div> */}
+            </div>
 
             {/* Dropdown 3 */}
             <div className="text-start drop">
@@ -279,7 +279,8 @@ const Home = () => {
         >
           {results.length > 0 ? (
             results.map((escort) => (
-              <div
+              
+              <Link to={`/details?guid=${escort.guid}`}
                 className="card  w-96 shadow-xl m-2 mt-4"
                 style={{
                   boxShadow: "#990000 0px 1px 0px 1px ,#990000 1px 0px 1px 1px",
@@ -326,23 +327,14 @@ const Home = () => {
                         document.getElementById(`my_modal_${index}`).showModal()
                       }
                     >
-                      <Link to={`/details?guid=${escort.guid}`}>
+                    
                         {language === "en" ? "Book Now" : "Book nu"}
-                      </Link>
+                     
                     </button>
                   </div>
                 </div>
-              </div>
-              // <div key={escort.id} className="escort-card">
-              //     <h3>{escort.name}</h3>
-              //     <p>Age: {escort.age}</p>
-              //     <p>Address: {escort.address}</p>
-              //     <p>About: {escort.about}</p>
-              //     {/* Display additional details as needed */}
-              //     {escort.media.map((mediaItem) => (
-              //         <img key={mediaItem.id} src={mediaItem.original_url} alt={escort.name} />
-              //     ))}
-              // </div>
+              </Link>
+       
             ))
           ) : (
             <p className="text-white">

@@ -8,12 +8,14 @@ import apis from "../Service/Index";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const RegistrationForm = () => {
   const navigate = useNavigate(); // For redirection after registration
   const [images, setImages] = useState([]);
   const [mainImage, setMainImage] = useState(null); // State for main image
   const [videos, setVideos] = useState([]);
+  const [passwordShoe,SetPasswordShow]=useState("password")
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -386,9 +388,10 @@ const RegistrationForm = () => {
     }
 
     try {
-      await apis.register(formDataToSend, {
+    let {data}=  await apis.register(formDataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+      localStorage.setItem("userId",data.data.id)
       navigate(`/otpscreen/${formData.email}`);
     } catch (error) {
       const errorMessage =
@@ -399,6 +402,11 @@ const RegistrationForm = () => {
     } finally {
       setLoading(false);
     }
+  };
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
   };
 
   return (
@@ -651,18 +659,26 @@ const RegistrationForm = () => {
                 className="input input-bordered input-primary"
               />
               {errors.weight && <p className="error-text">{errors.weight}</p>}
-              <input
-                type="password"
-                name="password"
-                style={{ border: errors.password ? "1px solid red" : "" }}
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Enter Password"
-                className="input input-bordered input-primary"
-              />
-              {errors.password && (
-                <p className="error-text">{errors.password}</p>
-              )}
+              <div className="relative">
+      <input
+        type={passwordVisible ? "text" : "password"} // Toggle input type
+        name="password"
+        style={{ border: errors.password ? "1px solid red" : "" }}
+        value={formData.password}
+        onChange={handleChange}
+        placeholder="Enter Password"
+        className="input input-bordered input-primary"
+      />
+      <button
+        type="button"
+        onClick={togglePasswordVisibility}
+        className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+        aria-label="Toggle password visibility"
+      >
+        {passwordVisible ? <FaEyeSlash /> : <FaEye />} 
+      </button>
+      {errors.password && <p className="error-text">{errors.password}</p>}
+    </div>
               <input
                 type="password"
                 name="confirmPassword"

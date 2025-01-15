@@ -98,7 +98,9 @@ const UpdateProfile = () => {
         )
         .then((response) => {
           const escortData = response.data.data.escort;
+          console.log('escortData', escortData)
           setUserData(escortData);
+
           setMainImageFile(escortData.main_image);
           setMainImage(escortData.main_image);
 
@@ -352,7 +354,7 @@ const UpdateProfile = () => {
         <div className="inputs">
           <div className="first-sec">
             <Flowerright />
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">Advert Title</label>
             <input
               type="text"
               name="name"
