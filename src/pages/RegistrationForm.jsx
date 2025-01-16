@@ -263,14 +263,13 @@ const RegistrationForm = () => {
   const handleRemoveImage = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
-  const [interest, setInterest] = useState([]); // Initialize as an empty array
+  const [interest, setInterest] = useState([]); 
 
-  // Fetch product data from API
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://escort.odhostestingweblinks.com/api/auth/interests`
+          `https://martinbackend.tripcouncel.com/api/auth/interests`
         );
 
         // Check if the data is in the expected format
@@ -288,13 +287,10 @@ const RegistrationForm = () => {
     fetchData();
   }, []);
   const [selectedInterests, setSelectedInterests] = useState([]);
-  // Handle checkbox change
   const handleInterestChange = (event, id) => {
     if (event.target.checked) {
-      // Add interest ID if checked
       setSelectedInterests([...selectedInterests, id]);
     } else {
-      // Remove interest ID if unchecked
       setSelectedInterests(
         selectedInterests.filter((interestId) => interestId !== id)
       );
@@ -306,10 +302,8 @@ const RegistrationForm = () => {
     setInputError(true);
     setLoading(true);
 
-    // Clear previous errors
     let validationErrors = {};
 
-    // Check required fields
     if (!formData.name) validationErrors.name = "Name is required";
     if (!formData.email) validationErrors.email = "Email is required";
     if (!formData.password) validationErrors.password = "Password is required";
@@ -317,20 +311,18 @@ const RegistrationForm = () => {
       validationErrors.confirmPassword = "Confirm Password is required";
     if (!formData.phone_number)
       validationErrors.phone_number = "Phone Number is required";
-    // if (!formData.address) validationErrors.address = "Location is required";
     if (!formData.city) validationErrors.city = "City is required";
     if (!formData.hair_color)
       validationErrors.hair_color = "Hair Color is required";
-    // if (!formData.state) validationErrors.state = "State is required";
     if (!formData.country) validationErrors.country = "Country is required";
     if (!formData.zip_code) validationErrors.zip_code = "ZIP Code is required";
     if (!formData.age) validationErrors.age = "Age is required";
     if (!formData.height) validationErrors.height = "Height is required";
     if (!formData.burst) validationErrors.burst = "Burst size is required";
-    if (!formData.sex) validationErrors.sex = "Sex selection is required";
+    
 
-    // If there are errors, set them and stop the submission
     if (Object.keys(validationErrors).length > 0) {
+      toast.error("All fields are required. Please fill out the missing information.");
       setErrors(validationErrors);
       setLoading(false);
       return;
@@ -340,8 +332,6 @@ const RegistrationForm = () => {
 
     const interestsString = JSON.stringify(selectedInterests);
     formDataToSend.append("user_interests", interestsString);
-
-    // Append other form data fields
     formDataToSend.append("name", formData.name);
     formDataToSend.append("email", formData.email);
     formDataToSend.append("password", formData.password);
@@ -621,7 +611,7 @@ const RegistrationForm = () => {
               />
               {errors.burst && <p className="error-text">{errors.burst}</p>}
               {/* Sex Dropdown */}
-              <select
+              {/* <select
                 name="sex"
                 value={formData.sex}
                 style={{ border: errors.sex ? "1px solid red" : "" }}
@@ -632,7 +622,7 @@ const RegistrationForm = () => {
                 <option value="man">Man</option>
                 <option value="woman">Woman</option>
               </select>
-              {errors.sex && <p className="error-text">{errors.sex}</p>}
+              {errors.sex && <p className="error-text">{errors.sex}</p>} */}
 
               {/* City Autocomplete */}
 

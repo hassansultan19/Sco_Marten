@@ -14,9 +14,9 @@ const OtpScreen = () => {
   const inputRefs = useRef([]);
   const { email } = useParams(); // Extract email from the URL
   const VERIFY_API_URL =
-    "https://escort.odhostestingweblinks.com/api/auth/verify-otp";
+    "https://martinbackend.tripcouncel.com/api/auth/verify-otp";
   const RESEND_API_URL =
-    "https://escort.odhostestingweblinks.com/api/auth/send-otp";
+    "https://martinbackend.tripcouncel.com/api/auth/send-otp";
   const [formData, setFormData] = useState({
     otp: "",
     password: "",

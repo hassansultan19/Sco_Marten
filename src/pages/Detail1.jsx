@@ -20,7 +20,7 @@ const Detail = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://escort.odhostestingweblinks.com/api/escort/featured"
+          "https://martinbackend.tripcouncel.com/api/escort/featured"
         );
         const jsonData = await response.json();
 
@@ -42,7 +42,7 @@ const Detail = () => {
     const fetchAllData = async () => {
       try {
         const response = await fetch(
-          "https://escort.odhostestingweblinks.com/api/escort/all"
+          "https://martinbackend.tripcouncel.com/api/escort/all"
         );
         const jsonData = await response.json();
 

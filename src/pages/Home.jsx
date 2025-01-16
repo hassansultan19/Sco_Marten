@@ -18,12 +18,15 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
+import axios from "axios";
 
 const Home = () => {
   const { language } = useLanguage(); // Access language context
 
   const [sex, setSex] = useState("");
   const [age, setAge] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [filterInterest, setFilterInterest] = useState(null);
   const [address, setAddress] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state
@@ -33,7 +36,7 @@ const Home = () => {
 
     try {
       const response = await fetch(
-        `https://escort.odhostestingweblinks.com/api/escort/search?sex=${sex}&age=${age}&address=${address}`,
+        `https://martinbackend.tripcouncel.com/api/escort/search?sex=${sex}&age=${age}&address=${address}&interests=${filterInterest}&zip_code=${zipcode}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -55,13 +58,36 @@ const Home = () => {
   const [cardData, setCardData] = useState([]);
   const [cardAllData, setCardAllData] = useState([]);
   const [cardAllNormalData, setCardAllNormalData] = useState([]);
+  const [interest, setInterest] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://martinbackend.tripcouncel.com/api/auth/interests`
+        );
+
+        // Check if the data is in the expected format
+        if (response.data && Array.isArray(response.data.data.interests)) {
+          setInterest(response.data.data.interests);
+        } else {
+          console.error("Unexpected data format:", response.data);
+        }
+
+        console.log("interest", response.data.data.interests);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     // Fetch data from the API
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://escort.odhostestingweblinks.com/api/escort/featured"
+          "https://martinbackend.tripcouncel.com/api/escort/featured"
         );
         const jsonData = await response.json();
 
@@ -85,7 +111,7 @@ const Home = () => {
       try {
         setLoading(true); // Start loader
         const response = await fetch(
-          "https://escort.odhostestingweblinks.com/api/escort/all"
+          "https://martinbackend.tripcouncel.com/api/escort/all"
         );
         const jsonData = await response.json();
 
@@ -108,7 +134,7 @@ const Home = () => {
     const fetchAllNormalData = async () => {
       try {
         const response = await fetch(
-          "https://escort.odhostestingweblinks.com/api/escort/normal?page_size=100"
+          "https://martinbackend.tripcouncel.com/api/escort/normal?page_size=100"
         );
         const jsonData = await response.json();
 
@@ -184,7 +210,7 @@ const Home = () => {
           >
             {language === "en"
               ? "Find An Escort In Your Area"
-              : "Find En Escort I Dit Område"}
+              : "Find en escort eller massage pige i dit område"}
           </h2>
 
           {/* Dropdown 1 */}
@@ -217,14 +243,25 @@ const Home = () => {
             </div>
 
             {/* Dropdown 2 */}
-            {/* <div className="text-start drop">
-              <p className="text-white mx-1">{language === 'en' ? 'Area' : 'Område'}</p>
-              <select className="dropdown w-48 bg-black text-white">
-                <option value="">{language === 'en' ? 'Select Area' : 'Vælg Område'}</option>
-                <option value="Area1">{language === 'en' ? 'Area 1' : 'Område 1'}</option>
-                <option value="Area2">{language === 'en' ? 'Area 2' : 'Område 2'}</option>
+            <div className="text-start drop">
+              <p className="text-white mx-1">{language === 'en' ? 'Service' : 'Service'}</p>
+              <select
+                value={filterInterest}
+                onChange={(e) => setFilterInterest(e.target.value)}
+                className="dropdown w-48 bg-black text-white"
+              >
+                <option value="">
+                  {language === "en" ? "All" : "Alle"}
+                </option>
+                {interest.map((item, index) => (
+                  <option key={index} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
               </select>
-            </div> */}
+            </div>
+
+
 
             {/* Dropdown 3 */}
             <div className="text-start drop">
@@ -237,7 +274,7 @@ const Home = () => {
                 className="dropdown w-48 bg-black text-white"
               >
                 <option value="">
-                  {language === "en" ? "Select Age" : "Vælg Alder"}
+                  {language === "en" ? "All" : "Alle"}
                 </option>
                 <option value="18">18</option>
                 <option value="25">25</option>
@@ -246,7 +283,10 @@ const Home = () => {
                 <option value="30">60</option>
               </select>
             </div>
-
+            <div className="text-start drop">
+              <p className="text-white mx-1">{language === 'en' ? 'Zip code / City name' : 'Soge / Bynavn'}</p>
+              <input type="text" className="dropdown w-48 rounded-lg  bg-black text-white m-[10px] px-[13px] py-[10px]" value={zipcode} onChange={(e) => setZipcode(e.target.value)} />
+            </div>
             {/* Submit Button */}
             <div className="flex justify-center mt-6 drop">
               <button
@@ -279,7 +319,7 @@ const Home = () => {
         >
           {results.length > 0 ? (
             results.map((escort) => (
-              
+
               <Link to={`/details?guid=${escort.guid}`}
                 className="card  w-96 shadow-xl m-2 mt-4"
                 style={{
@@ -327,14 +367,14 @@ const Home = () => {
                         document.getElementById(`my_modal_${index}`).showModal()
                       }
                     >
-                    
-                        {language === "en" ? "Book Now" : "Book nu"}
-                     
+
+                      {language === "en" ? "Book Now" : "Book nu"}
+
                     </button>
                   </div>
                 </div>
               </Link>
-       
+
             ))
           ) : (
             <p className="text-white">
