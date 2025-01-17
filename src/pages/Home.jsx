@@ -151,11 +151,10 @@ const Home = () => {
     fetchAllNormalData();
   }, []);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6; // Adjust the items per page as needed
+  const itemsPerPage = 6; 
 
   const totalPages = Math.ceil(results.length / itemsPerPage);
 
-  // Calculate the displayed results
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const displayedResults = results.slice(startIndex, endIndex);
@@ -170,54 +169,78 @@ const Home = () => {
 
   return (
     <div className="container mx-auto">
-      <section>
-        <Swiper
-          modules={[Navigation, Pagination]}
-          spaceBetween={20}
-          slidesPerView={5}
-          navigation
-          pagination={{ clickable: true }}
-          className="mySwiper"
-        >
-          {cardAllNormalData.map((item, index) => {
-            const backgroundUrl =
-              item.media && item.media[0]?.original_url
-                ? item.media[0].original_url
-                : "default-image-url.jpg";
+      <section style={{ padding: "30px" }} >
+      
+    <Swiper
+      modules={[Navigation, Pagination]}
+      spaceBetween={20}
+      slidesPerView={5}
+      navigation
+      pagination={{ clickable: true }}
+      className="mySwiper"
+      breakpoints={{
+        // Breakpoints for responsiveness
+        320: {
+          slidesPerView: 1, // 1 slide for small screens (e.g., mobile)
+          spaceBetween: 10,
+        },
+        480: {
+          slidesPerView: 2, // 2 slides for medium-small screens
+          spaceBetween: 15,
+        },
+        768: {
+          slidesPerView: 3, // 3 slides for tablets
+          spaceBetween: 20,
+        },
+        1024: {
+          slidesPerView: 4, // 4 slides for small desktops
+          spaceBetween: 20,
+        },
+        1280: {
+          slidesPerView: 5, // 5 slides for large desktops
+          spaceBetween: 20,
+        },
+      }}
+    >
+      {cardAllNormalData.map((item, index) => {
+        const backgroundUrl =
+          item.media && item.media[0]?.original_url
+            ? item.media[0].original_url
+            : "default-image-url.jpg";
 
-            return (
-
-              <SwiperSlide key={index}>
-                <Link
-                  to={`/details?guid=${item.guid}`}
-                  className="carousel-item bg-1"
+        return (
+          <SwiperSlide key={index}>
+            <Link
+              to={`/details?guid=${item.guid}`}
+              className="carousel-item bg-1"
+              style={{
+                backgroundImage: `url(${backgroundUrl})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            >
+              <div className="chota">
+                <h2 className="text-2xl text-center">{item.name}</h2>
+                <button
                   style={{
-                    backgroundImage: `url(${backgroundUrl})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
+                    marginTop: "10px",
+                    backgroundColor: "rgb(153, 0, 0)",
+                    border: "none",
+                    color: "white",
+                    fontSize: "16px",
+                    padding: "6px 21px",
+                    borderRadius: "9px",
                   }}
                 >
-                  <div className="chota">
-                    <h2 className="text-2xl text-center">{item.name}</h2>
-                    <button
-                      style={{
-                        marginTop: "10px",
-                        backgroundColor: "rgb(153, 0, 0)",
-                        border: "none",
-                        color: "white",
-                        fontSize: "16px",
-                        padding: "6px 21px",
-                        borderRadius: "9px",
-                      }}
-                    >
-                      More Details
-                    </button>
-                  </div>
-                </Link>
-              </SwiperSlide>
-            );
-          })}
-        </Swiper>
+                  More Details
+                </button>
+              </div>
+            </Link>
+          </SwiperSlide>
+        );
+      })}
+    </Swiper>
+  
       </section>
       <section style={{ padding: "30px" }} className="filterNew">
         <div className="coloumm flex justify-center gap-10 drop-down-main">
@@ -344,7 +367,7 @@ const Home = () => {
                     <img
                       className="w-full h-64 object-cover"
                       title={escort.name}
-                      src={escort.original_url}
+                      src={escort.media[0]?.original_url || "../assets/default.png"}
                       alt={escort.name}
                       name={`img${index + 1}`}
                     />
