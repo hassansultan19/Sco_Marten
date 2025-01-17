@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import Cards from "../components/Card";
-// import Carousel from "../components/Carousel";
 import ContactUs from "../components/ContactUs";
 import Flower from "../components/Flower.jsx";
 import Flowerright from "../components/Flowerright.jsx";
@@ -8,10 +6,8 @@ import Footer from "../components/Footer";
 import Images from "../components/Images.jsx";
 import NewLeftImagesFlover from "../components/NewLeftImagesFlover.jsx";
 import NewRightImagesFlover from "../components/NewRightImagesFlover.jsx";
-import TestimonialSlider from "../components/Testimonials.jsx";
 import "../pages/Home.css";
 import { Link } from "react-router-dom";
-import { FaStar } from "react-icons/fa";
 import { useLanguage } from "../LanguageContext.jsx";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -19,21 +15,22 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import axios from "axios";
+import { FaTruckLoading } from "react-icons/fa";
+import { LuLoader } from "react-icons/lu";
 
 const Home = () => {
-  const { language } = useLanguage(); // Access language context
-
+  const { language } = useLanguage();
   const [sex, setSex] = useState("");
   const [age, setAge] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [filterInterest, setFilterInterest] = useState(null);
   const [address, setAddress] = useState("");
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state
-
+  const [loading, setLoading] = useState(true);
+  const [sloading, setsLoading] = useState(false);
   const handleSearch = async () => {
     const authToken = sessionStorage.getItem("authToken");
-
+    setsLoading(true)
     try {
       const response = await fetch(
         `https://martinbackend.tripcouncel.com/api/escort/search?sex=${sex}&age=${age}&address=${address}&interests=${filterInterest}&zip_code=${zipcode}`,
@@ -49,9 +46,12 @@ const Home = () => {
       }
 
       const data = await response.json();
-      setResults(data.data); // Access the 'data' property here
+      setResults(data.data);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
+    } finally {
+      setsLoading(false)
+
     }
   };
 
@@ -67,7 +67,7 @@ const Home = () => {
           `https://martinbackend.tripcouncel.com/api/auth/interests`
         );
 
-        // Check if the data is in the expected format
+
         if (response.data && Array.isArray(response.data.data.interests)) {
           setInterest(response.data.data.interests);
         } else {
@@ -130,7 +130,7 @@ const Home = () => {
     fetchAllData();
   }, []);
   useEffect(() => {
-    // Fetch data from the API
+
     const fetchAllNormalData = async () => {
       try {
         const response = await fetch(
@@ -150,6 +150,23 @@ const Home = () => {
 
     fetchAllNormalData();
   }, []);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6; // Adjust the items per page as needed
+
+  const totalPages = Math.ceil(results.length / itemsPerPage);
+
+  // Calculate the displayed results
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedResults = results.slice(startIndex, endIndex);
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrevious = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
 
   return (
     <div className="container mx-auto">
@@ -157,7 +174,7 @@ const Home = () => {
         <Swiper
           modules={[Navigation, Pagination]}
           spaceBetween={20}
-          slidesPerView={5} // Display 5 models per slide
+          slidesPerView={5}
           navigation
           pagination={{ clickable: true }}
           className="mySwiper"
@@ -213,7 +230,7 @@ const Home = () => {
               : "Find en escort eller massage pige i dit område"}
           </h2>
 
-          {/* Dropdown 1 */}
+
           <div
             className="flex items-center gap-9 wrap-isp"
             style={{ justifyContent: "center" }}
@@ -242,7 +259,7 @@ const Home = () => {
               </select>
             </div>
 
-            {/* Dropdown 2 */}
+
             <div className="text-start drop">
               <p className="text-white mx-1">{language === 'en' ? 'Service' : 'Service'}</p>
               <select
@@ -263,7 +280,6 @@ const Home = () => {
 
 
 
-            {/* Dropdown 3 */}
             <div className="text-start drop">
               <p className="text-white mx-1">
                 {language === "en" ? "Age" : "Alder"}
@@ -279,18 +295,19 @@ const Home = () => {
                 <option value="18">18</option>
                 <option value="25">25</option>
                 <option value="30">35</option>
-                <option value="30">45</option>
-                <option value="30">60</option>
+                <option value="45">45</option>
+                <option value="60">60</option>
               </select>
             </div>
+
             <div className="text-start drop">
               <p className="text-white mx-1">{language === 'en' ? 'Zip code / City name' : 'Soge / Bynavn'}</p>
               <input type="text" className="dropdown w-48 rounded-lg  bg-black text-white m-[10px] px-[13px] py-[10px]" value={zipcode} onChange={(e) => setZipcode(e.target.value)} />
             </div>
-            {/* Submit Button */}
             <div className="flex justify-center mt-6 drop">
               <button
-                className="btun btn w-full"
+                disabled={sloading}
+                className="btun btn w-40"
                 style={{
                   backgroundColor: "#990000",
                   border: "none",
@@ -299,151 +316,101 @@ const Home = () => {
                 }}
                 onClick={handleSearch}
               >
-                {language === "en" ? "Submit" : "Indsend"}
+                {sloading ? <LuLoader className="w-5 h-5 animate-spin" /> : language === "en" ? "Submit" : "Indsend"}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Display results */}
+
       </section>
 
       <section style={{ padding: "30px" }}>
-        <div
-          className="results"
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            flexWrap: "wrap",
-          }}
-        >
-          {results.length > 0 ? (
-            results.map((escort) => (
+        <div>
 
-              <Link to={`/details?guid=${escort.guid}`}
-                className="card  w-96 shadow-xl m-2 mt-4"
-                style={{
-                  boxShadow: "#990000 0px 1px 0px 1px ,#990000 1px 0px 1px 1px",
-                  backgroundColor: "#111",
-                }}
-                key={escort.id}
-              >
-                {/* Added margin for spacing */}
-                <figure>
-                  {escort.media.map((mediaItem) => (
+          <div className="grid xl:grid-cols-3 md:grid-cols-2 gap-5">
+            {displayedResults.length > 0 ? (
+              displayedResults.map((escort, index) => (
+                <Link
+                  to={`/details?guid=${escort.guid}`}
+                  className="card w-full shadow-xl m-2 mt-4"
+                  style={{
+                    boxShadow: "#990000 0px 1px 0px 1px ,#990000 1px 0px 1px 1px",
+                    backgroundColor: "#111",
+                  }}
+                  key={escort.id}
+                >
+                  <figure>
                     <img
-                      style={{ width: "300px", height: "300px" }}
-                      className="rounded-[20px] p-3"
-                      key={mediaItem.id}
-                      src={mediaItem.original_url}
+                      className="w-full h-64 object-cover"
+                      title={escort.name}
+                      src={escort.original_url}
                       alt={escort.name}
+                      name={`img${index + 1}`}
                     />
-                  ))}
-                </figure>
-                <div className="card-body text-start">
-                  {" "}
-                  {/* Align text to the start (left) */}
-                  <h2 className="card-title text-white">{escort.name}</h2>
-                  <p className="text-white">{escort.address}</p>
-                  <div className="card-actions flex justify-between items-center">
-                    {" "}
-                    {/* Align the button and rating side by side */}
-                    {/* Rating Section */}
-                    {/* <div className="flex items-center">
-                      <span className="text-yellow-500 flex">
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
-                      </span>
-                      <span className="ml-2 text-white">4.5</span> 
-                    </div> */}
-                    {/* Buy Now Button */}
-                    <button
-                      style={{ border: "none", backgroundColor: "#990000" }}
-                      className="btn  text-white all-btn-hover"
-                      onClick={() =>
-                        document.getElementById(`my_modal_${index}`).showModal()
-                      }
-                    >
-
-                      {language === "en" ? "Book Now" : "Book nu"}
-
-                    </button>
+                  </figure>
+                  <div className="card-body text-start">
+                    <h2 className="card-title text-white">{escort.name}</h2>
+                    <p className="text-white">{escort.address}</p>
+                    <div className="card-actions flex justify-between items-center">
+                      <button
+                        style={{
+                          border: "none",
+                          backgroundColor: "#990000",
+                        }}
+                        className="btn text-white all-btn-hover"
+                        onClick={() =>
+                          document.getElementById(`my_modal_${index}`).showModal()
+                        }
+                      >
+                        {language === "en" ? "Book Now" : "Book nu"}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              ))
+            ) : (
+              <p className="text-white">
+                {language === "en"
+                  ? "No results found."
+                  : "Ingen resultater fundet."}
+              </p>
+            )}
+          </div>
 
-            ))
-          ) : (
-            <p className="text-white">
-              {language === "en"
-                ? "No results found."
-                : "Ingen resultater fundet."}
-            </p>
+          {/* Pagination Controls */}
+          {results.length > 0 && (
+            <div className="flex gap-x-2 items-center  justify-center mt-8">
+              <button
+                onClick={handlePrevious}
+                disabled={currentPage === 1}
+                className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${currentPage === 1
+                    ? "bg-gray-500 cursor-not-allowed"
+                    : "bg-red-700 hover:bg-red-800 text-white"
+                  }`}
+              >
+                Previous
+              </button>
+
+              <span className="text-white">
+                Page {currentPage} of {totalPages}
+              </span>
+
+              <button
+                onClick={handleNext}
+                disabled={currentPage === totalPages}
+                className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${currentPage === totalPages
+                    ? "bg-gray-500 cursor-not-allowed"
+                    : "bg-red-700 hover:bg-red-800 text-white"
+                  }`}
+              >
+                Next
+              </button>
+            </div>
           )}
         </div>
 
-        {/* <div>
-          <h1
-            style={{ fontFamily: "Recoleta-Regular" }}
-            className="text-center text-4xl mt-20 text-white"
-          >
-            {language === "en"
-              ? "Most Demanding Models"
-              : "Mest krævende modeller"}
-          </h1>
-        </div>
 
-        <Flower />
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            flexWrap: "wrap",
-          }}
-        >
-          {cardData.map((item, index) => (
-            <div
-              className="card w-96 shadow-xl m-2 mt-4"
-              key={item.id}
-              style={{
-                boxShadow: "#990000 0px 1px 0px 1px ,#990000 1px 0px 1px 1px",
-                backgroundColor: "#111",
-              }}
-            >
-              <figure>
-                <img
-                  className="rounded-[20px] p-3"
-                  src={
-                    item.media[0]?.original_url ||
-                    "https://via.placeholder.com/150"
-                  }
-                  alt={item.name}
-                />
-              </figure>
-              <div className="card-body text-start">
-                <h2 className="card-title text-white">{item.name}</h2>
-                <p className="text-white">{item.about}</p>
-                <div className="card-actions flex justify-between items-center">
-                 
-                  <button
-                    style={{ border: "none", backgroundColor: "#990000" }}
-                    className="btn text-white all-btn-hover"
-                    onClick={() =>
-                      document.getElementById(`my_modal_${index}`).showModal()
-                    }
-                  >
-                    <Link to={`/details?guid=${item.guid}`}>
-                      {language === "en" ? "Book Now" : "Book nu"}
-                    </Link>
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div> */}
         <Flower />
         <h1
           style={{ fontFamily: "Recoleta-Regular" }}
@@ -461,113 +428,59 @@ const Home = () => {
         </h1>
 
         {loading ? (
-          // Show loader while loading
+
           <div className="loader flex justify-center items-center">
             <div className="spinner">
-              {/* Add your spinner/loader here */}
               <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
             </div>
           </div>
         ) : (
-          // Show content when loading is complete
-          <div className="flex flex-wrap gap-5 justify-center">
-            {cardAllData.map((item, index) => (
-              <Link
-                to={`/details?guid=${item.guid}`} // Navigate to the next page with `guid` in the query
-                key={item.id} // Unique key for each image component
-              >
-                <Images
-                  src={item.media[0]?.original_url || "../assets/default.png"} // Use original_url or fallback to a default image
-                  title={item.name} // Pass the escort's name as the title
-                  guid={item.guid}
-                  name={`img${index + 1}`} // Unique name for each image (if needed)
-                  animation={index % 2 === 0 ? "fade" : "zoom-in"} // Simple logic for alternating animations
-                />
-              </Link>
-            ))}
-            <NewRightImagesFlover />
-            <NewLeftImagesFlover />
+          <div>
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 justify-center">
+              {
+                cardAllData.map((escort, index) => (
+                  <Link
+                    to={`/details?guid=${escort.guid}`}
+                    className="card w-full shadow-xl m-2 mt-4"
+                    style={{
+                      boxShadow: "#990000 0px 1px 0px 1px ,#990000 1px 0px 1px 1px",
+                      backgroundColor: "#111",
+                    }}
+                    key={escort.id}
+                  >
+                    <figure>
+                      <img
+                        src={escort.media[0]?.original_url || "../assets/default.png"}
+                        title={escort.name}
+                        alt={escort.name}
+                        name={`img${index + 1}`}
+                        className="w-full h-64 object-cover"
+                      />
+                    </figure>
+                    <div className="card-body text-start">
+                      <h2 className="card-title text-white">{escort.name}</h2>
+                      <p className="text-white">{escort.address}</p>
+                      <div className="card-actions flex justify-between items-center">
+                        <button
+                          style={{ border: "none", backgroundColor: "#990000" }}
+                          className="btn text-white all-btn-hover"
+                          onClick={() =>
+                            document.getElementById(`my_modal_${index}`).showModal()
+                          }
+                        >
+                          {language === "en" ? "Book Now" : "Book nu"}
+                        </button>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+            </div>
+
           </div>
         )}
-        {/* <div
-          style={{ alignItems: "center" }}
-          className="mt-48 flex flex-col-reverse lg:flex-row justify-evenly   items-center lg:items-start gap-[7vw]"
-        >
-          <div className="txt-size text-center lg:text-left">
-            <h1
-              style={{ fontFamily: "Recoleta-Regular" }}
-              className="text-white text-xl lg:text-6xl  mb-4"
-            >
-              {language === "en"
-                ? "About Us for Massage "
-                : "Om os til massage"}{" "}
-              <br className="hidden lg:block" />{" "}
-              {language === "en" ? "and Escort Services" : "og Escort Services"}
-            </h1>
-            <p className="text-sm lg:text-base mb-6">
-              {language === "en"
-                ? "Welcome to [Escort Nights], your destination for relaxation and "
-                : "Velkommen til [Escort Nights], din destination for afslapning og"}
-              <br className="hidden lg:block" />
-              {language === "en"
-                ? "companionship. We offer a range of soothing massage therapies and"
-                : "kammeratskab. Vi tilbyder en række beroligende massagebehandlinger og"}{" "}
-              <br className="hidden lg:block" />
-              {language === "en"
-                ? "professional escort services, designed to provide comfort, relaxation, and"
-                : "professionelle escorttjenester, designet til at give komfort, afslapning og"}{" "}
-              <br className="hidden lg:block" />
-              {language === "en"
-                ? "an unforgettable experience. Our team is dedicated to ensuring your "
-                : "en uforglemmelig oplevelse. Vores team er dedikeret til at sikre din"}
-              <br className="hidden lg:block" />
-              {language === "en"
-                ? "privacy, satisfaction, and comfort at all times. Discover a new level of "
-                : "privatliv, tilfredshed og komfort til enhver tid. Oplev et nyt niveau af"}{" "}
-              <br className="hidden lg:block" />
-              {language === "en" ? "care with us." : "pleje med os."}
-            </p>
-          </div>
 
-          <div
-            className="relative border rounded-lg p-1 z-[999]"
-            style={{ maxWidth: "380px" }}
-          >
-            <img
-              className="img-index absolute top-[-7vw] right-[12vw] z-[-999]"
-              src="./assests/04 1.png"
-              alt=""
-            />
-            <img
-              src="../assests/Rectangle 15.png "
-              alt=""
-              className="w-full h-auto rec-img "
-            />
-
-            <img
-              src="../assests/Rectangle 14.png"
-              alt=""
-              className="absolute top-5 right-[-30px] w-[80px] lg:w-[130px]"
-            />
-          </div>
-        </div> */}
         <Flower />
-        {/* <h1
-          style={{ fontFamily: "Recoleta-Regular" }}
-          className="text-center text-2xl mt-10 text-white"
-        >
-          {language === "en" ? "Testimonials" : "Udtalelser"}{" "}
-        </h1>
-        <h1
-          style={{ fontFamily: "Recoleta-Regular" }}
-          className="text-center text-4xl text-white mb-5"
-        >
-          {language === "en"
-            ? "What Our Clients Say"
-            : "Hvad vores kunder siger"}{" "}
-        </h1>
 
-        <TestimonialSlider /> */}
         <Flowerright />
         <ContactUs />
         <Footer />
