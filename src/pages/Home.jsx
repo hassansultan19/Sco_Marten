@@ -365,7 +365,7 @@ const Home = () => {
                 >
                   <figure>
                     <img
-                      className="w-full h-64 object-cover"
+                      className="w-full h-72 object-cover"
                       title={escort.name}
                       src={escort.media[0]?.original_url || "../assets/default.png"}
                       alt={escort.name}
@@ -477,7 +477,7 @@ const Home = () => {
                         title={escort.name}
                         alt={escort.name}
                         name={`img${index + 1}`}
-                        className="w-full h-64 object-cover"
+                        className="w-full h-72 object-cover"
                       />
                     </figure>
                     <div className="card-body text-start">

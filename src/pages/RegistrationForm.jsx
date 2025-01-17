@@ -649,26 +649,28 @@ const RegistrationForm = () => {
                 className="input input-bordered input-primary"
               />
               {errors.weight && <p className="error-text">{errors.weight}</p>}
-              <div className="relative">
+              <div className="flex items-center input bg-[#292929] input-bordered input-primary p-0 pr-4" 
+        style={{ border: errors.password ? "1px solid red" : "" }}
+              
+              >
       <input
         type={passwordVisible ? "text" : "password"} // Toggle input type
         name="password"
-        style={{ border: errors.password ? "1px solid red" : "" }}
         value={formData.password}
         onChange={handleChange}
         placeholder="Enter Password"
-        className="input input-bordered input-primary"
+        className=""
       />
       <button
         type="button"
         onClick={togglePasswordVisibility}
-        className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+        className=" flex items-center text-gray-500"
         aria-label="Toggle password visibility"
       >
         {passwordVisible ? <FaEyeSlash /> : <FaEye />} 
       </button>
-      {errors.password && <p className="error-text">{errors.password}</p>}
     </div>
+      {errors.password && <p className="error-text">{errors.password}</p>}
               <input
                 type="password"
                 name="confirmPassword"
