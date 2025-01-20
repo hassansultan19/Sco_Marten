@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Assuming you're using React Router
+import { useLocation, useNavigate } from "react-router-dom"; // Assuming you're using React Router
 import Flower from "../components/Flower";
 import Flowerright from "../components/Flowerright";
 import Footer from "../components/Footer";
@@ -9,13 +9,14 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useLocationStore } from "../store/useLocationStore";
 
 const RegistrationForm = () => {
   const navigate = useNavigate(); // For redirection after registration
   const [images, setImages] = useState([]);
   const [mainImage, setMainImage] = useState(null); // State for main image
   const [videos, setVideos] = useState([]);
-  const [passwordShoe,SetPasswordShow]=useState("password")
+  const [passwordShoe, SetPasswordShow] = useState("password")
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -45,6 +46,8 @@ const RegistrationForm = () => {
     sex: "", // Updated sex field
     is_user: 0,
   });
+
+
   const addressRef = useRef(null);
 
   const [errors, setErrors] = useState({});
@@ -52,10 +55,9 @@ const RegistrationForm = () => {
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
 
-  // Use Google Places API to auto-fill address components
   useEffect(() => {
+
     if (window.google) {
-      // Initialize autocomplete for address input
       const autocomplete = new window.google.maps.places.Autocomplete(
         addressRef.current,
         { types: ["address"] }
@@ -114,23 +116,24 @@ const RegistrationForm = () => {
         }));
       });
     }
-    // Update state with city, country, and zip code based on zip_code change
-    // Update state with city, country, and address based on zip_code change
-    const handleZipChange = async (zipCode) => {
+
+    const handleZipChange = async (zipCode) => {  
       try {
-        // Make a request to a geocoding API (e.g., Google Maps Geocoding API)
-        // to get city, country, and address from the zip code.
+
         const response = await fetch(
           `https://maps.googleapis.com/maps/api/geocode/json?address=dk-${zipCode}&key=AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y&libraries=places`
         );
         const data = await response.json();
-
         if (data.results && data.results.length > 0) {
           const addressComponents = data.results[0].address_components;
           const formattedAddress = data.results[0].formatted_address;
+          const location = data.results[0].geometry.location;
+          let latitude = location.lat; 
+          let longitude = location.lng; 
           let city = "";
           let state = "";
           let country = "";
+       
           let address = formattedAddress;
 
           addressComponents.forEach((component) => {
@@ -155,20 +158,26 @@ const RegistrationForm = () => {
             city,
             state,
             country,
-            address: address.trim(), // Remove trailing whitespace
+            address: address.trim(),
+            latitude,
+            longitude,
           }));
         } else {
-          // Handle cases where the zip code is invalid or no results are found
-          console.error("No results found for the provided zip code.");
-          // You might want to display an error message to the user
+          setFormData((prevData) => ({
+            ...prevData,
+            city:"",
+            state:"",
+            country:"",
+            address: "", 
+            latitude:null,
+            longitude:null,
+          }));
         }
       } catch (error) {
         console.error("Error fetching location data:", error);
-        // Handle API request errors
       }
     };
 
-    // Add event listener to the zip_code input field
     const zipCodeInput = document.getElementById("zip_code_input");
     if (zipCodeInput) {
       zipCodeInput.addEventListener("change", (event) => {
@@ -177,14 +186,37 @@ const RegistrationForm = () => {
     }
 
     return () => {
-      // Remove event listener when the component unmounts
       if (zipCodeInput) {
         zipCodeInput.removeEventListener("change", handleZipChange);
       }
     };
   }, []);
 
-  // Handle form input changes
+
+  // const getLatLong = async (zipCode) => {
+  //   if (!zipCode) {
+  //     console.error("ZIP code is required.");
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await fetch(
+  //       `https://maps.googleapis.com/maps/api/geocode/json?address=dk-${zipCode}&key=AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y`
+  //     );
+  //     const data = await response.json();
+
+  //     if (data.results && data.results.length > 0) {
+  //       const { lat, lng } = data.results[0].geometry.location;
+  //       return { latitude: lat, longitude: lng }; 
+  //     } else {
+  //       return null;
+  //     }
+  //   } catch (error) {
+  //     return null;
+  //   }
+  // };
+
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -192,7 +224,6 @@ const RegistrationForm = () => {
     });
   };
 
-  // Handle file input change for multiple images
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     const imageUrls = files.map((file) => URL.createObjectURL(file));
@@ -203,7 +234,6 @@ const RegistrationForm = () => {
     });
   };
 
-  // Handle main image change
   const handleMainImageChange = (event) => {
     const file = event.target.files[0];
     setMainImage(URL.createObjectURL(file));
@@ -263,7 +293,7 @@ const RegistrationForm = () => {
   const handleRemoveImage = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
-  const [interest, setInterest] = useState([]); 
+  const [interest, setInterest] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -302,8 +332,10 @@ const RegistrationForm = () => {
     setInputError(true);
     setLoading(true);
 
+
     let validationErrors = {};
 
+    if (!formData.city || !formData.country )   return   toast.error("Zip code field is not valid.");
     if (!formData.name) validationErrors.name = "Name is required";
     if (!formData.email) validationErrors.email = "Email is required";
     if (!formData.password) validationErrors.password = "Password is required";
@@ -311,15 +343,16 @@ const RegistrationForm = () => {
       validationErrors.confirmPassword = "Confirm Password is required";
     if (!formData.phone_number)
       validationErrors.phone_number = "Phone Number is required";
-    if (!formData.city) validationErrors.city = "City is required";
     if (!formData.hair_color)
       validationErrors.hair_color = "Hair Color is required";
-    if (!formData.country) validationErrors.country = "Country is required";
     if (!formData.zip_code) validationErrors.zip_code = "ZIP Code is required";
     if (!formData.age) validationErrors.age = "Age is required";
     if (!formData.height) validationErrors.height = "Height is required";
     if (!formData.burst) validationErrors.burst = "Burst size is required";
-    
+    if (!videos?.length) validationErrors.videos = "Video is required";
+    if (!images?.length) validationErrors.images = "Image is required";
+    if (!mainImage) validationErrors.mainImage = "Main Image is required";
+
 
     if (Object.keys(validationErrors).length > 0) {
       toast.error("All fields are required. Please fill out the missing information.");
@@ -356,6 +389,7 @@ const RegistrationForm = () => {
     formDataToSend.append("sex", formData.sex);
     formDataToSend.append("is_user", formData.is_user);
 
+
     if (formData.main_image) {
       formDataToSend.append("main_image", formData.main_image);
     } else {
@@ -378,10 +412,10 @@ const RegistrationForm = () => {
     }
 
     try {
-    let {data}=  await apis.register(formDataToSend, {
+      let { data } = await apis.register(formDataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      localStorage.setItem("userId",data.data.id)
+      localStorage.setItem("userId", data.data.id)
       navigate(`/otpscreen/${formData.email}`);
     } catch (error) {
       const errorMessage =
@@ -479,6 +513,7 @@ const RegistrationForm = () => {
               <input
                 type="text"
                 name="address"
+                disabled={true}
                 style={{
                   border: errors.address ? "1px solid red" : "",
                   // display: "none",
@@ -486,21 +521,22 @@ const RegistrationForm = () => {
                 value={formData.address}
                 onChange={handleChange}
                 placeholder="Address"
-                className="input input-bordered input-primary"
+                className="input input-bordered input-primary text-slate-300"
               />
-              
+
               {errors.address && <p className="error-text">{errors.address}</p>}
 
               {/* Autofilled Fields */}
               <input
                 type="text"
                 name="city"
+                disabled={true}
                 style={{ border: errors.city ? "1px solid red" : "" }}
                 value={formData.city}
                 onChange={handleChange}
                 placeholder="City"
                 // disabled
-                className="input input-bordered input-primary"
+                className="input input-bordered input-primary text-slate-300"
               />
               {errors.city && <p className="error-text">{errors.city}</p>}
 
@@ -515,7 +551,7 @@ const RegistrationForm = () => {
                 onChange={handleChange}
                 placeholder="State"
                 // disabled
-                className="input input-bordered input-primary"
+                className="input input-bordered input-primary text-slate-300"
               />
 
               {/*{errors.state && <p className="error-text">{errors.state}</p>} */}
@@ -523,12 +559,14 @@ const RegistrationForm = () => {
               <input
                 type="text"
                 name="country"
+                disabled={true}
+
                 style={{ border: errors.country ? "1px solid red" : "" }}
                 value={formData.country}
                 onChange={handleChange}
                 placeholder="Country"
-                className="input input-bordered input-primary"
-                // disabled
+                className="input input-bordered input-primary text-slate-300"
+              // disabled
               />
 
               <input
@@ -610,21 +648,7 @@ const RegistrationForm = () => {
                 className="input input-bordered input-primary"
               />
               {errors.burst && <p className="error-text">{errors.burst}</p>}
-              {/* Sex Dropdown */}
-              {/* <select
-                name="sex"
-                value={formData.sex}
-                style={{ border: errors.sex ? "1px solid red" : "" }}
-                onChange={handleChange}
-                className="input input-bordered input-primary"
-              >
-                <option value="">Select Sex</option>
-                <option value="man">Man</option>
-                <option value="woman">Woman</option>
-              </select>
-              {errors.sex && <p className="error-text">{errors.sex}</p>} */}
 
-              {/* City Autocomplete */}
 
               <input
                 type="text"
@@ -649,31 +673,31 @@ const RegistrationForm = () => {
                 className="input input-bordered input-primary"
               />
               {errors.weight && <p className="error-text">{errors.weight}</p>}
-              <div className="flex items-center input bg-[#292929] input-bordered input-primary p-0 pr-4" 
-        style={{ border: errors.password ? "1px solid red" : "" }}
-              
+              <div className="flex items-center input bg-[#292929] input-bordered input-primary p-0 pr-4"
+                style={{ border: errors.password ? "1px solid red" : "" }}
+
               >
-      <input
-        type={passwordVisible ? "text" : "password"} // Toggle input type
-        name="password"
-        value={formData.password}
-        onChange={handleChange}
-        placeholder="Enter Password"
-        className=""
-      />
-      <button
-        type="button"
-        onClick={togglePasswordVisibility}
-        className=" flex items-center text-gray-500"
-        aria-label="Toggle password visibility"
-      >
-        {passwordVisible ? <FaEyeSlash /> : <FaEye />} 
-      </button>
-    </div>
-      {errors.password && <p className="error-text">{errors.password}</p>}
+                <input
+                  type={passwordVisible ? "text" : "password"} // Toggle input type
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Enter Password"
+                  className=""
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className=" flex items-center text-gray-500"
+                  aria-label="Toggle password visibility"
+                >
+                  {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+              {errors.password && <p className="error-text">{errors.password}</p>}
               <input
-                type="password"
                 name="confirmPassword"
+                type={passwordVisible ? "text" : "password"}
                 style={{
                   border: errors.confirmPassword ? "1px solid red" : "",
                 }}
@@ -733,12 +757,14 @@ const RegistrationForm = () => {
               <input
                 id="mainImage"
                 className="upload-input"
+                style={{ border: errors.mainImage ? "1px solid red" : "", display: "none" }}
                 name="mainImage"
                 type="file"
                 accept="image/*"
                 onChange={handleMainImageChange}
-                style={{ display: "none" }}
+
               />
+              {errors.mainImage && <p className="error-text">{errors.mainImage}</p>}
             </label>
             <p className="hd-quality-instruction">
               Please upload an HD-quality image .
@@ -776,8 +802,9 @@ const RegistrationForm = () => {
                   accept="image/*"
                   multiple
                   onChange={handleFileChange}
-                  style={{ display: "none" }}
+                  style={{ border: errors.images ? "1px solid red" : "", display: "none" }}
                 />
+                {errors.images && <p className="error-text">{errors.images}</p>}
               </label>
             </div>
             <p className="hd-quality-instruction">
@@ -816,8 +843,9 @@ const RegistrationForm = () => {
                 accept="video/*"
                 multiple
                 onChange={handleVideoChange}
-                style={{ display: "none" }}
+                style={{ border: errors.videos ? "1px solid red" : "", display: "none" }}
               />
+              {errors.videos && <p className="error-text">{errors.videos}</p>}
             </label>
             <div className="uploaded-videos">
               {videos.map((video, index) => (

@@ -17,6 +17,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import axios from "axios";
 import { FaTruckLoading } from "react-icons/fa";
 import { LuLoader } from "react-icons/lu";
+import { useLocationStore } from "../store/useLocationStore.js";
 
 const Home = () => {
   const { language } = useLanguage();
@@ -28,6 +29,8 @@ const Home = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sloading, setsLoading] = useState(false);
+
+
   const handleSearch = async () => {
     const authToken = sessionStorage.getItem("authToken");
     setsLoading(true)
@@ -59,7 +62,7 @@ const Home = () => {
   const [cardAllData, setCardAllData] = useState([]);
   const [cardAllNormalData, setCardAllNormalData] = useState([]);
   const [interest, setInterest] = useState([]);
-
+  const { userLocation } = useLocationStore()
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -71,12 +74,9 @@ const Home = () => {
         if (response.data && Array.isArray(response.data.data.interests)) {
           setInterest(response.data.data.interests);
         } else {
-          console.error("Unexpected data format:", response.data);
         }
 
-        console.log("interest", response.data.data.interests);
       } catch (error) {
-        console.error("Error fetching data:", error);
       }
     };
     fetchData();
@@ -106,29 +106,32 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    // Fetch data from the API
-    const fetchAllData = async () => {
-      try {
-        setLoading(true); // Start loader
-        const response = await fetch(
-          "https://martinbackend.tripcouncel.com/api/escort/all"
-        );
-        const jsonData = await response.json();
 
-        if (jsonData.status) {
-          setCardAllData(jsonData.data.escorts); // Set card data
-        } else {
-          console.error("Error fetching data:", jsonData.message);
+    const fetchAllData = async () => {
+      console.log('userLocation', userLocation)
+      if (userLocation !== null) {
+        try {
+          setLoading(true);
+          const response = await fetch(
+            `https://martinbackend.tripcouncel.com/api/escort/all?latitude=${userLocation?.lat}&longitude=${userLocation?.lng}`
+          );
+          const jsonData = await response.json();
+
+          if (jsonData.status) {
+            setCardAllData(jsonData.data.escorts);
+          } else {
+            console.error("Error fetching data:", jsonData.message);
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false); // Stop loader
       }
     };
 
     fetchAllData();
-  }, []);
+  }, [userLocation]);
   useEffect(() => {
 
     const fetchAllNormalData = async () => {
@@ -151,7 +154,7 @@ const Home = () => {
     fetchAllNormalData();
   }, []);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6; 
+  const itemsPerPage = 6;
 
   const totalPages = Math.ceil(results.length / itemsPerPage);
 
@@ -170,77 +173,77 @@ const Home = () => {
   return (
     <div className="container mx-auto">
       <section style={{ padding: "30px" }} >
-      
-    <Swiper
-      modules={[Navigation, Pagination]}
-      spaceBetween={20}
-      slidesPerView={5}
-      navigation
-      pagination={{ clickable: true }}
-      className="mySwiper"
-      breakpoints={{
-        // Breakpoints for responsiveness
-        320: {
-          slidesPerView: 1, // 1 slide for small screens (e.g., mobile)
-          spaceBetween: 10,
-        },
-        480: {
-          slidesPerView: 2, // 2 slides for medium-small screens
-          spaceBetween: 15,
-        },
-        768: {
-          slidesPerView: 3, // 3 slides for tablets
-          spaceBetween: 20,
-        },
-        1024: {
-          slidesPerView: 4, // 4 slides for small desktops
-          spaceBetween: 20,
-        },
-        1280: {
-          slidesPerView: 5, // 5 slides for large desktops
-          spaceBetween: 20,
-        },
-      }}
-    >
-      {cardAllNormalData.map((item, index) => {
-        const backgroundUrl =
-          item.media && item.media[0]?.original_url
-            ? item.media[0].original_url
-            : "default-image-url.jpg";
 
-        return (
-          <SwiperSlide key={index}>
-            <Link
-              to={`/details?guid=${item.guid}`}
-              className="carousel-item bg-1"
-              style={{
-                backgroundImage: `url(${backgroundUrl})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
-              <div className="chota">
-                <h2 className="text-2xl text-center">{item.name}</h2>
-                <button
+        <Swiper
+          modules={[Navigation, Pagination]}
+          spaceBetween={20}
+          slidesPerView={5}
+          navigation
+          pagination={{ clickable: true }}
+          className="mySwiper"
+          breakpoints={{
+            // Breakpoints for responsiveness
+            320: {
+              slidesPerView: 1, // 1 slide for small screens (e.g., mobile)
+              spaceBetween: 10,
+            },
+            480: {
+              slidesPerView: 2, // 2 slides for medium-small screens
+              spaceBetween: 15,
+            },
+            768: {
+              slidesPerView: 3, // 3 slides for tablets
+              spaceBetween: 20,
+            },
+            1024: {
+              slidesPerView: 4, // 4 slides for small desktops
+              spaceBetween: 20,
+            },
+            1280: {
+              slidesPerView: 5, // 5 slides for large desktops
+              spaceBetween: 20,
+            },
+          }}
+        >
+          {cardAllNormalData.map((item, index) => {
+            const backgroundUrl =
+              item.media && item.media[0]?.original_url
+                ? item.media[0].original_url
+                : "default-image-url.jpg";
+
+            return (
+              <SwiperSlide key={index}>
+                <Link
+                  to={`/details?guid=${item.guid}`}
+                  className="carousel-item bg-1"
                   style={{
-                    marginTop: "10px",
-                    backgroundColor: "rgb(153, 0, 0)",
-                    border: "none",
-                    color: "white",
-                    fontSize: "16px",
-                    padding: "6px 21px",
-                    borderRadius: "9px",
+                    backgroundImage: `url(${backgroundUrl})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
                   }}
                 >
-                  More Details
-                </button>
-              </div>
-            </Link>
-          </SwiperSlide>
-        );
-      })}
-    </Swiper>
-  
+                  <div className="chota">
+                    <h2 className="text-2xl text-center">{item.name}</h2>
+                    <button
+                      style={{
+                        marginTop: "10px",
+                        backgroundColor: "rgb(153, 0, 0)",
+                        border: "none",
+                        color: "white",
+                        fontSize: "16px",
+                        padding: "6px 21px",
+                        borderRadius: "9px",
+                      }}
+                    >
+                      More Details
+                    </button>
+                  </div>
+                </Link>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+
       </section>
       <section style={{ padding: "30px" }} className="filterNew">
         <div className="coloumm flex justify-center gap-10 drop-down-main">
@@ -408,8 +411,8 @@ const Home = () => {
                 onClick={handlePrevious}
                 disabled={currentPage === 1}
                 className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${currentPage === 1
-                    ? "bg-gray-500 cursor-not-allowed"
-                    : "bg-red-700 hover:bg-red-800 text-white"
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : "bg-red-700 hover:bg-red-800 text-white"
                   }`}
               >
                 Previous
@@ -423,8 +426,8 @@ const Home = () => {
                 onClick={handleNext}
                 disabled={currentPage === totalPages}
                 className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${currentPage === totalPages
-                    ? "bg-gray-500 cursor-not-allowed"
-                    : "bg-red-700 hover:bg-red-800 text-white"
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : "bg-red-700 hover:bg-red-800 text-white"
                   }`}
               >
                 Next
@@ -458,48 +461,47 @@ const Home = () => {
             </div>
           </div>
         ) : (
-          <div>
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 justify-center">
-              {
-                cardAllData.map((escort, index) => (
-                  <Link
-                    to={`/details?guid=${escort.guid}`}
-                    className="card w-full shadow-xl m-2 mt-4"
-                    style={{
-                      boxShadow: "#990000 0px 1px 0px 1px ,#990000 1px 0px 1px 1px",
-                      backgroundColor: "#111",
-                    }}
-                    key={escort.id}
-                  >
-                    <figure>
-                      <img
-                        src={escort.media[0]?.original_url || "../assets/default.png"}
-                        title={escort.name}
-                        alt={escort.name}
-                        name={`img${index + 1}`}
-                        className="w-full h-72 object-cover"
-                      />
-                    </figure>
-                    <div className="card-body text-start">
-                      <h2 className="card-title text-white">{escort.name}</h2>
-                      <p className="text-white">{escort.address}</p>
-                      <div className="card-actions flex justify-between items-center">
-                        <button
-                          style={{ border: "none", backgroundColor: "#990000" }}
-                          className="btn text-white all-btn-hover"
-                          onClick={() =>
-                            document.getElementById(`my_modal_${index}`).showModal()
-                          }
-                        >
-                          {language === "en" ? "Book Now" : "Book nu"}
-                        </button>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-            </div>
 
+          <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 justify-center">
+            {
+              cardAllData?.map((escort, index) => (
+                <Link
+                  to={`/details?guid=${escort.guid}`}
+                  className="card w-full shadow-xl m-2 mt-4"
+                  style={{
+                    boxShadow: "#990000 0px 1px 0px 1px ,#990000 1px 0px 1px 1px",
+                    backgroundColor: "#111",
+                  }}
+                  key={escort.id}
+                >
+                  <figure>
+                    <img
+                      src={escort.media[0]?.original_url || "../assets/default.png"}
+                      title={escort.name}
+                      alt={escort.name}
+                      name={`img${index + 1}`}
+                      className="w-full h-72 object-cover"
+                    />
+                  </figure>
+                  <div className="card-body text-start">
+                    <h2 className="card-title text-white">{escort.name}</h2>
+                    <p className="text-white">{escort.address}</p>
+                    <div className="card-actions flex justify-between items-center">
+                      <button
+                        style={{ border: "none", backgroundColor: "#990000" }}
+                        className="btn text-white all-btn-hover"
+                        onClick={() =>
+                          document.getElementById(`my_modal_${index}`).showModal()
+                        }
+                      >
+                        {language === "en" ? "Book Now" : "Book nu"}
+                      </button>
+                    </div>
+                  </div>
+                </Link>
+              ))}
           </div>
+
         )}
 
         <Flower />
