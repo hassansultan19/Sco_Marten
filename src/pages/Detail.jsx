@@ -46,7 +46,7 @@ const Detail = () => {
     if (guid) {
       try {
         const response = await axios.get(
-          `http://192.168.18.83:8000/api/escort/getById/${guid}`
+          `https://martinbackend.tripcouncel.com/api/escort/getById/${guid}`
         );
         console.log("response", response.data.data.escort);
         setModelDetail(response.data.data.escort);
@@ -64,7 +64,7 @@ const Detail = () => {
   const fetchAllData = async () => {
     try {
       const response = await fetch(
-        `http://192.168.18.83:8000/api/escort/getRelated/${guid}`
+        `https://martinbackend.tripcouncel.com/api/escort/getRelated/${guid}`
       );
       const jsonData = await response.json();
       console.log(jsonData); // Log the full response for debugging
@@ -126,7 +126,7 @@ const Detail = () => {
 
     try {
       const response = await axios.post(
-        "http://192.168.18.83:8000/api/feedback/store",
+        "https://martinbackend.tripcouncel.com/api/feedback/store",
         payload
       );
       if (response.data && response.data.status) {
@@ -168,7 +168,7 @@ const Detail = () => {
     const fetchTestimonials = async () => {
       try {
         const response = await fetch(
-          `http://192.168.18.83:8000/api/feedback/user/${modelDetailId}`
+          `https://martinbackend.tripcouncel.com/api/feedback/user/${modelDetailId}`
         );
         const data = await response.json();
         if (data.status && data.data.feedbacks) {
@@ -240,8 +240,7 @@ const Detail = () => {
 
   // Truncated text for "about" section
   const truncatedText = modelDetail?.about
-    ?.split(" ")
-    .slice(0, wordLimit)
+    ?.split(" ")?.slice(0, wordLimit)
     .join(" ") + " ...";
   if (loading) {
     return (
@@ -381,12 +380,12 @@ const Detail = () => {
                     className="flex justify-between items-center text-lg location"
                   >
                     <h2>
-                      <FaMapMarkerAlt className="mr-2" /> {modelDetail.address}
+                      <FaMapMarkerAlt className="mr-2" /> {modelDetail?.address}
                     </h2>
                     <div className="flex justify-center items-center text-lg whatsappcall">
-                      <span className="mr-2">{modelDetail.phone_number}</span>
+                      <span className="mr-2">{modelDetail?.phone_number}</span>
                       <a
-                        href={`https://wa.me/${modelDetail.phone_number}`}
+                        href={`https://wa.me/${modelDetail?.phone_number}`}
                         className="text-white hover:text-gray-200"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -413,7 +412,7 @@ const Detail = () => {
                     fontSize: "3vw",
                   }}
                 >
-                  {modelDetail.name}
+                  {modelDetail?.name}
                 </h1>
                 <p className="mt-4 mb-4 text-gray-300 text-start">
                   {modelDetail?.about}

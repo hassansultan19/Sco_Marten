@@ -36,7 +36,7 @@ const Home = () => {
     setsLoading(true)
     try {
       const response = await fetch(
-        `http://192.168.18.83:8000/api/escort/search?sex=${sex}&age=${age}&address=${address}&interests=${filterInterest}&zip_code=${zipcode}`,
+        `https://martinbackend.tripcouncel.com/api/escort/search?sex=${sex}&age=${age}&address=${address}&interests=${filterInterest}&zip_code=${zipcode}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -48,8 +48,8 @@ const Home = () => {
         throw new Error("Network response was not ok");
       }
 
-      const data = await response.json();
-      setResults(data.data);
+      const res = await response.json();
+      setResults(res?.data?.data);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
     } finally {
@@ -67,7 +67,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.18.83:8000/api/auth/interests`
+          `https://martinbackend.tripcouncel.com/api/auth/interests`
         );
 
 
@@ -87,7 +87,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://192.168.18.83:8000/api/escort/featured"
+          "https://martinbackend.tripcouncel.com/api/escort/featured"
         );
         const jsonData = await response.json();
 
@@ -108,12 +108,11 @@ const Home = () => {
   useEffect(() => {
 
     const fetchAllData = async () => {
-      console.log('userLocation', userLocation)
       if (userLocation !== null) {
         try {
           setLoading(true);
           const response = await fetch(
-            `http://192.168.18.83:8000/api/escort/all?latitude=${userLocation?.lat}&longitude=${userLocation?.lng}`
+            `https://martinbackend.tripcouncel.com/api/escort/all?latitude=${userLocation?.lat}&longitude=${userLocation?.lng}`
           );
           const jsonData = await response.json();
 
@@ -137,7 +136,7 @@ const Home = () => {
     const fetchAllNormalData = async () => {
       try {
         const response = await fetch(
-          "http://192.168.18.83:8000/api/escort/normal?page_size=100"
+          "https://martinbackend.tripcouncel.com/api/escort/normal?page_size=100"
         );
         const jsonData = await response.json();
 
@@ -155,12 +154,12 @@ const Home = () => {
   }, []);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
-
-  const totalPages = Math.ceil(results.length / itemsPerPage);
+console.log('results', results)
+  const totalPages = Math.ceil(results?.length / itemsPerPage);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedResults = results.slice(startIndex, endIndex);
+  const displayedResults = results?.slice(startIndex, endIndex);
 
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -357,6 +356,7 @@ const Home = () => {
           <div className="grid xl:grid-cols-3 md:grid-cols-2 gap-5">
             {displayedResults.length > 0 ? (
               displayedResults.map((escort, index) => (
+
                 <Link
                   to={`/details?guid=${escort.guid}`}
                   className="card w-full shadow-xl m-2 mt-4"
@@ -465,8 +465,9 @@ const Home = () => {
           <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 justify-center">
             {
               cardAllData?.map((escort, index) => (
+
                 <Link
-                  to={`/details?guid=${escort.guid}`}
+                  to={`/details?guid=${escort.id}`}
                   className="card w-full shadow-xl m-2 mt-4"
                   style={{
                     boxShadow: "#990000 0px 1px 0px 1px ,#990000 1px 0px 1px 1px",

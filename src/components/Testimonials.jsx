@@ -10,7 +10,7 @@ const TestimonialSlider = () => {
     const fetchTestimonials = async () => {
       try {
         const response = await fetch(
-          "http://192.168.18.83:8000/api/admin/testimonial"
+          "https://martinbackend.tripcouncel.com/api/admin/testimonial"
         );
         const data = await response.json();
         if (data.status && data.data.testimonials) {

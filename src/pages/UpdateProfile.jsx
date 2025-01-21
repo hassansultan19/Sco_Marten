@@ -37,7 +37,7 @@ const UpdateProfile = () => {
       try {
         const token = sessionStorage.getItem("authToken");
         const response = await axios.get(
-          "http://192.168.18.83:8000/api/admin/packages",
+          "https://martinbackend.tripcouncel.com/api/admin/packages",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -72,7 +72,7 @@ const UpdateProfile = () => {
     const fetchInterests = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.18.83:8000/api/auth/interests"
+          "https://martinbackend.tripcouncel.com/api/auth/interests"
         );
         if (response.data && Array.isArray(response.data.data.interests)) {
           setAllInterests(response.data.data.interests);
@@ -94,7 +94,7 @@ const UpdateProfile = () => {
     if (guid) {
       axios
         .get(
-          `http://192.168.18.83:8000/api/escort/getById/${guid}`
+          `https://martinbackend.tripcouncel.com/api/escort/getById/${guid}`
         )
         .then((response) => {
           const escortData = response.data.data.escort;
@@ -274,7 +274,7 @@ const UpdateProfile = () => {
 
     try {
       const response = await axios.post(
-        "http://192.168.18.83:8000/api/escort/update-profile",
+        "https://martinbackend.tripcouncel.com/api/escort/update-profile",
         formData,
         {
           headers: {
@@ -319,7 +319,7 @@ const UpdateProfile = () => {
     if (showDays === true) {
       try {
         const response = await axios.post(
-          "http://192.168.18.83:8000/api/escort/update-featured",
+          "https://martinbackend.tripcouncel.com/api/escort/update-featured",
           { days: selectedDay }, // Payload for the API
           {
             headers: {
@@ -681,7 +681,7 @@ const UpdateProfile = () => {
             </div>
           ) : (
             <>
-              {mediaImages.slice(0, 1).map((image, index) => (
+              {mediaImages?.slice(0, 1).map((image, index) => (
                 <div className="uploaded-images">
                   <div className="uploaded-image-container">
                     <img src={image} alt={`Gallery ${index + 1}`} />

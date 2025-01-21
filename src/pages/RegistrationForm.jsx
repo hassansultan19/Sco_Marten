@@ -299,7 +299,7 @@ const RegistrationForm = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.18.83:8000/api/auth/interests`
+          `https://martinbackend.tripcouncel.com/api/auth/interests`
         );
 
         // Check if the data is in the expected format
