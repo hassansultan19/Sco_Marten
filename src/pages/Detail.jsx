@@ -203,14 +203,14 @@ const Detail = () => {
         },
       },
       {
-        breakpoint: 768, // For screens up to 768px wide
+        breakpoint: 768, 
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 480, // For screens up to 480px wide
+        breakpoint: 480, 
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -218,19 +218,13 @@ const Detail = () => {
       },
     ],
   };
-  const [isExpanded, setIsExpanded] = useState(false);
   const [shouldShowReadMore, setShouldShowReadMore] = useState(false);
 
-  // Limit for the number of words to show initially
   const wordLimit = 100;
 
-  // Function to toggle "Read More" and "Show Less"
-  const toggleReadMore = () => {
-    setIsExpanded(!isExpanded);
-  };
+
 
   useEffect(() => {
-    // Check if the "about" section has more words than the limit
     if (modelDetail?.about?.split(" ").length > wordLimit) {
       setShouldShowReadMore(true);
     } else {
@@ -238,34 +232,13 @@ const Detail = () => {
     }
   }, [modelDetail?.about]);
 
-  // Truncated text for "about" section
-  const truncatedText = modelDetail?.about
-    ?.split(" ")?.slice(0, wordLimit)
-    .join(" ") + " ...";
-  if (loading) {
-    return (
-      <div className="loader-overlay">
-        <div className="spinner"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="container mx-auto">
-      {/* <div className="detail-us-img">
-        <div>
-          <h1 style={{ fontFamily: "Recoleta-Regular" }}>Model Details</h1>
-          <p>
-            Home/ <span style={{ color: "red" }}>Detail page</span>
-          </p>
-        </div>
-      </div> */}
-
       <section style={{ marginTop: "4vw" }}>
         <div className="container mx-auto p-6 text-white">
           <Flowerright />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Left section: Profile Image and Basic Info */}
             <div className="profile-details">
               <div className="profile-image">
                 <img
@@ -300,7 +273,6 @@ const Detail = () => {
                   </div>
                 </div>
                 <div className="sec">
-                  {/* <div><strong>DRESS</strong><br /> 2.4</div> */}
                   <div>
                     <strong>BURST</strong>
                     <br /> {modelDetail?.burst}
@@ -317,9 +289,6 @@ const Detail = () => {
                     <strong>POSTAL CODE</strong>
                     <br /> {modelDetail?.zip_code}
                   </div>
-                  {/* <div><strong>WAIST</strong> <br />28</div> */}
-                  {/* <div><strong>HIPS</strong><br /> 36</div> */}
-                  {/* <div><strong>SHOE</strong><br /> 7.5</div> */}
                 </div>
               </div>
               <div className="image-gallery flex justify-center flex-wrap items-center gap-10">

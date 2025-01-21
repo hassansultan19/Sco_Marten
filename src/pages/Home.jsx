@@ -3,9 +3,6 @@ import ContactUs from "../components/ContactUs";
 import Flower from "../components/Flower.jsx";
 import Flowerright from "../components/Flowerright.jsx";
 import Footer from "../components/Footer";
-import Images from "../components/Images.jsx";
-import NewLeftImagesFlover from "../components/NewLeftImagesFlover.jsx";
-import NewRightImagesFlover from "../components/NewRightImagesFlover.jsx";
 import "../pages/Home.css";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../LanguageContext.jsx";
@@ -15,7 +12,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import axios from "axios";
-import { FaTruckLoading } from "react-icons/fa";
 import { LuLoader } from "react-icons/lu";
 import { useLocationStore } from "../store/useLocationStore.js";
 
@@ -27,16 +23,17 @@ const Home = () => {
   const [filterInterest, setFilterInterest] = useState(null);
   const [address, setAddress] = useState("");
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [sloading, setsLoading] = useState(false);
+  const [currentPageLocation, setCurrentPageLocation] = useState(1);
+  const [totalPagesLocation, setTotalPagesLocation] = useState(1);
 
 
-  const handleSearch = async () => {
+  const handleSearch = async (page) => {
     const authToken = sessionStorage.getItem("authToken");
     setsLoading(true)
     try {
       const response = await fetch(
-        `https://martinbackend.tripcouncel.com/api/escort/search?sex=${sex}&age=${age}&address=${address}&interests=${filterInterest}&zip_code=${zipcode}`,
+        `https://martinbackend.tripcouncel.com/api/escort/search?sex=${sex}&age=${age}&address=${address}&interests=${filterInterest}&zip_code=${zipcode}&page=${page}&page_size=9`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -49,7 +46,8 @@ const Home = () => {
       }
 
       const res = await response.json();
-      setResults(res?.data?.data);
+      setResults(res?.data?.escorts);
+      setTotalPagesLocation(res?.data?.pagination?.total_pages || 1);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
     } finally {
@@ -58,10 +56,17 @@ const Home = () => {
     }
   };
 
+  const handleLocationPageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPagesLocation) {
+      setCurrentPageLocation(newPage);
+      handleSearch(newPage);
+    }
+  };
+
   const [cardData, setCardData] = useState([]);
   const [cardAllNormalData, setCardAllNormalData] = useState([]);
   const [interest, setInterest] = useState([]);
-  const { isCardLoading, cardAllData } = useLocationStore()
+  const { isCardLoading, cardAllData, totalPages, currentPage, handlePageChange } = useLocationStore()
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -82,7 +87,6 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    // Fetch data from the API
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -90,9 +94,8 @@ const Home = () => {
         );
         const jsonData = await response.json();
 
-        // Check if the response is successful
         if (jsonData.status) {
-          setCardData(jsonData.data.escorts); // Set cardData to the escorts array
+          setCardData(jsonData.data.escorts);
         } else {
           console.error("Error fetching data:", jsonData.message);
         }
@@ -125,23 +128,24 @@ const Home = () => {
 
     fetchAllNormalData();
   }, []);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
-console.log('results', results)
-  const totalPages = Math.ceil(results?.length / itemsPerPage);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const itemsPerPage = 9;
+  // const totalPages = Math.ceil(results?.length / itemsPerPage);
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const displayedResults = results?.slice(startIndex, endIndex);
+  // const startIndex = (currentPage - 1) * itemsPerPage;
+  // const endIndex = startIndex + itemsPerPage;
+  // const displayedResults = results?.slice(startIndex, endIndex);
 
-  const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
+  // const handleNext = () => {
+  //   if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  // };
 
-  const handlePrevious = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
-  console.log('cardAllData', cardAllData)
+  // const handlePrevious = () => {
+  //   if (currentPage > 1) setCurrentPage(currentPage - 1);
+  // };
+
+  console.log('currentPage', currentPage)
+  console.log('total', totalPages)
 
   return (
     <div className="container mx-auto">
@@ -155,25 +159,24 @@ console.log('results', results)
           pagination={{ clickable: true }}
           className="mySwiper"
           breakpoints={{
-            // Breakpoints for responsiveness
             320: {
-              slidesPerView: 1, // 1 slide for small screens (e.g., mobile)
+              slidesPerView: 1,
               spaceBetween: 10,
             },
             480: {
-              slidesPerView: 2, // 2 slides for medium-small screens
+              slidesPerView: 2,
               spaceBetween: 15,
             },
             768: {
-              slidesPerView: 3, // 3 slides for tablets
+              slidesPerView: 3,
               spaceBetween: 20,
             },
             1024: {
-              slidesPerView: 4, // 4 slides for small desktops
+              slidesPerView: 4,
               spaceBetween: 20,
             },
             1280: {
-              slidesPerView: 5, // 5 slides for large desktops
+              slidesPerView: 5,
               spaceBetween: 20,
             },
           }}
@@ -231,10 +234,10 @@ console.log('results', results)
 
 
           <div
-            className="flex items-center gap-9 wrap-isp"
+            className="flex items-center lg:gap-10 gap-5 wrap-isp"
             style={{ justifyContent: "center" }}
           >
-            <div className="text-start drop">
+            <div className="text-start">
               <p className="text-white mx-1">
                 {language === "en" ? "Sex" : "Køn"}
               </p>
@@ -259,7 +262,7 @@ console.log('results', results)
             </div>
 
 
-            <div className="text-start drop">
+            <div className="text-start">
               <p className="text-white mx-1">{language === 'en' ? 'Service' : 'Service'}</p>
               <select
                 value={filterInterest}
@@ -279,7 +282,7 @@ console.log('results', results)
 
 
 
-            <div className="text-start drop">
+            <div className="text-start">
               <p className="text-white mx-1">
                 {language === "en" ? "Age" : "Alder"}
               </p>
@@ -299,7 +302,7 @@ console.log('results', results)
               </select>
             </div>
 
-            <div className="text-start drop">
+            <div className="text-start">
               <p className="text-white mx-1">{language === 'en' ? 'Zip code / City name' : 'Soge / Bynavn'}</p>
               <input type="text" className="dropdown w-48 rounded-lg  bg-black text-white m-[10px] px-[13px] py-[10px]" value={zipcode} onChange={(e) => setZipcode(e.target.value)} />
             </div>
@@ -328,8 +331,8 @@ console.log('results', results)
         <div>
 
           <div className="grid xl:grid-cols-3 md:grid-cols-2 gap-5">
-            {displayedResults.length > 0 ? (
-              displayedResults.map((escort, index) => (
+            {results?.length > 0 ? (
+              results?.map((escort, index) => (
 
                 <Link
                   to={`/details?guid=${escort.guid}`}
@@ -378,36 +381,33 @@ console.log('results', results)
             )}
           </div>
 
-          {/* Pagination Controls */}
-          {results.length > 0 && (
-            <div className="flex gap-x-2 items-center  justify-center mt-8">
-              <button
-                onClick={handlePrevious}
-                disabled={currentPage === 1}
-                className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${currentPage === 1
-                  ? "bg-gray-500 cursor-not-allowed"
-                  : "bg-red-700 hover:bg-red-800 text-white"
-                  }`}
-              >
-                Previous
-              </button>
+          {results?.length > 0 && <div className="flex gap-x-2 items-center  justify-center my-10">
+            <button
+              disabled={currentPageLocation === 1 || sloading}
+              onClick={() => handleLocationPageChange(currentPageLocation - 1)}
+              className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${currentPageLocation === 1
+                ? "bg-gray-500 cursor-not-allowed"
+                : "bg-red-700 hover:bg-red-800 text-white"
+                }`}
+            >
+              Previous
+            </button>
 
-              <span className="text-white">
-                Page {currentPage} of {totalPages}
-              </span>
+            <span className="text-white">
+              Page {currentPageLocation} of {totalPagesLocation}
+            </span>
 
-              <button
-                onClick={handleNext}
-                disabled={currentPage === totalPages}
-                className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${currentPage === totalPages
-                  ? "bg-gray-500 cursor-not-allowed"
-                  : "bg-red-700 hover:bg-red-800 text-white"
-                  }`}
-              >
-                Next
-              </button>
-            </div>
-          )}
+            <button
+              disabled={currentPageLocation === totalPagesLocation || sloading}
+              onClick={() => handleLocationPageChange(currentPageLocation + 1)}
+              className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${currentPageLocation === totalPagesLocation
+                ? "bg-gray-500 cursor-not-allowed"
+                : "bg-red-700 hover:bg-red-800 text-white"
+                }`}
+            >
+              Next
+            </button>
+          </div>}
         </div>
 
 
@@ -427,7 +427,7 @@ console.log('results', results)
             : "Find Advert i dit område"}
         </h1>
 
-        {isCardLoading   ? (
+        {isCardLoading ? (
 
           <div className="loader flex justify-center items-center">
             <div className="spinner">
@@ -435,46 +435,79 @@ console.log('results', results)
             </div>
           </div>
         ) : (
+          <div>
 
-          <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 justify-center">
-            {
-              cardAllData?.map((escort, index) => (
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 justify-center">
+              {
+                cardAllData?.map((escort, index) => (
 
-                <Link
-                  to={`/details?guid=${escort.id}`}
-                  className="card w-full shadow-xl m-2 mt-4"
-                  style={{
-                    boxShadow: "#990000 0px 1px 0px 1px ,#990000 1px 0px 1px 1px",
-                    backgroundColor: "#111",
-                  }}
-                  key={escort.id}
-                >
-                  <figure>
-                    <img
-                      src={escort.media[0]?.original_url || "../assets/default.png"}
-                      title={escort.name}
-                      alt={escort.name}
-                      name={`img${index + 1}`}
-                      className="w-full h-72 object-cover"
-                    />
-                  </figure>
-                  <div className="card-body text-start">
-                    <h2 className="card-title text-white">{escort.name}</h2>
-                    <p className="text-white">{escort.address}</p>
-                    <div className="card-actions flex justify-between items-center">
-                      <button
-                        style={{ border: "none", backgroundColor: "#990000" }}
-                        className="btn text-white all-btn-hover"
-                        onClick={() =>
-                          document.getElementById(`my_modal_${index}`).showModal()
-                        }
-                      >
-                        {language === "en" ? "Book Now" : "Book nu"}
-                      </button>
+                  <Link
+                    to={`/details?guid=${escort.id}`}
+                    className="card w-full shadow-xl m-2 mt-4"
+                    style={{
+                      boxShadow: "#990000 0px 1px 0px 1px ,#990000 1px 0px 1px 1px",
+                      backgroundColor: "#111",
+                    }}
+                    key={escort.id}
+                  >
+                    <figure>
+                      <img
+                        src={escort.media[0]?.original_url || "../assets/default.png"}
+                        title={escort.name}
+                        alt={escort.name}
+                        name={`img${index + 1}`}
+                        className="w-full h-72 object-cover"
+                      />
+                    </figure>
+                    <div className="card-body text-start">
+                      <h2 className="card-title text-white">{escort.name}</h2>
+                      <p className="text-white">{escort.address}</p>
+                      <div className="card-actions flex justify-between items-center">
+                        <button
+                          style={{ border: "none", backgroundColor: "#990000" }}
+                          className="btn text-white all-btn-hover"
+                          onClick={() =>
+                            document.getElementById(`my_modal_${index}`).showModal()
+                          }
+                        >
+                          {language === "en" ? "Book Now" : "Book nu"}
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                ))}
+            </div>
+
+            {cardAllData?.length > 0 &&
+              <div className="flex gap-x-2 items-center  justify-center my-10">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${currentPage === 1
+                    ? "bg-gray-500 cursor-not-allowed"
+                    : "bg-red-700 hover:bg-red-800 text-white"
+                    }`}
+                >
+                  Previous
+                </button>
+
+                <span className="text-white">
+                  Page {currentPage} of {totalPages}
+                </span>
+
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${currentPage === totalPages
+                    ? "bg-gray-500 cursor-not-allowed"
+                    : "bg-red-700 hover:bg-red-800 text-white"
+                    }`}
+                >
+                  Next
+                </button>
+              </div>
+              }
+
           </div>
 
         )}
