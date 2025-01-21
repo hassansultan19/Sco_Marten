@@ -9,11 +9,6 @@ import { useLocationStore } from "../store/useLocationStore.js";
 
 const Detail = () => {
   const { cardAllData } = useLocationStore()
-
-
-
-
-
   return (
     <div className="container mx-auto">
 
