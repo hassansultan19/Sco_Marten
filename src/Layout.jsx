@@ -11,7 +11,7 @@ import { useLocationStore } from "./store/useLocationStore";
 
 function App() {
   useScrollRestoration();
-  const {userLocation,setUserLocation} =useLocationStore()
+  const {userLocation,setUserLocation,setCardAllData,setCardLoading} =useLocationStore()
   const getUserLocation= () => {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -33,7 +33,33 @@ function App() {
     }
   }, [])
   
-console.log('userLocation', userLocation)
+
+  useEffect(() => {
+
+    const fetchAllData = async () => {
+      if (userLocation !== null) {
+        try {
+          setCardLoading(true);
+          const response = await fetch(
+            `https://martinbackend.tripcouncel.com/api/escort/all?latitude=${userLocation?.lat}&longitude=${userLocation?.lng}`
+          );
+          const jsonData = await response.json();
+
+          if (jsonData.status) {
+            setCardAllData(jsonData.data.escorts);
+          } else {
+            console.error("Error fetching data:", jsonData.message);
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          setCardLoading(false);
+        }
+      }
+    };
+
+    fetchAllData();
+  }, [userLocation]);
 
   
 

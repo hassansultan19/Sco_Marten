@@ -5,5 +5,13 @@ export const useLocationStore = create((set, get) => ({
     setUserLocation: (lat, lng) => {
         set({ userLocation: { lat, lng } });
     },
+    cardAllData:[  ],
+    setCardAllData: (value) => {
+        set({ cardAllData:value });
+    },
+    isCardLoading:false,
+    setCardLoading:(value)=>{
+        set({ isCardLoading:value });
 
+    }
 }))

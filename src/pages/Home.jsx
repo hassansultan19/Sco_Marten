@@ -59,10 +59,9 @@ const Home = () => {
   };
 
   const [cardData, setCardData] = useState([]);
-  const [cardAllData, setCardAllData] = useState([]);
   const [cardAllNormalData, setCardAllNormalData] = useState([]);
   const [interest, setInterest] = useState([]);
-  const { userLocation } = useLocationStore()
+  const { isCardLoading, cardAllData } = useLocationStore()
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -107,32 +106,6 @@ const Home = () => {
 
   useEffect(() => {
 
-    const fetchAllData = async () => {
-      if (userLocation !== null) {
-        try {
-          setLoading(true);
-          const response = await fetch(
-            `https://martinbackend.tripcouncel.com/api/escort/all?latitude=${userLocation?.lat}&longitude=${userLocation?.lng}`
-          );
-          const jsonData = await response.json();
-
-          if (jsonData.status) {
-            setCardAllData(jsonData.data.escorts);
-          } else {
-            console.error("Error fetching data:", jsonData.message);
-          }
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchAllData();
-  }, [userLocation]);
-  useEffect(() => {
-
     const fetchAllNormalData = async () => {
       try {
         const response = await fetch(
@@ -168,6 +141,7 @@ console.log('results', results)
   const handlePrevious = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
+  console.log('cardAllData', cardAllData)
 
   return (
     <div className="container mx-auto">
@@ -453,7 +427,7 @@ console.log('results', results)
             : "Find Advert i dit område"}
         </h1>
 
-        {loading ? (
+        {isCardLoading   ? (
 
           <div className="loader flex justify-center items-center">
             <div className="spinner">
