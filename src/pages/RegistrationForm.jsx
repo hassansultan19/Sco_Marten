@@ -299,7 +299,7 @@ const RegistrationForm = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://martinbackend.tripcouncel.com/api/auth/interests`
+          `http://192.168.18.83:8000/api/auth/interests`
         );
 
         // Check if the data is in the expected format
@@ -551,7 +551,7 @@ const RegistrationForm = () => {
                 onChange={handleChange}
                 placeholder="State"
                 // disabled
-                className="input input-bordered input-primary text-slate-300"
+                className="input input-bordered input-primary "
               />
 
               {/*{errors.state && <p className="error-text">{errors.state}</p>} */}
@@ -565,7 +565,7 @@ const RegistrationForm = () => {
                 value={formData.country}
                 onChange={handleChange}
                 placeholder="Country"
-                className="input input-bordered input-primary text-slate-300"
+                className="input input-bordered input-primary"
               // disabled
               />
 

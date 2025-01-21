@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const Forget = () => {
   const FORGET_API_URL =
-    "https://martinbackend.tripcouncel.com/api/auth/send-otp";
+    "http://192.168.18.83:8000/api/auth/send-otp";
   const [email, setEmail] = useState(""); // State to manage email input
   const [loading, setLoading] = useState(false); // State to manage loading state
 

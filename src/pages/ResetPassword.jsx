@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const ResetPassword = () => {
   const RESET_API_URL =
-    "https://martinbackend.tripcouncel.com/api/auth/reset-password";
+    "http://192.168.18.83:8000/api/auth/reset-password";
   const { email } = useParams(); // Extract email from the URL
 
   const [password, setPassword] = useState(""); // State for new password

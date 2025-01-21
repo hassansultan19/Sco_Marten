@@ -14,9 +14,9 @@ const OtpScreenForget = () => {
   const inputRefs = useRef([]);
   const { email } = useParams(); // Extract email from the URL
   const VERIFY_API_URL =
-    "https://martinbackend.tripcouncel.com/api/auth/verify-otp";
+    "http://192.168.18.83:8000/api/auth/verify-otp";
   const RESEND_API_URL =
-    "https://martinbackend.tripcouncel.com/api/auth/send-otp";
+    "http://192.168.18.83:8000/api/auth/send-otp";
   const [formData, setFormData] = useState({
     otp: "",
     password: "",

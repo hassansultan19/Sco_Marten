@@ -36,7 +36,7 @@ const Home = () => {
     setsLoading(true)
     try {
       const response = await fetch(
-        `https://martinbackend.tripcouncel.com/api/escort/search?sex=${sex}&age=${age}&address=${address}&interests=${filterInterest}&zip_code=${zipcode}`,
+        `http://192.168.18.83:8000/api/escort/search?sex=${sex}&age=${age}&address=${address}&interests=${filterInterest}&zip_code=${zipcode}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -67,7 +67,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://martinbackend.tripcouncel.com/api/auth/interests`
+          `http://192.168.18.83:8000/api/auth/interests`
         );
 
 
@@ -87,7 +87,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://martinbackend.tripcouncel.com/api/escort/featured"
+          "http://192.168.18.83:8000/api/escort/featured"
         );
         const jsonData = await response.json();
 
@@ -113,7 +113,7 @@ const Home = () => {
         try {
           setLoading(true);
           const response = await fetch(
-            `https://martinbackend.tripcouncel.com/api/escort/all?latitude=${userLocation?.lat}&longitude=${userLocation?.lng}`
+            `http://192.168.18.83:8000/api/escort/all?latitude=${userLocation?.lat}&longitude=${userLocation?.lng}`
           );
           const jsonData = await response.json();
 
@@ -137,7 +137,7 @@ const Home = () => {
     const fetchAllNormalData = async () => {
       try {
         const response = await fetch(
-          "https://martinbackend.tripcouncel.com/api/escort/normal?page_size=100"
+          "http://192.168.18.83:8000/api/escort/normal?page_size=100"
         );
         const jsonData = await response.json();
 

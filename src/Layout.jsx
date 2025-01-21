@@ -18,8 +18,6 @@ function App() {
             (position) => {
                 const { latitude, longitude } = position.coords;
                 setUserLocation(latitude, longitude);
-
-
             },
             (error) => console.error(error),
             { enableHighAccuracy: true }

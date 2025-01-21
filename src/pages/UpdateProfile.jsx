@@ -37,7 +37,7 @@ const UpdateProfile = () => {
       try {
         const token = sessionStorage.getItem("authToken");
         const response = await axios.get(
-          "https://martinbackend.tripcouncel.com/api/admin/packages",
+          "http://192.168.18.83:8000/api/admin/packages",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -72,7 +72,7 @@ const UpdateProfile = () => {
     const fetchInterests = async () => {
       try {
         const response = await axios.get(
-          "https://martinbackend.tripcouncel.com/api/auth/interests"
+          "http://192.168.18.83:8000/api/auth/interests"
         );
         if (response.data && Array.isArray(response.data.data.interests)) {
           setAllInterests(response.data.data.interests);
@@ -94,7 +94,7 @@ const UpdateProfile = () => {
     if (guid) {
       axios
         .get(
-          `https://martinbackend.tripcouncel.com/api/escort/getById/${guid}`
+          `http://192.168.18.83:8000/api/escort/getById/${guid}`
         )
         .then((response) => {
           const escortData = response.data.data.escort;
@@ -274,7 +274,7 @@ const UpdateProfile = () => {
 
     try {
       const response = await axios.post(
-        "https://martinbackend.tripcouncel.com/api/escort/update-profile",
+        "http://192.168.18.83:8000/api/escort/update-profile",
         formData,
         {
           headers: {
@@ -319,7 +319,7 @@ const UpdateProfile = () => {
     if (showDays === true) {
       try {
         const response = await axios.post(
-          "https://martinbackend.tripcouncel.com/api/escort/update-featured",
+          "http://192.168.18.83:8000/api/escort/update-featured",
           { days: selectedDay }, // Payload for the API
           {
             headers: {
