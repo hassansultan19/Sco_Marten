@@ -83,8 +83,8 @@ function Navbar() {
             </Link>
           </div>
           <div className={`text-2flags ${isOpen ? "open" : ""}`}>
-          {/* <div className="language-dropdown" ref={dropdownRef}> */}
-          <div className="language-dropdown">
+            {/* <div className="language-dropdown" ref={dropdownRef}> */}
+            <div className="language-dropdown">
               {/* Display the currently active flag */}
               {/* <img
                 src={language === "da" ? denmark : usa} // Dynamically display the active flag
@@ -94,33 +94,33 @@ function Navbar() {
               /> */}
 
               {/* Dropdown menu */}
-                <div className="dropdown-menu">
-                  {/* Show only the inactive language */}
-                    <div
-                      className="dropdown-item"
-                      onClick={() => handleLanguageChange("en")}
-                    >
-                      <img
-                        src={usa}
-                        alt="English"
-                        style={{ width: "20px", cursor: "pointer" }}
-                      />{" "}
-                      {/* English */}
-                    </div>
-                    <div
-                      className="dropdown-item"
-                      onClick={() => handleLanguageChange("da")}
-                    >
-                      <img
-                        src={denmark}
-                        alt="Danish"
-                        style={{ width: "20px", cursor: "pointer" }}
-                      />{" "}
-                      {/* Danish */}
-                    </div>
+              <div className="dropdown-menu">
+                {/* Show only the inactive language */}
+                <div
+                  className="dropdown-item"
+                  onClick={() => handleLanguageChange("en")}
+                >
+                  <img
+                    src={usa}
+                    alt="English"
+                    style={{ width: "20px", cursor: "pointer" }}
+                  />{" "}
+                  {/* English */}
                 </div>
+                <div
+                  className="dropdown-item"
+                  onClick={() => handleLanguageChange("da")}
+                >
+                  <img
+                    src={denmark}
+                    alt="Danish"
+                    style={{ width: "20px", cursor: "pointer" }}
+                  />{" "}
+                  {/* Danish */}
+                </div>
+              </div>
             </div>
-            </div>
+          </div>
           <div className={`text-2 ${isOpen ? "open" : ""}`}>
             <Link
               style={{ color: "white" }}
@@ -130,13 +130,13 @@ function Navbar() {
             >
               {language === "en" ? "Home" : "Hjem"}
             </Link>
-          <Link
+            <Link
               style={{ color: "white" }}
               className="link"
               to="/about"
               onClick={closeMenu}
             >
-              {language === "en" ? "About Us" : "Om Oss"}
+              {language === "en" ? "About Us" : "Om Os"}
             </Link>
             <Link
               style={{ color: "white" }}
@@ -144,7 +144,7 @@ function Navbar() {
               to="/Adverts"
               onClick={closeMenu}
             >
-              {language === "en" ? "Adverts" : "Modeller"}
+              {language === "en" ? "Adverts" : "Annoncer"}
             </Link>
 
             {userToken && userName ? (
@@ -184,13 +184,12 @@ function Navbar() {
                   to="/registrationForm"
                   onClick={closeMenu}
                 >
-                  {language === "en" ? "Registration" : "Tilmelding"}
+                  {language === "en" ? "Registration" : "Registration"}
                 </Link>
               </>
             )}
 
             {/* Language Dropdown */}
-           
 
             {/* <Link
               to="/bookAnAppointment"

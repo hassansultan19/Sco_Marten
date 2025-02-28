@@ -6,32 +6,32 @@ import Flower from "../components/Flower.jsx";
 import { Link } from "react-router-dom";
 
 import { useLocationStore } from "../store/useLocationStore.js";
+import { useLanguage } from "../LanguageContext.jsx";
 
 const Detail = () => {
-  const { cardAllData } = useLocationStore()
+  const { cardAllData } = useLocationStore();
+  const { language } = useLanguage();
   return (
     <div className="container mx-auto">
-
       <Flower />
       <h1
         style={{ fontFamily: "Recoleta-Regular" }}
         className="text-center text-2xl mt-20 text-white"
       >
-        Choose Your Partners
+        {language === "en" ? "Choose Your Partners" : "Vælg dine partnere"}
       </h1>
       <h1
         style={{ fontFamily: "Recoleta-Regular" }}
         className="text-center text-4xl mt-5 mb-10 text-white"
       >
-        Find Advert In Your Area
+        {language === "en"
+          ? "Find Advert In Your Area"
+          : "Find annonce i dit område"}
       </h1>
 
-      <div className="flex flex-wrap gap-5 justify-center">
+      <div className="flex flex-wrap gap-5 min-h-screen h-full justify-center">
         {cardAllData.map((item, index) => (
-          <Link
-            to={`/details?guid=${item.guid}`}
-            key={item.id}
-          >
+          <Link to={`/details?guid=${item.guid}`} key={item.id}>
             <Images
               src={item.media[0]?.original_url || "../assets/default.png"}
               title={item.name}

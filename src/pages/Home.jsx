@@ -30,10 +30,10 @@ const Home = () => {
 
   const handleSearch = async (page) => {
     const authToken = sessionStorage.getItem("authToken");
-    setsLoading(true)
+    setsLoading(true);
     try {
       const response = await fetch(
-        `https://martinbackend.tripcouncel.com/api/escort/search?sex=${sex}&age=${age}&address=${address}&interests=${filterInterest}&zip_code=${zipcode}&page=${page}&page_size=9`,
+        `https://escortnights.dk/backend-martin/public/api/escort/search?sex=${sex}&age=${age}&address=${address}&interests=${filterInterest}&zip_code=${zipcode}&page=${page}&page_size=9`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -51,8 +51,7 @@ const Home = () => {
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
     } finally {
-      setsLoading(false)
-
+      setsLoading(false);
     }
   };
 
@@ -66,22 +65,25 @@ const Home = () => {
   const [cardData, setCardData] = useState([]);
   const [cardAllNormalData, setCardAllNormalData] = useState([]);
   const [interest, setInterest] = useState([]);
-  const { isCardLoading, cardAllData, totalPages, currentPage, handlePageChange } = useLocationStore()
+  const {
+    isCardLoading,
+    cardAllData,
+    totalPages,
+    currentPage,
+    handlePageChange,
+  } = useLocationStore();
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://martinbackend.tripcouncel.com/api/auth/interests`
+          `https://escortnights.dk/backend-martin/public/api/auth/interests`
         );
-
 
         if (response.data && Array.isArray(response.data.data.interests)) {
           setInterest(response.data.data.interests);
         } else {
         }
-
-      } catch (error) {
-      }
+      } catch (error) {}
     };
     fetchData();
   }, []);
@@ -90,7 +92,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://martinbackend.tripcouncel.com/api/escort/featured"
+          "https://escortnights.dk/backend-martin/public/api/escort/featured"
         );
         const jsonData = await response.json();
 
@@ -108,11 +110,10 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-
     const fetchAllNormalData = async () => {
       try {
         const response = await fetch(
-          "https://martinbackend.tripcouncel.com/api/escort/normal?page_size=100"
+          "https://escortnights.dk/backend-martin/public/api/escort/normal?page_size=100"
         );
         const jsonData = await response.json();
 
@@ -144,13 +145,13 @@ const Home = () => {
   //   if (currentPage > 1) setCurrentPage(currentPage - 1);
   // };
 
-  console.log('currentPage', currentPage)
-  console.log('total', totalPages)
+  console.log("currentPage", currentPage);
+  console.log("total", totalPages);
+  console.log("cardAllData", cardAllData);
 
   return (
     <div className="container mx-auto">
-      <section style={{ padding: "30px" }} >
-
+      <section style={{ padding: "30px" }}>
         <Swiper
           modules={[Navigation, Pagination]}
           spaceBetween={20}
@@ -219,7 +220,6 @@ const Home = () => {
             );
           })}
         </Swiper>
-
       </section>
       <section style={{ padding: "30px" }} className="filterNew">
         <div className="coloumm flex justify-center gap-10 drop-down-main">
@@ -231,7 +231,6 @@ const Home = () => {
               ? "Find An Escort In Your Area"
               : "Find en escort eller massage pige i dit område"}
           </h2>
-
 
           <div
             className="flex items-center lg:gap-10 gap-5 wrap-isp"
@@ -261,17 +260,16 @@ const Home = () => {
               </select>
             </div>
 
-
             <div className="text-start">
-              <p className="text-white mx-1">{language === 'en' ? 'Service' : 'Service'}</p>
+              <p className="text-white mx-1">
+                {language === "en" ? "Service" : "Service"}
+              </p>
               <select
                 value={filterInterest}
                 onChange={(e) => setFilterInterest(e.target.value)}
                 className="dropdown w-48 bg-black text-white"
               >
-                <option value="">
-                  {language === "en" ? "All" : "Alle"}
-                </option>
+                <option value="">{language === "en" ? "All" : "Alle"}</option>
                 {interest.map((item, index) => (
                   <option key={index} value={item.id}>
                     {item.name}
@@ -279,8 +277,6 @@ const Home = () => {
                 ))}
               </select>
             </div>
-
-
 
             <div className="text-start">
               <p className="text-white mx-1">
@@ -291,9 +287,7 @@ const Home = () => {
                 onChange={(e) => setAge(e.target.value)}
                 className="dropdown w-48 bg-black text-white"
               >
-                <option value="">
-                  {language === "en" ? "All" : "Alle"}
-                </option>
+                <option value="">{language === "en" ? "All" : "Alle"}</option>
                 <option value="18">18</option>
                 <option value="25">25</option>
                 <option value="30">35</option>
@@ -303,8 +297,17 @@ const Home = () => {
             </div>
 
             <div className="text-start">
-              <p className="text-white mx-1">{language === 'en' ? 'Zip code / City name' : 'Soge / Bynavn'}</p>
-              <input type="text" className="dropdown w-48 rounded-lg  bg-black text-white m-[10px] px-[13px] py-[10px]" value={zipcode} onChange={(e) => setZipcode(e.target.value)} />
+              <p className="text-white mx-1">
+                {language === "en"
+                  ? "Zip code / City name"
+                  : "Postnummer / Bynavn"}
+              </p>
+              <input
+                type="text"
+                className="dropdown w-48 rounded-lg  bg-black text-white m-[10px] px-[13px] py-[10px]"
+                value={zipcode}
+                onChange={(e) => setZipcode(e.target.value)}
+              />
             </div>
             <div className="flex justify-center mt-6 drop">
               <button
@@ -318,27 +321,30 @@ const Home = () => {
                 }}
                 onClick={handleSearch}
               >
-                {sloading ? <LuLoader className="w-5 h-5 animate-spin" /> : language === "en" ? "Submit" : "Indsend"}
+                {sloading ? (
+                  <LuLoader className="w-5 h-5 animate-spin" />
+                ) : language === "en" ? (
+                  "Submit"
+                ) : (
+                  "Indsend"
+                )}
               </button>
             </div>
           </div>
         </div>
-
-
       </section>
 
       <section style={{ padding: "30px" }}>
         <div>
-
           <div className="grid xl:grid-cols-3 md:grid-cols-2 gap-5">
             {results?.length > 0 ? (
               results?.map((escort, index) => (
-
                 <Link
                   to={`/details?guid=${escort.guid}`}
                   className="card w-full shadow-xl m-2 mt-4"
                   style={{
-                    boxShadow: "#990000 0px 1px 0px 1px ,#990000 1px 0px 1px 1px",
+                    boxShadow:
+                      "#990000 0px 1px 0px 1px ,#990000 1px 0px 1px 1px",
                     backgroundColor: "#111",
                   }}
                   key={escort.id}
@@ -347,7 +353,9 @@ const Home = () => {
                     <img
                       className="w-full h-72 object-cover"
                       title={escort.name}
-                      src={escort.media[0]?.original_url || "../assets/default.png"}
+                      src={
+                        escort.media[0]?.original_url || "../assets/default.png"
+                      }
                       alt={escort.name}
                       name={`img${index + 1}`}
                     />
@@ -355,20 +363,7 @@ const Home = () => {
                   <div className="card-body text-start">
                     <h2 className="card-title text-white">{escort.name}</h2>
                     <p className="text-white">{escort.address}</p>
-                    <div className="card-actions flex justify-between items-center">
-                      <button
-                        style={{
-                          border: "none",
-                          backgroundColor: "#990000",
-                        }}
-                        className="btn text-white all-btn-hover"
-                        onClick={() =>
-                          document.getElementById(`my_modal_${index}`).showModal()
-                        }
-                      >
-                        {language === "en" ? "Book Now" : "Book nu"}
-                      </button>
-                    </div>
+                    <div className="card-actions flex justify-between items-center"></div>
                   </div>
                 </Link>
               ))
@@ -381,35 +376,44 @@ const Home = () => {
             )}
           </div>
 
-          {results?.length > 0 && <div className="flex gap-x-2 items-center  justify-center my-10">
-            <button
-              disabled={currentPageLocation === 1 || sloading}
-              onClick={() => handleLocationPageChange(currentPageLocation - 1)}
-              className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${currentPageLocation === 1
-                ? "bg-gray-500 cursor-not-allowed"
-                : "bg-red-700 hover:bg-red-800 text-white"
+          {results?.length > 0 && (
+            <div className="flex gap-x-2 items-center  justify-center my-10">
+              <button
+                disabled={currentPageLocation === 1 || sloading}
+                onClick={() =>
+                  handleLocationPageChange(currentPageLocation - 1)
+                }
+                className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${
+                  currentPageLocation === 1
+                    ? "bg-gray-500 cursor-not-allowed"
+                    : "bg-red-700 hover:bg-red-800 text-white"
                 }`}
-            >
-              Previous
-            </button>
+              >
+                Previous
+              </button>
 
-            <span className="text-white">
-              Page {currentPageLocation} of {totalPagesLocation}
-            </span>
+              <span className="text-white">
+                Page {currentPageLocation} of {totalPagesLocation}
+              </span>
 
-            <button
-              disabled={currentPageLocation === totalPagesLocation || sloading}
-              onClick={() => handleLocationPageChange(currentPageLocation + 1)}
-              className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${currentPageLocation === totalPagesLocation
-                ? "bg-gray-500 cursor-not-allowed"
-                : "bg-red-700 hover:bg-red-800 text-white"
+              <button
+                disabled={
+                  currentPageLocation === totalPagesLocation || sloading
+                }
+                onClick={() =>
+                  handleLocationPageChange(currentPageLocation + 1)
+                }
+                className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${
+                  currentPageLocation === totalPagesLocation
+                    ? "bg-gray-500 cursor-not-allowed"
+                    : "bg-red-700 hover:bg-red-800 text-white"
                 }`}
-            >
-              Next
-            </button>
-          </div>}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
-
 
         <Flower />
         <h1
@@ -424,11 +428,10 @@ const Home = () => {
         >
           {language === "en"
             ? "Find Advert In Your Area"
-            : "Find Advert i dit område"}
+            : "Find annonce i dit område"}
         </h1>
 
         {isCardLoading ? (
-
           <div className="loader flex justify-center items-center">
             <div className="spinner">
               <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
@@ -436,57 +439,47 @@ const Home = () => {
           </div>
         ) : (
           <div>
-
             <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 justify-center">
-              {
-                cardAllData?.map((escort, index) => (
-
-                  <Link
-                    to={`/details?guid=${escort.id}`}
-                    className="card w-full shadow-xl m-2 mt-4"
-                    style={{
-                      boxShadow: "#990000 0px 1px 0px 1px ,#990000 1px 0px 1px 1px",
-                      backgroundColor: "#111",
-                    }}
-                    key={escort.id}
-                  >
-                    <figure>
-                      <img
-                        src={escort.media[0]?.original_url || "../assets/default.png"}
-                        title={escort.name}
-                        alt={escort.name}
-                        name={`img${index + 1}`}
-                        className="w-full h-72 object-cover"
-                      />
-                    </figure>
-                    <div className="card-body text-start">
-                      <h2 className="card-title text-white">{escort.name}</h2>
-                      <p className="text-white">{escort.address}</p>
-                      <div className="card-actions flex justify-between items-center">
-                        <button
-                          style={{ border: "none", backgroundColor: "#990000" }}
-                          className="btn text-white all-btn-hover"
-                          onClick={() =>
-                            document.getElementById(`my_modal_${index}`).showModal()
-                          }
-                        >
-                          {language === "en" ? "Book Now" : "Book nu"}
-                        </button>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
+              {cardAllData?.map((escort, index) => (
+                <Link
+                  to={`/details?guid=${escort?.guid}`}
+                  className="card w-full shadow-xl m-2 mt-4"
+                  style={{
+                    boxShadow:
+                      "#990000 0px 1px 0px 1px ,#990000 1px 0px 1px 1px",
+                    backgroundColor: "#111",
+                  }}
+                  key={escort.id}
+                >
+                  <figure>
+                    <img
+                      src={
+                        escort.media[0]?.original_url || "../assets/default.png"
+                      }
+                      title={escort.name}
+                      alt={escort.name}
+                      name={`img${index + 1}`}
+                      className="w-full h-72 object-cover"
+                    />
+                  </figure>
+                  <div className="card-body text-start">
+                    <h2 className="card-title text-white">{escort.name}</h2>
+                    <p className="text-white">{escort.address}</p>
+                  </div>
+                </Link>
+              ))}
             </div>
 
-            {cardAllData?.length > 0 &&
+            {cardAllData?.length > 0 && (
               <div className="flex gap-x-2 items-center  justify-center my-10">
                 <button
                   disabled={currentPage === 1}
                   onClick={() => handlePageChange(currentPage - 1)}
-                  className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${currentPage === 1
-                    ? "bg-gray-500 cursor-not-allowed"
-                    : "bg-red-700 hover:bg-red-800 text-white"
-                    }`}
+                  className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${
+                    currentPage === 1
+                      ? "bg-gray-500 cursor-not-allowed"
+                      : "bg-red-700 hover:bg-red-800 text-white"
+                  }`}
                 >
                   Previous
                 </button>
@@ -498,18 +491,17 @@ const Home = () => {
                 <button
                   disabled={currentPage === totalPages}
                   onClick={() => handlePageChange(currentPage + 1)}
-                  className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${currentPage === totalPages
-                    ? "bg-gray-500 cursor-not-allowed"
-                    : "bg-red-700 hover:bg-red-800 text-white"
-                    }`}
+                  className={`py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ${
+                    currentPage === totalPages
+                      ? "bg-gray-500 cursor-not-allowed"
+                      : "bg-red-700 hover:bg-red-800 text-white"
+                  }`}
                 >
                   Next
                 </button>
               </div>
-              }
-
+            )}
           </div>
-
         )}
 
         <Flower />

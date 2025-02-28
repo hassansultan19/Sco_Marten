@@ -4,7 +4,7 @@ import { useLanguage } from "../LanguageContext"; // Import the useLanguage hook
 import "./Footer.css";
 
 const Footer = () => {
-  const { language } = useLanguage(); // Access language context
+  const { language } = useLanguage();
 
   return (
     <div>
@@ -48,11 +48,7 @@ const Footer = () => {
               alt=""
               style={{ width: "120px", height: "60px", objectFit: "contain" }}
             />
-            <p>
-              {language === "en"
-                ? "Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer."
-                : "Lorem Ipsum har været branchens standard dummy tekst siden 1500-tallet, da en ukendt printer."}
-            </p>
+
             <div className="subscribe-now">
               {/* <p style={{ fontWeight: "600", fontSize: "22px" }}>{language === 'en' ? 'Subscribe Now' : 'Tilmeld dig nu'}</p> */}
               {/* <form style={{ display: "flex", alignItems: "center" }}>
@@ -73,17 +69,17 @@ const Footer = () => {
               </li>
               <li>
                 <Link to="/about">
-                  {language === "en" ? "About Us" : "Om Oss"}
+                  {language === "en" ? "About Us" : "Om Os"}
                 </Link>
               </li>
               <li>
                 <Link to="/Adverts">
-                  {language === "en" ? "Adverts" : "Modeller"}
+                  {language === "en" ? "Adverts" : "Annoncer"}
                 </Link>
               </li>
               <li>
                 <Link to="/registrationForm">
-                  {language === "en" ? "Registration" : "Registrering"}
+                  {language === "en" ? "Registration" : "Tilmelding"}
                 </Link>
               </li>
             </ul>
@@ -105,7 +101,7 @@ const Footer = () => {
                 }}
               >
                 <i style={{ fontSize: "19px" }} className="fa fa-envelope"></i>{" "}
-                debbie.baker@example.com
+                support@escortnights.dk
               </li>
             </ul>
           </div>
@@ -114,8 +110,8 @@ const Footer = () => {
         <div className="footer-bottom">
           <p>
             {language === "en"
-              ? "2024 Massage. All rights reserved by Escort"
-              : "2024 Massage. Alle rettigheder forbeholdes af Escort"}
+              ? "2025 Massage. All rights reserved by Escort"
+              : "2025 Massage. Alle rettigheder forbeholdes af Escort"}
           </p>
         </div>
       </footer>

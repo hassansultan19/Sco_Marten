@@ -5,16 +5,19 @@ import Layout from './Layout.jsx'
 import Home from './pages/Home.jsx'
 import About from './pages/AboutUs.jsx'
 import Detail from './pages/Detail.jsx'
-import RegistrationForm from './pages/RegistrationForm.jsx'
-import Register from './pages/Register.jsx'
-import Login from './pages/Login.jsx'
-import BookAnAppointment from './pages/BookAnAppointment.jsx'
-import Detail1 from './pages/Detail1.jsx'
-import OtpScreen from './pages/OtpScreen.jsx'
-import Forget from './pages/Forget.jsx'
-import OtpScreenForget from './pages/OtpScreenForget.jsx'
-import ResetPassword from './pages/ResetPassword.jsx'
-import UpdateProfile from './pages/UpdateProfile.jsx'
+import RegistrationForm from "./pages/RegistrationForm.jsx";
+import Register from "./pages/Register.jsx";
+import Login from "./pages/Login.jsx";
+import BookAnAppointment from "./pages/BookAnAppointment.jsx";
+import Detail1 from "./pages/Detail1.jsx";
+import OtpScreen from "./pages/OtpScreen.jsx";
+import Forget from "./pages/Forget.jsx";
+import OtpScreenForget from "./pages/OtpScreenForget.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
+import UpdateProfile from "./pages/UpdateProfile.jsx";
+import PackagesMain from "./pages/PackagesMain.jsx";
+import Success from "./pages/Success.jsx";
+import PaymentRejected from "./pages/Reject.jsx";
 
 // import Login from './pages/Login.jsx'
 
@@ -27,7 +30,7 @@ const ScrollManager = ({ children }) => {
 
     return () => {
       const scrollPosition = window.scrollY;
-      history.replaceState({ scrollPosition }, '');
+      history.replaceState({ scrollPosition }, "");
     };
   }, [location]);
 
@@ -36,65 +39,76 @@ const ScrollManager = ({ children }) => {
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Layout />,
-    children : [
+    children: [
       {
-        path: '/',
-        element: <Home/>
+        path: "/",
+        element: <Home />,
       },
       {
-        path: 'about',
-        element: <About/>
+        path: "about",
+        element: <About />,
       },
       {
-        path: 'details',
-        element: <Detail/>
+        path: "packages",
+        element: <PackagesMain />,
       },
       {
-        path: 'registrationForm',
-        element: <RegistrationForm/>
+        path: "success",
+        element: <Success />,
       },
       {
-        path: 'register',
-        element: <Register/>
+        path: "cancel",
+        element: <PaymentRejected />,
       },
       {
-        path: 'login',
-        element: <Login/>
+        path: "details",
+        element: <Detail />,
       },
       {
-        path: 'otpscreen/:email',
-        element: <OtpScreen/>
+        path: "registrationForm",
+        element: <RegistrationForm />,
       },
       {
-        path: 'otpscreenforget/:email',
-        element: <OtpScreenForget/>
+        path: "register",
+        element: <Register />,
       },
       {
-        path: 'resetpassword/:email',
-        element: <ResetPassword />
+        path: "login",
+        element: <Login />,
       },
       {
-        path: 'dashboard',
-        element: <UpdateProfile />
+        path: "otpscreen/:email",
+        element: <OtpScreen />,
       },
       {
-        path: 'forget',
-        element: <Forget/>
+        path: "otpscreenforget/:email",
+        element: <OtpScreenForget />,
       },
       {
-        path: 'bookAnAppointment',
-        element: <BookAnAppointment/>
+        path: "resetpassword/:email",
+        element: <ResetPassword />,
       },
       {
-        path: 'Adverts',
-        element: <Detail1/>
+        path: "dashboard",
+        element: <UpdateProfile />,
       },
-      
-    ]
-  }
-])
+      {
+        path: "forget",
+        element: <Forget />,
+      },
+      {
+        path: "bookAnAppointment",
+        element: <BookAnAppointment />,
+      },
+      {
+        path: "Adverts",
+        element: <Detail1 />,
+      },
+    ],
+  },
+]);
 
 createRoot(document.getElementById('root')).render(
   <RouterProvider router={router}>

@@ -4,8 +4,6 @@ import ContactUs from "../components/ContactUs";
 import Flower from "../components/Flower";
 import Flowerright from "../components/Flowerright";
 import Footer from "../components/Footer";
-import { details_img } from "../components/images";
-import TestimonialSlider from "../components/Testimonials";
 import "../pages/Details.css";
 import Slider from "react-slick";
 import "../components/TestimonialSlider.css"; // CSS included
@@ -46,7 +44,7 @@ const Detail = () => {
     if (guid) {
       try {
         const response = await axios.get(
-          `https://martinbackend.tripcouncel.com/api/escort/getById/${guid}`
+          `https://escortnights.dk/backend-martin/public/api/escort/getById/${guid}`
         );
         console.log("response", response.data.data.escort);
         setModelDetail(response.data.data.escort);
@@ -64,7 +62,7 @@ const Detail = () => {
   const fetchAllData = async () => {
     try {
       const response = await fetch(
-        `https://martinbackend.tripcouncel.com/api/escort/getRelated/${guid}`
+        `https://escortnights.dk/backend-martin/public/api/escort/getRelated/${guid}`
       );
       const jsonData = await response.json();
       console.log(jsonData); // Log the full response for debugging
@@ -126,7 +124,7 @@ const Detail = () => {
 
     try {
       const response = await axios.post(
-        "https://martinbackend.tripcouncel.com/api/feedback/store",
+        "https://escortnights.dk/backend-martin/public/api/feedback/store",
         payload
       );
       if (response.data && response.data.status) {
@@ -168,7 +166,7 @@ const Detail = () => {
     const fetchTestimonials = async () => {
       try {
         const response = await fetch(
-          `https://martinbackend.tripcouncel.com/api/feedback/user/${modelDetailId}`
+          `https://escortnights.dk/backend-martin/public/api/feedback/user/${modelDetailId}`
         );
         const data = await response.json();
         if (data.status && data.data.feedbacks) {
@@ -203,14 +201,14 @@ const Detail = () => {
         },
       },
       {
-        breakpoint: 768, 
+        breakpoint: 768,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 480, 
+        breakpoint: 480,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -222,8 +220,6 @@ const Detail = () => {
 
   const wordLimit = 100;
 
-
-
   useEffect(() => {
     if (modelDetail?.about?.split(" ").length > wordLimit) {
       setShouldShowReadMore(true);
@@ -231,7 +227,6 @@ const Detail = () => {
       setShouldShowReadMore(false);
     }
   }, [modelDetail?.about]);
-
 
   return (
     <div className="container mx-auto">
@@ -256,38 +251,48 @@ const Detail = () => {
               <div className="profile-info flex justify-between mt-6 profile">
                 <div className="one">
                   <div>
-                    <strong>AGE</strong> <br /> {modelDetail?.age}
+                    <strong>AGE</strong> <br />{" "}
+                    {modelDetail?.age !== "" ? modelDetail?.age : ""}
                   </div>
                   <div>
                     <strong>HEIGHT</strong>
-                    <br /> {modelDetail?.height}
+                    <br />{" "}
+                    {modelDetail?.height !== "" ? modelDetail?.height : ""}
                   </div>
 
                   <div>
                     <strong>HAIR COLOR</strong>
-                    <br /> {modelDetail?.hair_color}
+                    <br />{" "}
+                    {modelDetail?.hair_color !== ""
+                      ? modelDetail?.hair_color
+                      : ""}
                   </div>
                   <div>
                     <strong>CITY</strong>
-                    <br /> {modelDetail?.city}
+                    <br /> {modelDetail?.city !== "" ? modelDetail?.city : ""}
                   </div>
                 </div>
                 <div className="sec">
                   <div>
                     <strong>BURST</strong>
-                    <br /> {modelDetail?.burst}
+                    <br /> {modelDetail?.burst !== "" ? modelDetail?.burst : ""}
                   </div>
                   <div>
                     <strong>WEIGHT</strong>
-                    <br /> {modelDetail?.weight} lbs
+                    <br />{" "}
+                    {modelDetail?.weight ? modelDetail?.weight + "lbs" : "N/A"}
                   </div>
                   <div>
                     <strong>EYES</strong>
-                    <br /> {modelDetail?.eye_color}
+                    <br />{" "}
+                    {modelDetail?.eye_color !== ""
+                      ? modelDetail?.eye_color
+                      : ""}
                   </div>
                   <div>
                     <strong>POSTAL CODE</strong>
-                    <br /> {modelDetail?.zip_code}
+                    <br />{" "}
+                    {modelDetail?.zip_code !== "" ? modelDetail?.zip_code : ""}
                   </div>
                 </div>
               </div>
@@ -304,7 +309,7 @@ const Detail = () => {
                 {modelDetail?.videos?.map((video, index) => (
                   <a key={index} target="_blank" href={video.original_url}>
                     <video
-                      src={'video.original_url'}
+                      src={"video.original_url"}
                       controls
                       width="200"
                     ></video>
@@ -346,15 +351,24 @@ const Detail = () => {
                       borderBottom: "1px solid gray",
                       marginBottom: "20px",
                     }}
-                    className="flex justify-between items-center text-lg location"
+                    className="flex justify-between items-center text-lg location pb-2"
                   >
                     <h2>
-                      <FaMapMarkerAlt className="mr-2" /> {modelDetail?.address}
+                      <FaMapMarkerAlt className="mr-2" />{" "}
+                      <span>
+                        {modelDetail?.address
+                          ? modelDetail?.address
+                          : "No Location"}
+                      </span>
                     </h2>
                     <div className="flex justify-center items-center text-lg whatsappcall">
                       <span className="mr-2">{modelDetail?.phone_number}</span>
                       <a
-                        href={`https://wa.me/${modelDetail?.phone_number}`}
+                        href={
+                          modelDetail?.phone_number
+                            ? `https://wa.me/${modelDetail?.phone_number}`
+                            : "#"
+                        }
                         className="text-white hover:text-gray-200"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -363,14 +377,10 @@ const Detail = () => {
                       </a>
                     </div>
                   </div>
-                  {/* <div style={{ borderBottom: "1px solid gray", marginTop: "20px" }} className="flex justify-center items-center text-lg location">
-                    <FaEnvelope className="mr-2" /> {modelDetail.email}
-                  </div> */}
                 </div>
               </div>
             </div>
 
-            {/* Right section: Service Ratings and Contact Form */}
             <div className="space-y-6">
               <div className="ratings">
                 <h1

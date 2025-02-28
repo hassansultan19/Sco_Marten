@@ -10,13 +10,14 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useLocationStore } from "../store/useLocationStore";
+import { useLanguage } from "../LanguageContext";
 
 const RegistrationForm = () => {
   const navigate = useNavigate(); // For redirection after registration
   const [images, setImages] = useState([]);
   const [mainImage, setMainImage] = useState(null); // State for main image
   const [videos, setVideos] = useState([]);
-  const [passwordShoe, SetPasswordShow] = useState("password")
+  const [passwordShoe, SetPasswordShow] = useState("password");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -47,7 +48,6 @@ const RegistrationForm = () => {
     is_user: 0,
   });
 
-
   const addressRef = useRef(null);
 
   const [errors, setErrors] = useState({});
@@ -56,7 +56,6 @@ const RegistrationForm = () => {
   const [apiError, setApiError] = useState("");
 
   useEffect(() => {
-
     if (window.google) {
       const autocomplete = new window.google.maps.places.Autocomplete(
         addressRef.current,
@@ -117,9 +116,8 @@ const RegistrationForm = () => {
       });
     }
 
-    const handleZipChange = async (zipCode) => {  
+    const handleZipChange = async (zipCode) => {
       try {
-
         const response = await fetch(
           `https://maps.googleapis.com/maps/api/geocode/json?address=dk-${zipCode}&key=AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y&libraries=places`
         );
@@ -128,12 +126,12 @@ const RegistrationForm = () => {
           const addressComponents = data.results[0].address_components;
           const formattedAddress = data.results[0].formatted_address;
           const location = data.results[0].geometry.location;
-          let latitude = location.lat; 
-          let longitude = location.lng; 
+          let latitude = location.lat;
+          let longitude = location.lng;
           let city = "";
           let state = "";
           let country = "";
-       
+
           let address = formattedAddress;
 
           addressComponents.forEach((component) => {
@@ -165,12 +163,12 @@ const RegistrationForm = () => {
         } else {
           setFormData((prevData) => ({
             ...prevData,
-            city:"",
-            state:"",
-            country:"",
-            address: "", 
-            latitude:null,
-            longitude:null,
+            city: "",
+            state: "",
+            country: "",
+            address: "",
+            latitude: null,
+            longitude: null,
           }));
         }
       } catch (error) {
@@ -192,7 +190,6 @@ const RegistrationForm = () => {
     };
   }, []);
 
-
   // const getLatLong = async (zipCode) => {
   //   if (!zipCode) {
   //     console.error("ZIP code is required.");
@@ -207,7 +204,7 @@ const RegistrationForm = () => {
 
   //     if (data.results && data.results.length > 0) {
   //       const { lat, lng } = data.results[0].geometry.location;
-  //       return { latitude: lat, longitude: lng }; 
+  //       return { latitude: lat, longitude: lng };
   //     } else {
   //       return null;
   //     }
@@ -215,7 +212,6 @@ const RegistrationForm = () => {
   //     return null;
   //   }
   // };
-
 
   const handleChange = (e) => {
     setFormData({
@@ -299,7 +295,7 @@ const RegistrationForm = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://martinbackend.tripcouncel.com/api/auth/interests`
+          `https://escortnights.dk/backend-martin/public/api/auth/interests`
         );
 
         // Check if the data is in the expected format
@@ -332,10 +328,10 @@ const RegistrationForm = () => {
     setInputError(true);
     setLoading(true);
 
-
     let validationErrors = {};
 
-    if (!formData.city || !formData.country )   return   toast.error("Zip code field is not valid.");
+    if (!formData.city || !formData.country)
+      return toast.error("Zip code field is not valid.");
     if (!formData.name) validationErrors.name = "Name is required";
     if (!formData.email) validationErrors.email = "Email is required";
     if (!formData.password) validationErrors.password = "Password is required";
@@ -353,9 +349,10 @@ const RegistrationForm = () => {
     if (!images?.length) validationErrors.images = "Image is required";
     if (!mainImage) validationErrors.mainImage = "Main Image is required";
 
-
     if (Object.keys(validationErrors).length > 0) {
-      toast.error("All fields are required. Please fill out the missing information.");
+      toast.error(
+        "All fields are required. Please fill out the missing information."
+      );
       setErrors(validationErrors);
       setLoading(false);
       return;
@@ -389,7 +386,6 @@ const RegistrationForm = () => {
     formDataToSend.append("sex", formData.sex);
     formDataToSend.append("is_user", formData.is_user);
 
-
     if (formData.main_image) {
       formDataToSend.append("main_image", formData.main_image);
     } else {
@@ -415,7 +411,7 @@ const RegistrationForm = () => {
       let { data } = await apis.register(formDataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      localStorage.setItem("userId", data.data.id)
+      localStorage.setItem("userId", data.data.id);
       navigate(`/otpscreen/${formData.email}`);
     } catch (error) {
       const errorMessage =
@@ -432,6 +428,7 @@ const RegistrationForm = () => {
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
+  const { language } = useLanguage();
 
   return (
     <>
@@ -444,7 +441,7 @@ const RegistrationForm = () => {
         <div className="about-us-img">
           <div>
             <h1 style={{ fontFamily: "Recoleta-Regular", fontSize: "40px" }}>
-              Become Our Advert
+              {language === "en" ? "Create advert" : "Opret annonce"}
             </h1>
             <p style={{ fontFamily: "Recoleta-Regular" }}>
               Home/ <span style={{ color: "red" }}>Form</span>
@@ -454,7 +451,9 @@ const RegistrationForm = () => {
 
         <div className="heading">
           <h1 style={{ fontFamily: "Recoleta-Regular", marginTop: "3vw" }}>
-            Registration Form
+            {language === "en"
+              ? " Registration Form"
+              : "Tilmelding  Form                                                                            "}
           </h1>
         </div>
 
@@ -560,13 +559,12 @@ const RegistrationForm = () => {
                 type="text"
                 name="country"
                 disabled={true}
-
                 style={{ border: errors.country ? "1px solid red" : "" }}
                 value={formData.country}
                 onChange={handleChange}
                 placeholder="Country"
                 className="input input-bordered input-primary"
-              // disabled
+                // disabled
               />
 
               <input
@@ -649,7 +647,6 @@ const RegistrationForm = () => {
               />
               {errors.burst && <p className="error-text">{errors.burst}</p>}
 
-
               <input
                 type="text"
                 name="eye_color"
@@ -673,9 +670,9 @@ const RegistrationForm = () => {
                 className="input input-bordered input-primary"
               />
               {errors.weight && <p className="error-text">{errors.weight}</p>}
-              <div className="flex items-center input bg-[#292929] input-bordered input-primary p-0 pr-4"
+              <div
+                className="flex items-center input bg-[#292929] input-bordered input-primary p-0 pr-4"
                 style={{ border: errors.password ? "1px solid red" : "" }}
-
               >
                 <input
                   type={passwordVisible ? "text" : "password"} // Toggle input type
@@ -694,7 +691,9 @@ const RegistrationForm = () => {
                   {passwordVisible ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-              {errors.password && <p className="error-text">{errors.password}</p>}
+              {errors.password && (
+                <p className="error-text">{errors.password}</p>
+              )}
               <input
                 name="confirmPassword"
                 type={passwordVisible ? "text" : "password"}
@@ -757,14 +756,18 @@ const RegistrationForm = () => {
               <input
                 id="mainImage"
                 className="upload-input"
-                style={{ border: errors.mainImage ? "1px solid red" : "", display: "none" }}
+                style={{
+                  border: errors.mainImage ? "1px solid red" : "",
+                  display: "none",
+                }}
                 name="mainImage"
                 type="file"
                 accept="image/*"
                 onChange={handleMainImageChange}
-
               />
-              {errors.mainImage && <p className="error-text">{errors.mainImage}</p>}
+              {errors.mainImage && (
+                <p className="error-text">{errors.mainImage}</p>
+              )}
             </label>
             <p className="hd-quality-instruction">
               Please upload an HD-quality image .
@@ -802,7 +805,10 @@ const RegistrationForm = () => {
                   accept="image/*"
                   multiple
                   onChange={handleFileChange}
-                  style={{ border: errors.images ? "1px solid red" : "", display: "none" }}
+                  style={{
+                    border: errors.images ? "1px solid red" : "",
+                    display: "none",
+                  }}
                 />
                 {errors.images && <p className="error-text">{errors.images}</p>}
               </label>
@@ -843,7 +849,10 @@ const RegistrationForm = () => {
                 accept="video/*"
                 multiple
                 onChange={handleVideoChange}
-                style={{ border: errors.videos ? "1px solid red" : "", display: "none" }}
+                style={{
+                  border: errors.videos ? "1px solid red" : "",
+                  display: "none",
+                }}
               />
               {errors.videos && <p className="error-text">{errors.videos}</p>}
             </label>

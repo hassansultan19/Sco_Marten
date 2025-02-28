@@ -19,11 +19,11 @@ const resources = {
     translation: {
       home: "Hjem",
       about: "Om os",
-      models: "Modeller",
+      models: "Annoncer",
       profile: "Profil",
       logout: "Log ud",
       signIn: "Log ind",
-      registration: "Registrering",
+      registration: "Tilmelding",
       bookAppointment: "Book en aftale",
     },
   },
@@ -31,7 +31,7 @@ const resources = {
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: "en", // Default language
+  lng: "en",
   fallbackLng: "en",
   interpolation: {
     escapeValue: false,

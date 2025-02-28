@@ -1,10 +1,10 @@
 {
-    "home": "Home",
-    "aboutUs": "About Us",
-    "models": "Models",
-    "signIn": "Sign in",
-    "registration": "Registration",
-    "profile": "Profile",
-    "logout": "Logout",
-    "bookAppointment": "Book an appointment"
+  "home": "Home",
+  "aboutUs": "About Us",
+  "models": "Models",
+  "signIn": "Sign in",
+  "registration": "Registration",
+  "profile": "Profile",
+  "logout": "Logout",
+  "bookAppointment": "Book an appointment"
 }

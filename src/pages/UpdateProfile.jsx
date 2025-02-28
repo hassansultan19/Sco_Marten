@@ -37,7 +37,7 @@ const UpdateProfile = () => {
       try {
         const token = sessionStorage.getItem("authToken");
         const response = await axios.get(
-          "https://martinbackend.tripcouncel.com/api/admin/packages",
+          "https://escortnights.dk/backend-martin/public/api/admin/packages",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -72,7 +72,7 @@ const UpdateProfile = () => {
     const fetchInterests = async () => {
       try {
         const response = await axios.get(
-          "https://martinbackend.tripcouncel.com/api/auth/interests"
+          "https://escortnights.dk/backend-martin/public/api/auth/interests"
         );
         if (response.data && Array.isArray(response.data.data.interests)) {
           setAllInterests(response.data.data.interests);
@@ -94,11 +94,11 @@ const UpdateProfile = () => {
     if (guid) {
       axios
         .get(
-          `https://martinbackend.tripcouncel.com/api/escort/getById/${guid}`
+          `https://escortnights.dk/backend-martin/public/api/escort/getById/${guid}`
         )
         .then((response) => {
           const escortData = response.data.data.escort;
-          console.log('escortData', escortData)
+          console.log("escortData", escortData);
           setUserData(escortData);
 
           setMainImageFile(escortData.main_image);
@@ -274,7 +274,7 @@ const UpdateProfile = () => {
 
     try {
       const response = await axios.post(
-        "https://martinbackend.tripcouncel.com/api/escort/update-profile",
+        "https://escortnights.dk/backend-martin/public/api/escort/update-profile",
         formData,
         {
           headers: {
@@ -319,7 +319,7 @@ const UpdateProfile = () => {
     if (showDays === true) {
       try {
         const response = await axios.post(
-          "https://martinbackend.tripcouncel.com/api/escort/update-featured",
+          "https://escortnights.dk/backend-martin/public/api/escort/update-featured",
           { days: selectedDay }, // Payload for the API
           {
             headers: {
@@ -382,7 +382,6 @@ const UpdateProfile = () => {
               type="number"
               name="phone_number"
               disabled={true}
-
               value={userData.phone_number || ""}
               placeholder="Phone Number"
               className="input input-bordered input-primary"
@@ -396,7 +395,6 @@ const UpdateProfile = () => {
               type="text"
               name="zip_code"
               disabled={true}
-
               ref={addressInputRef}
               value={userData.zip_code || ""}
               placeholder="ZIP Code"
@@ -446,7 +444,6 @@ const UpdateProfile = () => {
             <input
               type="text"
               name="country"
-              
               value={userData.country || ""}
               placeholder="Country"
               className="input input-bordered input-primary"

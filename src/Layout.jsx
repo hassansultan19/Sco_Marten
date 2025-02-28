@@ -41,7 +41,7 @@ function App() {
         try {
           setCardLoading(true);
           const response = await fetch(
-            `https://martinbackend.tripcouncel.com/api/escort/all?latitude=${userLocation?.lat}&longitude=${userLocation?.lng}&page=${currentPage}`
+            `https://escortnights.dk/backend-martin/public/api/escort/all?latitude=${userLocation?.lat}&longitude=${userLocation?.lng}&page=${currentPage}`
           );
           const jsonData = await response.json();
 

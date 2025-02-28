@@ -13,8 +13,8 @@ const About = () => {
     <div className="about-page">
       {/* <div className="about-us">
         <div>
-          <h1 style={{fontFamily:"Recoleta-Regular"}}>{language === 'en' ? 'About Us' : 'Om Oss'}</h1>
-          <p style={{fontFamily:"Recoleta-Regular"}}>{language === 'en' ? 'Home' : 'Hjem'} / <span style={{color:'red'}}>{language === 'en' ? 'About Us' : 'Om Oss'}</span></p>
+          <h1 style={{fontFamily:"Recoleta-Regular"}}>{language === 'en' ? 'About Us' : 'Om Os'}</h1>
+          <p style={{fontFamily:"Recoleta-Regular"}}>{language === 'en' ? 'Home' : 'Hjem'} / <span style={{color:'red'}}>{language === 'en' ? 'About Us' : 'Om Os'}</span></p>
         </div>
         
       </div> */}
@@ -76,7 +76,7 @@ const About = () => {
           <img className="para-img" src="./assests/right.png" alt="" />
           <p>
             {language === "en"
-              ? "Welcome to Your Website Name, where elegance, sophistication, and discretion come together to offer an unparalleled escort experience. Founded with the vision of providing high-class companionship services, our journey began with a simple goal: to connect discerning individuals with exceptional escorts who value privacy, respect, and unforgettable moments."
+              ? "Welcome to Your Escort Nights, where elegance, sophistication, and discretion come together to offer an unparalleled escort experience. Founded with the vision of providing high-class companionship services, our journey began with a simple goal: to connect discerning individuals with exceptional escorts who value privacy, respect, and unforgettable moments."
               : "Velkommen til dit webstedsnavn, hvor elegance, sofistikering og diskretion mødes for at tilbyde en escortoplevelse uden sidestykke. Grundlagt med visionen om at levere kammeratskabstjenester af høj klasse, begyndte vores rejse med et enkelt mål: at forbinde kræsne individer med exceptionelle ledsagere, der værdsætter privatliv, respekt og uforglemmelige øjeblikke."}
           </p>
           <p>
@@ -87,7 +87,7 @@ const About = () => {
 
           <p>
             {language === "en"
-              ? "At Your Website Name, we believe in offering more than just a service; we provide experiences. Whether its accompanying you to an upscale event, traveling to an exotic destination, or sharing a quiet, intimate evening, our escorts are here to make every moment special."
+              ? "At Your Escort Nights, we believe in offering more than just a service; we provide experiences. Whether its accompanying you to an upscale event, traveling to an exotic destination, or sharing a quiet, intimate evening, our escorts are here to make every moment special."
               : "Hos dit webstedsnavn tror vi på at tilbyde mere end blot en service; vi giver oplevelser. Uanset om det ledsager dig til en eksklusiv begivenhed, rejser til en eksotisk destination eller deler en stille, intim aften, er vores eskorte her for at gøre hvert øjeblik specielt."}{" "}
           </p>
         </div>

@@ -1,10 +1,10 @@
 {
-    "home": "Hjem",
-    "aboutUs": "Om os",
-    "models": "Modeller",
-    "signIn": "Log ind",
-    "registration": "Tilmelding",
-    "profile": "Profil",
-    "logout": "Log ud",
-    "bookAppointment": "Book en aftale"
+  "home": "Hjem",
+  "aboutUs": "Om os",
+  "models": "Annoncer",
+  "signIn": "Log ind",
+  "registration": "Registration",
+  "profile": "Profil",
+  "logout": "Log ud",
+  "bookAppointment": "Book en aftale"
 }
