@@ -326,7 +326,6 @@ const RegistrationForm = () => {
   const register = async (event) => {
     event.preventDefault();
     setInputError(true);
-    setLoading(true);
 
     let validationErrors = {};
 
@@ -354,9 +353,10 @@ const RegistrationForm = () => {
         "All fields are required. Please fill out the missing information."
       );
       setErrors(validationErrors);
-      setLoading(false);
       return;
     }
+
+    setLoading(true);
 
     const formDataToSend = new FormData();
 

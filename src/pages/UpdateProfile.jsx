@@ -5,6 +5,7 @@ import Flowerright from "../components/Flowerright";
 import Footer from "../components/Footer";
 import "../pages/Registration.css";
 import Swal from "sweetalert2";
+import { useUser } from "../store/useUser";
 
 const UpdateProfile = () => {
   const [packages, setPackages] = useState([]); // Store packages data
@@ -97,24 +98,24 @@ const UpdateProfile = () => {
           `https://escortnights.dk/backend-martin/public/api/escort/getById/${guid}`
         )
         .then((response) => {
-          const escortData = response.data.data.escort;
+          const escortData = response?.data?.data?.escort;
           console.log("escortData", escortData);
           setUserData(escortData);
 
-          setMainImageFile(escortData.main_image);
-          setMainImage(escortData.main_image);
+          setMainImageFile(escortData?.main_image);
+          setMainImage(escortData?.main_image);
 
           // Set media images and deleted IDs
-          setMediaImages(escortData.images.map((item) => item.original_url));
+          setMediaImages(escortData?.images.map((item) => item.original_url));
 
-          setMediaImageIds(escortData.images.map((item) => item.id));
+          setMediaImageIds(escortData?.images.map((item) => item.id));
 
           // Set media videos and deleted IDs
-          setMediaVideos(escortData.videos.map((item) => item.original_url));
+          setMediaVideos(escortData?.videos.map((item) => item.original_url));
 
-          setMediaVideosIds(escortData.videos.map((item) => item.id));
+          setMediaVideosIds(escortData?.videos.map((item) => item.id));
 
-          const userInterests = escortData.user_interest.map(
+          const userInterests = escortData?.user_interest.map(
             (item) => item.interest_id
           );
           setSelectedInterests(userInterests);
@@ -341,13 +342,24 @@ const UpdateProfile = () => {
       null;
     }
   };
+  const { userPackages } = useUser();
 
   return (
     <>
       <div className="container mx-auto">
         <div className="heading">
-          <h1 style={{ fontFamily: "Recoleta-Regular", marginTop: "3vw" }}>
-            Update Profile
+          <h1
+            className="flex gap-x-10 items-center "
+            style={{ fontFamily: "Recoleta-Regular", marginTop: "3vw" }}
+          >
+            Update Profile{" "}
+            {userPackages.id ? (
+              <div className="w-32 text-center bg-yellow-500 text-black text-xs font-bold py-1 px-3 rounded-full">
+                FEATURED
+              </div>
+            ) : (
+              ""
+            )}
           </h1>
         </div>
 

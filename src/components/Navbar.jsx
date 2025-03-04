@@ -1,9 +1,10 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../components/Navbar.css";
 import { useState, useEffect, useRef } from "react";
 import { useLanguage } from "../LanguageContext";
 import usa from "../assests/britishflag.svg";
 import denmark from "../assests/denmark.svg";
+import { useUser } from "../store/useUser";
 
 function Navbar() {
   const { language, setLanguage } = useLanguage(); // Access language context
@@ -62,6 +63,30 @@ function Navbar() {
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
+  }, []);
+  const { setPackage } = useUser();
+  const router = useNavigate();
+
+  const fetchPackages = async (userId) => {
+    try {
+      const response = await fetch(
+        `https://escortnights.dk/backend-martin/public/api/escort/get-user-package/${userId}`
+      );
+      const data = await response.json();
+      if (data.data?.escorts) {
+        setPackage(data.data.escorts);
+      } else {
+        setPackage({});
+      }
+    } catch (error) {
+      console.error("Error fetching brands:", error);
+    }
+  };
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      fetchPackages(userId);
+    }
   }, []);
 
   return (
@@ -129,6 +154,14 @@ function Navbar() {
               onClick={closeMenu}
             >
               {language === "en" ? "Home" : "Hjem"}
+            </Link>
+            <Link
+              style={{ color: "white" }}
+              className="link"
+              to="/packages"
+              onClick={closeMenu}
+            >
+              {language === "en" ? "Packages" : "Om Os"}
             </Link>
             <Link
               style={{ color: "white" }}

@@ -182,7 +182,7 @@ const Home = () => {
             },
           }}
         >
-          {cardAllNormalData.map((item, index) => {
+          {cardData?.map((item, index) => {
             const backgroundUrl =
               item.media && item.media[0]?.original_url
                 ? item.media[0].original_url
@@ -192,13 +192,17 @@ const Home = () => {
               <SwiperSlide key={index}>
                 <Link
                   to={`/details?guid=${item.guid}`}
-                  className="carousel-item bg-1"
+                  className="carousel-item bg-1 "
                   style={{
                     backgroundImage: `url(${backgroundUrl})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}
                 >
+                  <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-bold py-1 px-3 rounded-full">
+                    FEATURED
+                  </div>
+
                   <div className="chota">
                     <h2 className="text-2xl text-center">{item.name}</h2>
                     <button

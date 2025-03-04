@@ -2,14 +2,17 @@ import { FaUserCircle, FaUsersCog, FaChartLine, FaAward } from "react-icons/fa";
 import Package from "./Package";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../store/useUser";
 
 const Packages = () => {
   const [packages, setPackages] = useState([]);
+  const { userPackages } = useUser();
   const icons = [FaUserCircle, FaUsersCog, FaChartLine, FaAward];
   const fetchBrands = async (page = 1) => {
     try {
       const response = await fetch(
-        `https://martinbackend.tripcouncel.com/api/admin/packages?page=${page}`
+        `https://escortnights.dk/backend-martin/public/api/admin/packages?page=${page}`
       );
       const data = await response.json();
       if (data.status && data.data?.packages) {
@@ -26,6 +29,7 @@ const Packages = () => {
     fetchBrands();
   }, []);
 
+  console.log("userPackages", userPackages);
   const [loading, setLoading] = useState(false);
 
   const handleCreatePayment = async (packageId) => {
@@ -61,6 +65,7 @@ const Packages = () => {
           return (
             <div key={index} className="flex flex-col items-center">
               <Package
+                userPackages={userPackages}
                 {...pkg}
                 icon={Icon}
                 handleCreatePayment={handleCreatePayment}
