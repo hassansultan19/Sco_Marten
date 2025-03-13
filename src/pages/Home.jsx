@@ -27,9 +27,8 @@ const Home = () => {
   const [currentPageLocation, setCurrentPageLocation] = useState(1);
   const [totalPagesLocation, setTotalPagesLocation] = useState(1);
 
-
   const handleSearch = async (page) => {
-    const authToken = sessionStorage.getItem("authToken");
+    const authToken = localStorage.getItem("authToken");
     setsLoading(true);
     try {
       const response = await fetch(
@@ -129,25 +128,6 @@ const Home = () => {
 
     fetchAllNormalData();
   }, []);
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const itemsPerPage = 9;
-  // const totalPages = Math.ceil(results?.length / itemsPerPage);
-
-  // const startIndex = (currentPage - 1) * itemsPerPage;
-  // const endIndex = startIndex + itemsPerPage;
-  // const displayedResults = results?.slice(startIndex, endIndex);
-
-  // const handleNext = () => {
-  //   if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  // };
-
-  // const handlePrevious = () => {
-  //   if (currentPage > 1) setCurrentPage(currentPage - 1);
-  // };
-
-  console.log("currentPage", currentPage);
-  console.log("total", totalPages);
-  console.log("cardAllData", cardAllData);
 
   return (
     <div className="container mx-auto">
@@ -199,10 +179,11 @@ const Home = () => {
                     backgroundPosition: "center",
                   }}
                 >
-                  <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-bold py-1 px-3 rounded-full">
-                    FEATURED
-                  </div>
-
+                  {item?.user_package?.id && (
+                    <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-bold py-1 px-3 rounded-full">
+                      FEATURED
+                    </div>
+                  )}
                   <div className="chota">
                     <h2 className="text-2xl text-center">{item.name}</h2>
                     <button

@@ -1,42 +1,40 @@
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import axios from "axios";
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-function Checkout({ price, package_id }) {
+function Checkout({ price, package_id, onClose }) {
   const router = useNavigate();
+
   const handlePaymentSuccess = async (orderData, package_id) => {
     try {
-      setLoading(true);
-
-      const token = orderData.id;
       const userId = localStorage.getItem("userId");
-
-      const res = await axios.post(
+      const token = orderData.id;
+      await axios.post(
         "https://escortnights.dk/backend-martin/public/api/admin/paypal/capture-payment",
         {
           token: token,
           package_id: Number(package_id),
           user_id: Number(userId),
-        },
-        {
-          headers: {
-            Accept: "application/json",
-          },
         }
       );
 
-      const data = await res.data;
-
-      if (data.status === "success") {
-        toast.success("Payment successful!");
-        onSuccess(data?.data);
-        router("/");
-      } else {
-        toast.error("Payment failed or was not processed.");
-      }
+      Swal.fire({
+        title: "Feature Successful!",
+        text: "You have successfully feature you account.",
+        icon: "success",
+        confirmButtonText: "OK",
+        customClass: {
+          popup: "swal-popup",
+          title: "swal-title",
+          content: "swal-content",
+          confirmButton: "swal-confirm-button",
+        },
+      });
+      onClose();
+      router("/");
     } catch (error) {
-      toast.error("Payment failed or was not processed.");
-    } finally {
-      setLoading(false);
+      console.log("error", error);
     }
   };
 
@@ -44,7 +42,7 @@ function Checkout({ price, package_id }) {
     <PayPalScriptProvider
       options={{
         "client-id":
-          "AT5sriG61vcAodXCaFX9n3CW1AA3NjgP-lwKooZJAchdyHyu9HKnucoKW3i2oCxza2CNr4dSwBA9UFm7",
+          "AU3WhMDBIPTrVnFsVjb0hyRiWYfHWuBoP_dyInEO9dUR0lZqCpFvZmdO1A-_YDldf6r-l0ikmrNvIQXL",
       }}
     >
       <div className="p-7">

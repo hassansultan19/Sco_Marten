@@ -15,8 +15,8 @@ const Package = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const hasActivePackage = !!userPackages?.id; // Check if user already has any package
-  const isCurrentPackage = userPackages?.package?.id === id; // Check if this package is the one user owns
+  const hasActivePackage = false;
+  const isCurrentPackage = false;
 
   const openModal = () => {
     if (!hasActivePackage) {

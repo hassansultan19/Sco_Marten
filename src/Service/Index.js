@@ -58,9 +58,9 @@ const createBackendServer = (baseURL) => {
 
   // Auth
 
-  const register = async (body) => {let data = await api.post("auth/register", body)
-console.log('data', data)
-    return data
+  const register = async (body) => {
+    let data = await api.post("auth/register", body);
+    return data;
   };
 
   return {

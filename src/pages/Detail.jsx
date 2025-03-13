@@ -20,6 +20,7 @@ import axios from "axios";
 import NewRightImagesFlover from "../components/NewRightImagesFlover";
 import NewLeftImagesFlover from "../components/NewLeftImagesFlover";
 import Swal from "sweetalert2";
+import { useLanguage } from "../LanguageContext";
 
 const Detail = () => {
   const [modelDetail, setModelDetail] = useState(null);
@@ -27,7 +28,7 @@ const Detail = () => {
   const [cardRelatedData, setCardRelatedData] = useState([]);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
-
+  const { language } = useLanguage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -242,7 +243,7 @@ const Detail = () => {
                     height: "auto",
                     objectFit: "contain",
                   }}
-                  src={modelDetail?.main_image}
+                  // src={modelDetail?.main_image}
                   alt="Profile"
                   className="rounded-lg mx-auto"
                 />
@@ -251,46 +252,52 @@ const Detail = () => {
               <div className="profile-info flex justify-between mt-6 profile">
                 <div className="one">
                   <div>
-                    <strong>AGE</strong> <br />{" "}
-                    {modelDetail?.age !== "" ? modelDetail?.age : ""}
+                    <strong>{language === "en" ? "AGE" : "ALDER"}</strong>{" "}
+                    <br /> {modelDetail?.age !== "" ? modelDetail?.age : ""}
                   </div>
                   <div>
-                    <strong>HEIGHT</strong>
+                    <strong>{language === "en" ? "HEIGHT" : "HØJDE"}</strong>
                     <br />{" "}
                     {modelDetail?.height !== "" ? modelDetail?.height : ""}
                   </div>
 
                   <div>
-                    <strong>HAIR COLOR</strong>
+                    <strong>
+                      {language === "en" ? "HAIR COLOR" : "HÅRFARVE"}
+                    </strong>
                     <br />{" "}
                     {modelDetail?.hair_color !== ""
                       ? modelDetail?.hair_color
                       : ""}
                   </div>
                   <div>
-                    <strong>CITY</strong>
+                    <strong>{language === "en" ? "CITY" : "BY"}</strong>
                     <br /> {modelDetail?.city !== "" ? modelDetail?.city : ""}
                   </div>
                 </div>
                 <div className="sec">
                   <div>
-                    <strong>BURST</strong>
+                    <strong>{language === "en" ? "BURST" : "BRÆST"}</strong>
                     <br /> {modelDetail?.burst !== "" ? modelDetail?.burst : ""}
                   </div>
                   <div>
-                    <strong>WEIGHT</strong>
+                    <strong>
+                      {language === "en" ? "HAIR COLOR" : "HÅRFARVE"}
+                    </strong>
                     <br />{" "}
                     {modelDetail?.weight ? modelDetail?.weight + "lbs" : "N/A"}
                   </div>
                   <div>
-                    <strong>EYES</strong>
+                    <strong>{language === "en" ? "EYES" : "ØJNE"}</strong>
                     <br />{" "}
                     {modelDetail?.eye_color !== ""
                       ? modelDetail?.eye_color
                       : ""}
                   </div>
                   <div>
-                    <strong>POSTAL CODE</strong>
+                    <strong>
+                      {language === "en" ? "POSTAL CODE" : "POSTNUMMER"}
+                    </strong>
                     <br />{" "}
                     {modelDetail?.zip_code !== "" ? modelDetail?.zip_code : ""}
                   </div>
@@ -358,7 +365,9 @@ const Detail = () => {
                       <span>
                         {modelDetail?.address
                           ? modelDetail?.address
-                          : "No Location"}
+                          : language === "en"
+                          ? "No Location"
+                          : "Ingen placering"}
                       </span>
                     </h2>
                     <div className="flex justify-center items-center text-lg whatsappcall">
@@ -557,13 +566,15 @@ const Detail = () => {
               style={{ fontFamily: "Recoleta-Regular" }}
               className="text-center text-2xl mt-10 text-white"
             >
-              Testimonials
+              {language === "en" ? "Testimonials" : "Udtalelser"}
             </h1>
             <h1
               style={{ fontFamily: "Recoleta-Regular" }}
               className="text-center text-4xl text-white mb-5"
             >
-              What Our Clients Say
+              {language === "en"
+                ? "What Our Clients Say"
+                : "Hvad vores kunder siger"}
             </h1>
             <div className="testimonial-slider">
               <Slider {...settings}>

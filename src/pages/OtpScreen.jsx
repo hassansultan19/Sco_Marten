@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"; // For extracting ema
 import "./Login.css"; // Assuming your CSS is in a separate file called Login.css
 import Swal from "sweetalert2";
 import OTPInput from "react-otp-input";
+import axios from "axios";
 
 const OtpScreen = () => {
   const navigate = useNavigate(); // For redirection after registration
@@ -29,49 +30,23 @@ const OtpScreen = () => {
     });
   };
 
-  // Handle backspace
-  const handleBackspace = (e, index) => {
-    if (e.key === "Backspace" && otp[index] === "" && index > 0) {
-      inputRefs.current[index - 1].focus();
-    }
-  };
-
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const code = otp.join("");
 
-    // Prepare the API body
     const requestBody = {
       email,
       otp: formData.otp,
-      type: 0, // 0 for email verification, 1 for forgot password
+      type: 0,
       is_user: 0,
     };
 
-    // Make API request
     setLoading(true);
     try {
-      const response = await fetch(VERIFY_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
+      await axios.post(VERIFY_API_URL, requestBody);
 
-      const result = await response.json();
       setLoading(false);
 
-      if (response.ok) {
-        navigate("/login");
-        // Handle success
-        // alert('Verification successful!');
-        // Redirect or handle post-verification logic here
-      } else {
-        // Handle error response
-        alert(`Verification failed: ${result.message}`);
-      }
+      navigate("/login");
     } catch (error) {
       setLoading(false);
       console.error("Error during OTP verification:", error);
@@ -79,16 +54,13 @@ const OtpScreen = () => {
     }
   };
 
-  // Handle resend code functionality
   const handleResendCode = async () => {
-    // Prepare the API body
     const requestBody = {
       email,
-      type: 0, // 0 for email verification, 1 for forgot password
+      type: 0,
       is_user: 0,
     };
 
-    // Make API request
     try {
       const response = await fetch(RESEND_API_URL, {
         method: "POST",
@@ -138,7 +110,6 @@ const OtpScreen = () => {
     }
   };
 
-  // Countdown effect for the resend button
   useEffect(() => {
     if (isResendDisabled && resendTimer > 0) {
       const countdown = setInterval(() => {

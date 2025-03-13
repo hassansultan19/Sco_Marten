@@ -36,7 +36,7 @@ const UpdateProfile = () => {
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        const token = sessionStorage.getItem("authToken");
+        const token = localStorage.getItem("authToken");
         const response = await axios.get(
           "https://escortnights.dk/backend-martin/public/api/admin/packages",
           {
@@ -55,7 +55,7 @@ const UpdateProfile = () => {
   }, []);
   // Fetch all interests
   useEffect(() => {
-    const token = sessionStorage.getItem("authToken");
+    const token = localStorage.getItem("authToken");
     if (!token) {
       Swal.fire({
         title: "Not Logged In",
@@ -91,14 +91,14 @@ const UpdateProfile = () => {
 
   // Fetch user data and saved interests
   useEffect(() => {
-    const guid = sessionStorage.getItem("guid");
+    const guid = localStorage.getItem("userId");
     if (guid) {
       axios
         .get(
           `https://escortnights.dk/backend-martin/public/api/escort/getById/${guid}`
         )
         .then((response) => {
-          const escortData = response?.data?.data?.escort;
+          const escortData = response?.data?.data?.user;
           console.log("escortData", escortData);
           setUserData(escortData);
 
@@ -231,7 +231,7 @@ const UpdateProfile = () => {
   };
 
   const handleUpdateProfile = async () => {
-    const token = sessionStorage.getItem("authToken"); // Get token from session storage
+    const token = localStorage.getItem("authToken"); // Get token from session storage
     if (!token) return alert("Please log in to update your profile");
 
     const formData = new FormData();

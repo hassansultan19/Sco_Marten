@@ -453,7 +453,7 @@ const RegistrationForm = () => {
           <h1 style={{ fontFamily: "Recoleta-Regular", marginTop: "3vw" }}>
             {language === "en"
               ? " Registration Form"
-              : "Tilmelding  Form                                                                            "}
+              : "Tilmeldings  Form                                                                            "}
           </h1>
         </div>
 
@@ -467,7 +467,7 @@ const RegistrationForm = () => {
                 style={{ border: errors.name ? "1px solid red" : "" }}
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Your Name"
+                placeholder={language === "en" ? "Your Name" : "Dit navn"}
                 className="input input-bordered input-primary"
               />
               {errors.name && <p className="error-text">{errors.name}</p>}
@@ -478,7 +478,7 @@ const RegistrationForm = () => {
                 style={{ border: errors.email ? "1px solid red" : "" }}
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="Email"
+                placeholder={language === "en" ? "Email" : "E-mail"}
                 className="input input-bordered input-primary"
               />
               {errors.email && <p className="error-text">{errors.email}</p>}
@@ -489,7 +489,7 @@ const RegistrationForm = () => {
                 style={{ border: errors.phone_number ? "1px solid red" : "" }}
                 value={formData.phone_number}
                 onChange={handleChange}
-                placeholder="Phone Number"
+                placeholder={language === "en" ? "Email" : "Telefonnummer"}
                 className="input input-bordered input-primary"
               />
               {errors.phone_number && (
@@ -498,11 +498,11 @@ const RegistrationForm = () => {
               <input
                 type="text"
                 name="zip_code"
-                id="zip_code_input" // Add ID for easier access
+                id="zip_code_input"
                 style={{ border: errors.zip_code ? "1px solid red" : "" }}
                 value={formData.zip_code}
                 onChange={handleChange}
-                placeholder="ZIP Code"
+                placeholder={language === "en" ? "ZIP Code" : "postnummer"}
                 className="input input-bordered input-primary"
               />
               {errors.zip_code && (
@@ -515,11 +515,10 @@ const RegistrationForm = () => {
                 disabled={true}
                 style={{
                   border: errors.address ? "1px solid red" : "",
-                  // display: "none",
                 }}
                 value={formData.address}
                 onChange={handleChange}
-                placeholder="Address"
+                placeholder={language === "en" ? "Address" : "Adresse"}
                 className="input input-bordered input-primary text-slate-300"
               />
 
@@ -533,7 +532,7 @@ const RegistrationForm = () => {
                 style={{ border: errors.city ? "1px solid red" : "" }}
                 value={formData.city}
                 onChange={handleChange}
-                placeholder="City"
+                placeholder={language === "en" ? "City" : "By"}
                 // disabled
                 className="input input-bordered input-primary text-slate-300"
               />
@@ -548,7 +547,7 @@ const RegistrationForm = () => {
                 }}
                 value={formData.state}
                 onChange={handleChange}
-                placeholder="State"
+                placeholder={language === "en" ? "State" : "Tilstand"}
                 // disabled
                 className="input input-bordered input-primary "
               />
@@ -562,7 +561,7 @@ const RegistrationForm = () => {
                 style={{ border: errors.country ? "1px solid red" : "" }}
                 value={formData.country}
                 onChange={handleChange}
-                placeholder="Country"
+                placeholder={language === "en" ? "Country" : "Land"}
                 className="input input-bordered input-primary"
                 // disabled
               />
@@ -573,7 +572,7 @@ const RegistrationForm = () => {
                 value={formData.latitude}
                 onChange={handleChange}
                 style={{ display: "none" }}
-                placeholder="Latitude"
+                placeholder={language === "en" ? "Latitude" : "Breddegrad"}
                 className="input input-bordered input-primary"
               />
 
@@ -583,7 +582,7 @@ const RegistrationForm = () => {
                 value={formData.longitude}
                 onChange={handleChange}
                 style={{ display: "none" }}
-                placeholder="Longitude"
+                placeholder={language === "en" ? "Longitude" : "Længde"}
                 className="input input-bordered input-primary"
               />
               <input
@@ -592,7 +591,7 @@ const RegistrationForm = () => {
                 value={formData.age}
                 style={{ border: errors.age ? "1px solid red" : "" }}
                 onChange={handleChange}
-                placeholder="Your Age"
+                placeholder={language === "en" ? "Your Age" : "Din alder"}
                 className="input input-bordered input-primary"
               />
               {errors.age && <p className="error-text">{errors.age}</p>}
@@ -603,7 +602,9 @@ const RegistrationForm = () => {
                 style={{ border: errors.hair_color ? "1px solid red" : "" }}
                 value={formData.hair_color}
                 onChange={handleChange}
-                placeholder="Enter Hair Color"
+                placeholder={
+                  language === "en" ? "Enter Hair Color" : "Indtast hårfarve"
+                }
                 className="input input-bordered input-primary"
               />
               {errors.hair_color && (
@@ -631,7 +632,9 @@ const RegistrationForm = () => {
                 style={{ border: errors.height ? "1px solid red" : "" }}
                 value={formData.height}
                 onChange={handleChange}
-                placeholder="Your Height (CM)"
+                placeholder={
+                  language === "en" ? " Your Height (CM)" : "Din højde (CM)"
+                }
                 className="input input-bordered input-primary"
               />
               {errors.height && <p className="error-text">{errors.height}</p>}
@@ -642,7 +645,9 @@ const RegistrationForm = () => {
                 value={formData.burst}
                 style={{ border: errors.burst ? "1px solid red" : "" }}
                 onChange={handleChange}
-                placeholder="Burst Size"
+                placeholder={
+                  language === "en" ? "Burst Size" : "Burst størrelse"
+                }
                 className="input input-bordered input-primary"
               />
               {errors.burst && <p className="error-text">{errors.burst}</p>}
@@ -653,7 +658,7 @@ const RegistrationForm = () => {
                 style={{ border: errors.eye_color ? "1px solid red" : "" }}
                 value={formData.eye_color}
                 onChange={handleChange}
-                placeholder="Eye Color"
+                placeholder={language === "en" ? "Eye Color" : "Øjenfarve"}
                 className="input input-bordered input-primary"
               />
               {errors.eye_color && (
@@ -666,7 +671,9 @@ const RegistrationForm = () => {
                 style={{ border: errors.weight ? "1px solid red" : "" }}
                 value={formData.weight}
                 onChange={handleChange}
-                placeholder="Your Weight (IB)"
+                placeholder={
+                  language === "en" ? "Your Weight (IB)" : "Din vægt (IB)"
+                }
                 className="input input-bordered input-primary"
               />
               {errors.weight && <p className="error-text">{errors.weight}</p>}
@@ -675,11 +682,13 @@ const RegistrationForm = () => {
                 style={{ border: errors.password ? "1px solid red" : "" }}
               >
                 <input
-                  type={passwordVisible ? "text" : "password"} // Toggle input type
+                  type={passwordVisible ? "text" : "password"}
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Enter Password"
+                  placeholder={
+                    language === "en" ? "Enter Password" : "Indtast adgangskode"
+                  }
                   className=""
                 />
                 <button
@@ -702,7 +711,11 @@ const RegistrationForm = () => {
                 }}
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                placeholder="Enter Confirm Password"
+                placeholder={
+                  language === "en"
+                    ? "Enter Confirm Password"
+                    : "Indtast Bekræft adgangskode"
+                }
                 className="input input-bordered input-primary"
               />
               {errors.confirmPassword && (
@@ -718,7 +731,7 @@ const RegistrationForm = () => {
                 style={{ border: errors.about ? "1px solid red" : "" }}
                 value={formData.about}
                 onChange={handleChange}
-                placeholder="About Me"
+                placeholder={language === "en" ? "About Me" : "Om mig"}
                 className="about-me-textarea"
               ></textarea>
               {errors.about && <p className="error-text">{errors.about}</p>}
@@ -726,7 +739,9 @@ const RegistrationForm = () => {
           </div>
 
           <div className="field-container">
-            <h1 style={{ fontFamily: "Recoleta-Regular" }}>Field Interest</h1>
+            <h1 style={{ fontFamily: "Recoleta-Regular" }}>
+              {language === "en" ? "Field Interest" : "Feltinteresse"}
+            </h1>
             <div className="checkbox-container">
               <div className="checkbox-group">
                 <div className="checkbox-group">
@@ -747,7 +762,9 @@ const RegistrationForm = () => {
           {/* Main Image Upload Section */}
           <div className="upload-container">
             <h1 style={{ fontFamily: "Recoleta-Regular" }}>
-              Main Image Upload
+              {language === "en"
+                ? "Main Image Upload"
+                : "Upload af hovedbillede"}
             </h1>
             <label className="upload-label" htmlFor="mainImage">
               <div className="upload-area">
@@ -770,7 +787,9 @@ const RegistrationForm = () => {
               )}
             </label>
             <p className="hd-quality-instruction">
-              Please upload an HD-quality image .
+              {language === "en"
+                ? "Please upload an HD-quality image ."
+                : "Upload venligst et billede i HD-kvalitet."}
             </p>
             <div className="uploaded-images">
               <div className="uploaded-image-container">
@@ -787,7 +806,9 @@ const RegistrationForm = () => {
 
           {/* Multiple Images Upload Section */}
           <div className="upload-container">
-            <h1 style={{ fontFamily: "Recoleta-Regular" }}>UPLOAD SHOTS</h1>
+            <h1 style={{ fontFamily: "Recoleta-Regular" }}>
+              {language === "en" ? "UPLOAD SHOTS" : "UPLOAD SKUD"}
+            </h1>
             <div className=" upload-header">
               <label className="upload-label" htmlFor="uploadimages">
                 <div className="upload-area">
@@ -814,7 +835,9 @@ const RegistrationForm = () => {
               </label>
             </div>
             <p className="hd-quality-instruction">
-              Please upload an HD-quality image .
+              {language === "en"
+                ? "Please upload an HD-quality image ."
+                : "Upload venligst et billede i HD-kvalitet."}
             </p>
             <div className="uploaded-images">
               {images.map((image, index) => (
@@ -836,7 +859,11 @@ const RegistrationForm = () => {
           </div>
           {/* Multiple videos Upload Section */}
           <div className="upload-container">
-            <h1>Video Upload (30 seconds max)</h1>
+            <h1>
+              {language === "en"
+                ? "Video Upload (30 seconds max)"
+                : "Videoupload (maks. 30 sekunder)"}
+            </h1>
             <label className="upload-label" htmlFor="videos">
               <div className="upload-area">
                 <p>Upload Videos</p>
@@ -877,7 +904,13 @@ const RegistrationForm = () => {
 
           <div className="submit-button">
             <button type="submit" className=" " disabled={loading}>
-              {loading ? "Submitting..." : "Submit"}
+              {language === "en"
+                ? loading
+                  ? "Submitting..."
+                  : "Submit"
+                : loading
+                ? "Indsend..."
+                : "Indsend"}
             </button>
           </div>
 

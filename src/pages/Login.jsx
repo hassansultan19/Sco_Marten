@@ -1,10 +1,11 @@
 import { useState } from "react";
-import "./Login.css"; // Assuming your CSS is in a separate file called Login.css
+import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Login = () => {
-  const navigate = useNavigate(); // For redirection after registration
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,7 +18,6 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
 
-    // Prepare the API body
     const requestBody = {
       email,
       password,
@@ -25,66 +25,36 @@ const Login = () => {
     };
 
     try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await axios.post(API_URL, requestBody);
+
+      const result = await response.data;
+      setLoading(false);
+
+      Swal.fire({
+        title: "Login Successful!",
+        text: "You have successfully logged in.",
+        icon: "success",
+        confirmButtonText: "OK",
+        customClass: {
+          popup: "swal-popup",
+          title: "swal-title",
+          content: "swal-content",
+          confirmButton: "swal-confirm-button",
         },
-        body: JSON.stringify(requestBody),
       });
+      localStorage.setItem("authToken", result.data.token);
+      localStorage.setItem("guid", result.data.guid);
+      localStorage.setItem("name", result.data.name);
+      localStorage.setItem("email", result.data.email);
+      localStorage.setItem("featured", result.data.featured);
 
-      const result = await response.json();
-      setLoading(false);
-
-      if (response.ok && result.status) {
-        // Handle successful login
-        Swal.fire({
-          title: "Login Successful!",
-          text: "You have successfully logged in.",
-          icon: "success",
-          confirmButtonText: "OK",
-          customClass: {
-            popup: "swal-popup",
-            title: "swal-title",
-            content: "swal-content",
-            confirmButton: "swal-confirm-button",
-          },
-        }).then(() => {
-          // Save token in sessionStorage
-          if (result.data && result.data.token) {
-            sessionStorage.setItem("authToken", result.data.token);
-            sessionStorage.setItem("guid", result.data.guid);
-            sessionStorage.setItem("name", result.data.name);
-            sessionStorage.setItem("email", result.data.email);
-            sessionStorage.setItem("featured", result.data.featured);
-          }
-
-          // Redirect to the home page after the user clicks 'OK'
-          navigate("/dashboard");
-        });
-      } else {
-        // Handle error response using SweetAlert2
-        Swal.fire({
-          title: "Login Failed",
-          text: result.message || "Invalid credentials. Please try again.",
-          icon: "error",
-          confirmButtonText: "OK",
-          customClass: {
-            popup: "swal-popup",
-            title: "swal-title",
-            content: "swal-content",
-            confirmButton: "swal-confirm-button",
-          },
-        });
-      }
+      navigate("/dashboard");
     } catch (error) {
+      console.log("error", error);
       setLoading(false);
-      console.error("Error during login:", error);
-
-      // Show error popup with SweetAlert2
       Swal.fire({
         title: "An Error Occurred",
-        text: "Something went wrong. Please try again.",
+        text: error.response.data.message || error.message,
         icon: "error",
         confirmButtonText: "OK",
         customClass: {

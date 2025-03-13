@@ -9,6 +9,7 @@ const ConfirmModal = ({
   duration,
   packagePrice,
 }) => {
+
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-75 backdrop-blur-sm">
@@ -46,7 +47,8 @@ const ConfirmModal = ({
               with this package.
             </p>
           </div>
-          <Checkout price={packagePrice} package_id={id} />
+
+          <Checkout price={packagePrice} package_id={id} onClose={onClose} />
         </div>
       </div>
     </div>
