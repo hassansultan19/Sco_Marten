@@ -32,7 +32,7 @@ const Home = () => {
     setsLoading(true);
     try {
       const response = await fetch(
-        `https://escortnights.dk/backend-martin/public/api/escort/search?sex=${sex}&age=${age}&address=${address}&interests=${filterInterest}&zip_code=${zipcode}&page=${page}&page_size=9`,
+        `http://192.168.18.74:800/api/escort/search?sex=${sex}&age=${age}&address=${address}&interests=${filterInterest}&zip_code=${zipcode}&page=${page}&page_size=9`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -75,7 +75,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://escortnights.dk/backend-martin/public/api/auth/interests`
+          `http://192.168.18.74:800/api/auth/interests`
         );
 
         if (response.data && Array.isArray(response.data.data.interests)) {
@@ -91,7 +91,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://escortnights.dk/backend-martin/public/api/escort/featured"
+          "http://192.168.18.74:800/api/escort/featured"
         );
         const jsonData = await response.json();
 
@@ -112,7 +112,7 @@ const Home = () => {
     const fetchAllNormalData = async () => {
       try {
         const response = await fetch(
-          "https://escortnights.dk/backend-martin/public/api/escort/normal?page_size=100"
+          "http://192.168.18.74:800/api/escort/normal?page_size=100"
         );
         const jsonData = await response.json();
 

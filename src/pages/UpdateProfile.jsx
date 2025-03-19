@@ -38,7 +38,7 @@ const UpdateProfile = () => {
       try {
         const token = localStorage.getItem("authToken");
         const response = await axios.get(
-          "https://escortnights.dk/backend-martin/public/api/admin/packages",
+          "http://192.168.18.74:800/api/admin/packages",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -73,7 +73,7 @@ const UpdateProfile = () => {
     const fetchInterests = async () => {
       try {
         const response = await axios.get(
-          "https://escortnights.dk/backend-martin/public/api/auth/interests"
+          "http://192.168.18.74:800/api/auth/interests"
         );
         if (response.data && Array.isArray(response.data.data.interests)) {
           setAllInterests(response.data.data.interests);
@@ -94,9 +94,7 @@ const UpdateProfile = () => {
     const guid = localStorage.getItem("userId");
     if (guid) {
       axios
-        .get(
-          `https://escortnights.dk/backend-martin/public/api/escort/getById/${guid}`
-        )
+        .get(`http://192.168.18.74:800/api/escort/get-user-id/${guid}`)
         .then((response) => {
           const escortData = response?.data?.data?.user;
           console.log("escortData", escortData);
@@ -275,7 +273,7 @@ const UpdateProfile = () => {
 
     try {
       const response = await axios.post(
-        "https://escortnights.dk/backend-martin/public/api/escort/update-profile",
+        "http://192.168.18.74:800/api/escort/update-profile",
         formData,
         {
           headers: {
@@ -320,7 +318,7 @@ const UpdateProfile = () => {
     if (showDays === true) {
       try {
         const response = await axios.post(
-          "https://escortnights.dk/backend-martin/public/api/escort/update-featured",
+          "http://192.168.18.74:800/api/escort/update-featured",
           { days: selectedDay }, // Payload for the API
           {
             headers: {

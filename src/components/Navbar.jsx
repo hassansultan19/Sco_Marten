@@ -59,7 +59,7 @@ function Navbar() {
   const fetchPackages = async (userId) => {
     try {
       const response = await fetch(
-        `https://escortnights.dk/backend-martin/public/api/escort/get-user-package/${userId}`
+        `http://192.168.18.74:800/api/escort/get-user-package/${userId}`
       );
       const data = await response.json();
       if (data.data?.escorts) {

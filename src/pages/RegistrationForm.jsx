@@ -295,7 +295,7 @@ const RegistrationForm = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://escortnights.dk/backend-martin/public/api/auth/interests`
+          `http://192.168.18.74:800/api/auth/interests`
         );
 
         // Check if the data is in the expected format

@@ -11,8 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const API_URL =
-    "https://escortnights.dk/backend-martin/public/api/auth/login";
+  const API_URL = "http://192.168.18.74:800/api/auth/login";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -4,8 +4,7 @@ import "./Login.css"; // Assuming your CSS is in a separate file called Login.cs
 import { useNavigate, useParams } from "react-router-dom";
 
 const ResetPassword = () => {
-  const RESET_API_URL =
-    "https://escortnights.dk/backend-martin/public/api/auth/reset-password";
+  const RESET_API_URL = "http://192.168.18.74:800/api/auth/reset-password";
   const { email } = useParams(); // Extract email from the URL
 
   const [password, setPassword] = useState(""); // State for new password

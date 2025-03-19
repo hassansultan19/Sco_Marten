@@ -17,7 +17,7 @@ function Success() {
 
     try {
       const res = await axios.post(
-        "https://escortnights.dk/backend-martin/public/api/admin/paypal/capture-payment",
+        "http://192.168.18.74:800/api/admin/paypal/capture-payment",
         {
           token: token,
           package_id: Number(packageId),

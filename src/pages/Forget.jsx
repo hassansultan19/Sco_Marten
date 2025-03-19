@@ -4,8 +4,7 @@ import "./Login.css"; // Assuming your CSS is in a separate file called Login.cs
 import { useNavigate } from "react-router-dom";
 
 const Forget = () => {
-  const FORGET_API_URL =
-    "https://escortnights.dk/backend-martin/public/api/auth/send-otp";
+  const FORGET_API_URL = "http://192.168.18.74:800/api/auth/send-otp";
   const [email, setEmail] = useState(""); // State to manage email input
   const [loading, setLoading] = useState(false); // State to manage loading state
 
