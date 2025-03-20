@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+"use client";
+
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import Flower from "../components/Flower";
 import Flowerright from "../components/Flowerright";
 import Footer from "../components/Footer";
 import "../pages/Registration.css";
 import Swal from "sweetalert2";
 import { useUser } from "../store/useUser";
+import { useLanguage } from "../LanguageContext";
 
 const UpdateProfile = () => {
   const [packages, setPackages] = useState([]); // Store packages data
@@ -25,6 +27,7 @@ const UpdateProfile = () => {
   const [mainImageFile, setMainImageFile] = useState(null); // Actual file
   const [mediaFiles, setMediaFiles] = useState([]); // Actual files
   const [mediaVideosFiles, setMediaVideosFiles] = useState([]); // Actual files
+  const [loading, setLoading] = useState(false);
 
   const handleCheckboxChange = (e) => {
     setShowDays(e.target.checked); // Show or hide days based on checkbox
@@ -103,15 +106,37 @@ const UpdateProfile = () => {
           setMainImageFile(escortData?.main_image);
           setMainImage(escortData?.main_image);
 
-          // Set media images and deleted IDs
-          setMediaImages(escortData?.images.map((item) => item.original_url));
+          // Parse images from JSON string if needed
+          let imagesArray = [];
+          try {
+            if (typeof escortData?.images === "string") {
+              imagesArray = JSON.parse(escortData?.images);
+            } else if (Array.isArray(escortData?.images)) {
+              imagesArray = escortData?.images;
+            }
+          } catch (e) {
+            console.error("Error parsing images:", e);
+          }
 
-          setMediaImageIds(escortData?.images.map((item) => item.id));
+          // Set media images
+          setMediaImages(imagesArray);
+          setMediaImageIds(imagesArray.map((_, index) => index));
 
-          // Set media videos and deleted IDs
-          setMediaVideos(escortData?.videos.map((item) => item.original_url));
+          // Parse videos from JSON string if needed
+          let videosArray = [];
+          try {
+            if (typeof escortData?.videos === "string") {
+              videosArray = JSON.parse(escortData?.videos);
+            } else if (Array.isArray(escortData?.videos)) {
+              videosArray = escortData?.videos;
+            }
+          } catch (e) {
+            console.error("Error parsing videos:", e);
+          }
 
-          setMediaVideosIds(escortData?.videos.map((item) => item.id));
+          // Set media videos
+          setMediaVideos(videosArray);
+          setMediaVideosIds(videosArray.map((_, index) => index));
 
           const userInterests = escortData?.user_interest.map(
             (item) => item.interest_id
@@ -168,6 +193,7 @@ const UpdateProfile = () => {
       }
     });
   }, []);
+  const { language } = useLanguage();
   const handleInterestChange = (interestId) => {
     setSelectedInterests((prevSelected) =>
       prevSelected.includes(interestId)
@@ -203,33 +229,25 @@ const UpdateProfile = () => {
   };
 
   const handleRemoveImage = (index) => {
-    // Add the ID of the removed image to deletedFiles
     setDeletedFiles((prev) => [...prev, mediaImageIds[index]]);
 
-    // Remove the preview of the image
     setMediaImages((prev) => prev.filter((_, i) => i !== index));
 
-    // Remove the ID of the image from mediaImageIds
     setMediaImageIds((prev) => prev.filter((_, i) => i !== index));
   };
   const handleRemoveVideos = (index) => {
-    // Add the ID of the removed image to deletedFiles
     setDeletedVideoFiles((prev) => [...prev, mediaVideosIds[index]]);
 
-    // Remove the preview of the image
     setMediaVideos((prev) => prev.filter((_, i) => i !== index));
 
-    // Remove the ID of the image from mediaImageIds
     setMediaVideosIds((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleClearAll = () => {
-    setMediaImages([]);
-    setMediaFiles([]);
-  };
+  const [loader, setLoader] = useState(false);
 
   const handleUpdateProfile = async () => {
-    const token = localStorage.getItem("authToken"); // Get token from session storage
+    setLoader(true);
+    const token = localStorage.getItem("authToken");
     if (!token) return alert("Please log in to update your profile");
 
     const formData = new FormData();
@@ -267,7 +285,6 @@ const UpdateProfile = () => {
       formData.append(`videos[${index}]`, file);
     });
     formData.append("user_interests", JSON.stringify(selectedInterests));
-    // Append deleted file IDs
     formData.append("deleted_files", JSON.stringify(deletedFiles));
     formData.append("deleted_video_files", JSON.stringify(deletedVideosFiles));
 
@@ -283,7 +300,6 @@ const UpdateProfile = () => {
         }
       );
 
-      // Show success popup with SweetAlert2
       Swal.fire({
         title: "Profile Updated!",
         text: "Your profile has been successfully updated.",
@@ -299,12 +315,9 @@ const UpdateProfile = () => {
         // Perform any additional actions here, such as reloading data or redirecting
       });
     } catch (error) {
-      console.error("Error updating profile:", error);
-
-      // Show error popup with SweetAlert2
       Swal.fire({
         title: "Update Failed",
-        text: "There was an error updating your profile. Please try again.",
+        text: "Some fields are required but are missing.",
         icon: "error",
         confirmButtonText: "OK",
         customClass: {
@@ -314,6 +327,8 @@ const UpdateProfile = () => {
           confirmButton: "swal-confirm-button",
         },
       });
+    } finally {
+      setLoader(false);
     }
     if (showDays === true) {
       try {
@@ -341,6 +356,7 @@ const UpdateProfile = () => {
     }
   };
   const { userPackages } = useUser();
+  console.log("mediaVideos", mediaVideos);
 
   return (
     <>
@@ -364,43 +380,51 @@ const UpdateProfile = () => {
         <div className="inputs">
           <div className="first-sec">
             <Flowerright />
-            <label htmlFor="name">Advert Title</label>
+            <label htmlFor="name">
+              {language === "en" ? "Your Name" : "Navn"}
+            </label>
             <input
               type="text"
               name="name"
               value={userData.name || ""}
-              placeholder="Your Name"
+              placeholder={language === "en" ? "Your Name" : "Navn"}
               className="input input-bordered input-primary"
               onChange={(e) =>
                 setUserData({ ...userData, name: e.target.value })
               }
             />
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">
+              {language === "en" ? "Email" : "E-mail"}
+            </label>
             <input
               type="email"
               name="email"
               value={userData.email || ""}
-              placeholder="Email"
+              placeholder={language === "en" ? "Email" : "E-mail"}
               className="input input-bordered input-primary"
               onChange={(e) =>
                 setUserData({ ...userData, email: e.target.value })
               }
             />
 
-            <label htmlFor="phone_code">Phone </label>
+            <label htmlFor="phone_number">
+              {language === "en" ? "Phone Number" : "Telefonnummer"}{" "}
+            </label>
             <input
               type="number"
               name="phone_number"
               disabled={true}
               value={userData.phone_number || ""}
-              placeholder="Phone Number"
+              placeholder={language === "en" ? "Phone Number" : "Telefonnummer"}
               className="input input-bordered input-primary"
               onChange={(e) =>
                 setUserData({ ...userData, phone_number: e.target.value })
               }
             />
 
-            <label htmlFor="zip_code">Zip Code</label>
+            <label htmlFor="zip_code">
+              {language === "en" ? " Zip Code" : "Postnummer"}
+            </label>
             <input
               type="text"
               name="zip_code"
@@ -425,14 +449,14 @@ const UpdateProfile = () => {
               }
             />
 
-            <label htmlFor="city">City</label>
+            <label htmlFor="city">{language === "en" ? "City" : "By"}</label>
             {/* Autofilled Fields */}
             <input
               type="text"
               disabled={true}
               name="city"
               value={userData.city || ""}
-              placeholder="City"
+              placeholder={language === "en" ? "City" : "By"}
               className="input input-bordered input-primary"
               onChange={(e) =>
                 setUserData({ ...userData, city: e.target.value })
@@ -485,12 +509,14 @@ const UpdateProfile = () => {
                 setUserData({ ...userData, longitude: e.target.value })
               }
             />
-            <label htmlFor="hair_color">Hair color</label>
+            <label htmlFor="hair_color">
+              {language === "en" ? " Hair Color" : " Hårfarve"}
+            </label>
             <input
               type="text"
               name="hair_color"
               value={userData.hair_color || ""}
-              placeholder="Hair Color"
+              placeholder={language === "en" ? " Hair Color" : " Hårfarve"}
               className="input input-bordered input-primary"
               onChange={(e) =>
                 setUserData({ ...userData, hair_color: e.target.value })
@@ -499,34 +525,40 @@ const UpdateProfile = () => {
           </div>
 
           <div className="second-sec">
-            <label htmlFor="age">Age</label>
+            <label htmlFor="age">{language === "en" ? "Age" : "Alder"}</label>
             <input
               type="text"
               name="age"
               value={userData.age || ""}
-              placeholder="Your Age"
+              placeholder={language === "en" ? "Your Age" : "Alder"}
               className="input input-bordered input-primary"
               onChange={(e) =>
                 setUserData({ ...userData, age: e.target.value })
               }
             />
-            <label htmlFor="height">Height</label>
+            <label htmlFor="height">
+              {language === "en" ? "  Height " : "Højde "}
+            </label>
             <input
               type="text"
               name="height"
               value={userData.height || ""}
-              placeholder="Your Height (CM)"
+              placeholder={
+                language === "en" ? " Your Height (CM)" : "Højde (CM)"
+              }
               className="input input-bordered input-primary"
               onChange={(e) =>
                 setUserData({ ...userData, height: e.target.value })
               }
             />
-            <label htmlFor="weight">Weight</label>
+            <label htmlFor="weight">
+              {language === "en" ? "Burst Size" : "Bryst Size"}
+            </label>
             <input
               type="text"
               name="burst"
               value={userData.burst || ""}
-              placeholder="Burst Size"
+              placeholder={language === "en" ? "Burst Size" : "Bryst Size"}
               className="input input-bordered input-primary"
               onChange={(e) =>
                 setUserData({ ...userData, burst: e.target.value })
@@ -548,23 +580,27 @@ const UpdateProfile = () => {
             </select>
 
             {/* City Autocomplete */}
-            <label htmlFor="eye_color">Eye Color</label>
+            <label htmlFor="eye_color">
+              {language === "en" ? "Eye Color" : "Øjenfarve"}
+            </label>
             <input
               type="text"
               name="eye_color"
               value={userData.eye_color || ""}
-              placeholder="Eye Color"
+              placeholder={language === "en" ? "Eye Color" : "Øjenfarve"}
               className="input input-bordered input-primary"
               onChange={(e) =>
                 setUserData({ ...userData, eye_color: e.target.value })
               }
             />
-            <label htmlFor="weight">Weight</label>
+            <label htmlFor="weight">
+              {language === "en" ? "Weight" : "vægt"}
+            </label>
             <input
               type="text"
               name="weight"
               value={userData.weight || ""}
-              placeholder="Your Weight (IB)"
+              placeholder={language === "en" ? "Your Weight (KG)" : "vægt (KG)"}
               className="input input-bordered input-primary"
               onChange={(e) =>
                 setUserData({ ...userData, weight: e.target.value })
@@ -574,11 +610,11 @@ const UpdateProfile = () => {
         </div>
         <div className="inputs">
           <div className="second-sec">
-            <label htmlFor="about">About</label>
+            <label htmlFor="about">{language === "en" ? "About" : "Om"}</label>
             <textarea
               name="about"
               value={userData.about || ""}
-              placeholder="About Me"
+              placeholder={language === "en" ? "About Me" : "Om mig"}
               className="about-me-textarea"
               onChange={(e) =>
                 setUserData({ ...userData, about: e.target.value })
@@ -587,7 +623,10 @@ const UpdateProfile = () => {
           </div>
         </div>
         <div className="field-container">
-          <h1 style={{ fontFamily: "Recoleta-Regular" }}>Field Interest</h1>
+          <h1 style={{ fontFamily: "Recoleta-Regular" }}>
+            {" "}
+            {language === "en" ? "Field Interest" : "Feltinteresse"}
+          </h1>
           <div className="checkbox-container">
             <div className="checkbox-group">
               <div className="checkbox-group">
@@ -605,7 +644,7 @@ const UpdateProfile = () => {
             </div>
           </div>
         </div>
-        <div className="field-container">
+        {/* <div className="field-container">
           <h1 style={{ fontFamily: "Recoleta-Regular" }}>Profile Status</h1>
           <div className="checkbox-container">
             <div className="checkbox-group">
@@ -615,7 +654,7 @@ const UpdateProfile = () => {
               </label>
             </div>
           </div>
-        </div>
+        </div> */}
         {showDays && (
           <div className="field-container">
             <div className="checkbox-container">
@@ -639,32 +678,20 @@ const UpdateProfile = () => {
             </div>
           </div>
         )}
-        {/* <div className="field-container">
-        <h1 style={{ fontFamily: "Recoleta-Regular" }}>Field Interest</h1>
-        <div className="checkbox-container">
-          <div className="checkbox-group">
-            <div className="checkbox-group">
-              {allInterests.map(interest => (
-                <label key={interest.id} className="checkbox-group">
-                  <input
-                    type="checkbox"
-                    checked={selectedInterests.includes(interest.id)}
-                    onChange={() => handleInterestChange(interest.id)}
-                  />
-                  {interest.name}
-                </label>
-              ))}
-            </div>
-
-          </div>
-        </div>
-      </div> */}
 
         <div className="upload-container">
-          <h1>Main Image Upload</h1>
+          <h1>
+            {" "}
+            {language === "en" ? "Upload Main Image" : "Upload Profile Billede"}
+          </h1>
           <label className="upload-label" htmlFor="mainImage">
             <div className="upload-area">
-              <p>Upload Main Image</p>
+              <p>
+                {" "}
+                {language === "en"
+                  ? "Upload Main Image"
+                  : "Upload Profile Billede"}
+              </p>
             </div>
             <input
               id="mainImage"
@@ -680,7 +707,11 @@ const UpdateProfile = () => {
             <div className="uploaded-images">
               <div className="uploaded-image-container">
                 <img
-                  src={mainImage}
+                  src={
+                    mainImage.startsWith("http")
+                      ? mainImage
+                      : `http://192.168.18.74:800/${mainImage}`
+                  }
                   alt="Main Upload"
                   className="uploaded-image"
                 />
@@ -689,9 +720,16 @@ const UpdateProfile = () => {
           ) : (
             <>
               {mediaImages?.slice(0, 1).map((image, index) => (
-                <div className="uploaded-images">
+                <div className="uploaded-images" key={index}>
                   <div className="uploaded-image-container">
-                    <img src={image} alt={`Gallery ${index + 1}`} />
+                    <img
+                      src={
+                        typeof image === "string" && image.startsWith("http")
+                          ? image
+                          : `http://192.168.18.74:800/${image}`
+                      }
+                      alt={`Gallery ${index + 1}`}
+                    />
                   </div>
                 </div>
               ))}
@@ -701,10 +739,16 @@ const UpdateProfile = () => {
 
         {/* Multiple Images Upload Section */}
         <div className="upload-container">
-          <h1>UPLOAD IMAGES SHOTS</h1>
+          <h1>
+            {" "}
+            {language === "en" ? "UPLOAD IMAGES SHOTS" : "UPLOAD BILLEDER"}
+          </h1>
           <label className="upload-label" htmlFor="uploadimages">
             <div className="upload-area">
-              <p>Browse To Upload</p>
+              <p>
+                {" "}
+                {language === "en" ? "UPLOAD IMAGES SHOTS" : "UPLOAD BILLEDER"}
+              </p>
             </div>
             <input
               id="uploadimages"
@@ -718,39 +762,33 @@ const UpdateProfile = () => {
             />
           </label>
           <div className="uploaded-images">
-            {mediaImages.map((image, index) => (
+            {mediaImages?.map((image, index) => (
               <div key={index} className="gallery-item">
-                <img src={image} alt={`Gallery ${index + 1}`} />
+                <img
+                  src={
+                    typeof image === "string" && image.startsWith("http")
+                      ? image
+                      : `http://192.168.18.74:800/${image}`
+                  }
+                  alt={`Gallery ${index + 1}`}
+                />
                 <button onClick={() => handleRemoveImage(index)}>Remove</button>
               </div>
             ))}
-            {/* <div className="uploaded-images">
-  {mediaImageIds.map((id, index) => (
-    <div key={id} className="uploaded-image-container">
-      <p>Image ID: {id}</p>
-      <img
-        src={mediaImages[index]}
-        alt={`Uploaded ${index}`}
-        className="uploaded-image"
-      />
-      <button
-        onClick={() => handleRemoveImage(index)}
-        className="remove-button"
-      >
-        Remove
-      </button>
-    </div>
-  ))}
-</div> */}
           </div>
         </div>
 
         {/* Multiple Videos Upload Section */}
         <div className="upload-container">
-          <h1>UPLOAD VIDEOS SHOTS</h1>
+          <h1>
+            {" "}
+            {language === "en"
+              ? "Upload Videos  (30 seconds max)"
+              : "Upload Videoer (maks. 30 sekunder)"}
+          </h1>
           <label className="upload-label" htmlFor="videos">
             <div className="upload-area">
-              <p>Browse To Upload</p>
+              <p>{language === "en" ? "Upload Videos" : "Upload Videoer"}</p>
             </div>
             <input
               id="videos"
@@ -766,10 +804,15 @@ const UpdateProfile = () => {
           <div className="uploaded-images">
             {mediaVideos.map((video, index) => (
               <div key={index} className="gallery-item">
-                <video src={video} controls width="200"></video>
-                <button onClick={() => handleRemoveVideos(index)}>
-                  Remove
-                </button>
+                <video
+                  src={
+                    typeof video === "string" && video.startsWith("http")
+                      ? video
+                      : `http://192.168.18.74:800/${video}`
+                  }
+                  controls
+                  width="200"
+                ></video>
               </div>
             ))}
             {/* <div className="uploaded-images">
@@ -777,7 +820,7 @@ const UpdateProfile = () => {
     <div key={id} className="uploaded-image-container">
       <p>Image ID: {id}</p>
       <img
-        src={mediaImages[index]}
+        src={mediaImages[index] || "/placeholder.svg"}
         alt={`Uploaded ${index}`}
         className="uploaded-image"
       />
@@ -793,7 +836,13 @@ const UpdateProfile = () => {
           </div>
         </div>
         <div className="submit-button">
-          <button onClick={handleUpdateProfile}>Update Profile</button>
+          <button disabled={loader} onClick={handleUpdateProfile}>
+            {loader
+              ? "updating..."
+              : language === "en"
+              ? "Update Profile"
+              : "Update Profil"}
+          </button>
         </div>
         <Footer />
       </div>

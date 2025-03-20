@@ -163,18 +163,15 @@ const Home = () => {
           }}
         >
           {cardData?.map((item, index) => {
-            const backgroundUrl =
-              item.media && item.media[0]?.original_url
-                ? item.media[0].original_url
-                : "default-image-url.jpg";
-
+            const backgroundUrl = item?.main_image;
+            console.log("backgroundUrl", backgroundUrl);
             return (
               <SwiperSlide key={index}>
                 <Link
                   to={`/details?guid=${item.guid}`}
                   className="carousel-item bg-1 "
                   style={{
-                    backgroundImage: `url(${backgroundUrl})`,
+                    backgroundImage: `url(http://192.168.18.74:800/${backgroundUrl})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}
@@ -338,9 +335,7 @@ const Home = () => {
                     <img
                       className="w-full h-72 object-cover"
                       title={escort.name}
-                      src={
-                        escort.media[0]?.original_url || "../assets/default.png"
-                      }
+                      src={`http://192.168.18.74:800/${escort?.main_image}`}
                       alt={escort.name}
                       name={`img${index + 1}`}
                     />
@@ -438,9 +433,7 @@ const Home = () => {
                 >
                   <figure>
                     <img
-                      src={
-                        escort.media[0]?.original_url || "../assets/default.png"
-                      }
+                      src={`http://192.168.18.74:800/${escort?.main_image}`}
                       title={escort.name}
                       alt={escort.name}
                       name={`img${index + 1}`}
@@ -448,8 +441,8 @@ const Home = () => {
                     />
                   </figure>
                   <div className="card-body text-start">
-                    <h2 className="card-title text-white">{escort.name}</h2>
-                    <p className="text-white">{escort.address}</p>
+                    <h2 className="card-title text-white">{escort?.name}</h2>
+                    <p className="text-white">{escort?.address}</p>
                   </div>
                 </Link>
               ))}

@@ -23,7 +23,7 @@ const Footer = () => {
             <input
               type="email"
               placeholder={
-                language === "en" ? "Enter your email" : "Indtast din e-mail"
+                language === "en" ? "Enter your email" : " din e-mail"
               }
               style={{
                 color: "black",
@@ -53,7 +53,7 @@ const Footer = () => {
               {/* <p style={{ fontWeight: "600", fontSize: "22px" }}>{language === 'en' ? 'Subscribe Now' : 'Tilmeld dig nu'}</p> */}
               {/* <form style={{ display: "flex", alignItems: "center" }}>
                 <i className="fa-solid fa-envelope"></i>
-                <input className='footer-input-inner' type="email" placeholder={language === 'en' ? "Enter Your Email" : "Indtast din e-mail"} />
+                <input className='footer-input-inner' type="email" placeholder={language === 'en' ? "Enter Your Email" : " din e-mail"} />
               </form> */}
             </div>
           </div>

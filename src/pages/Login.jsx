@@ -3,10 +3,11 @@ import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useLanguage } from "../LanguageContext";
 
 const Login = () => {
   const navigate = useNavigate();
-
+  const { language } = useLanguage();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -43,6 +44,7 @@ const Login = () => {
       });
       localStorage.setItem("authToken", result.data.token);
       localStorage.setItem("guid", result.data.guid);
+      localStorage.setItem("userId", result.data.id);
       localStorage.setItem("name", result.data.name);
       localStorage.setItem("email", result.data.email);
       localStorage.setItem("featured", result.data.featured);
@@ -79,7 +81,7 @@ const Login = () => {
                 alt="Logo"
               />
               <h2 style={{ fontFamily: "Recoleta-Regular" }}>
-                Login Your <br /> Account!
+                {language === "en" ? "Login " : "Log ind"} Your <br /> Account!
               </h2>
               <p>
                 Register to access all the features of our services. <br />
@@ -109,14 +111,22 @@ const Login = () => {
                 required
               />
               <div className="forgot-password">
-                <Link to="/forget">Forgot Password?</Link>
+                <Link to="/forget">
+                  {language === "en" ? "Forgot Password?" : "Glemt Adgangskode"}
+                </Link>
               </div>
               <button
                 type="submit"
                 className="login-btn all-btn-hover"
                 disabled={loading}
               >
-                {loading ? "Logging in..." : "Log in"}
+                {loading
+                  ? language === "en"
+                    ? " Login..."
+                    : "Log ind..."
+                  : language === "en"
+                  ? " Login"
+                  : "Log ind"}
               </button>
             </form>
           </div>

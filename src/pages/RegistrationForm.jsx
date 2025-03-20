@@ -17,7 +17,6 @@ const RegistrationForm = () => {
   const [images, setImages] = useState([]);
   const [mainImage, setMainImage] = useState(null); // State for main image
   const [videos, setVideos] = useState([]);
-  const [passwordShoe, SetPasswordShow] = useState("password");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -66,7 +65,6 @@ const RegistrationForm = () => {
         const place = autocomplete.getPlace();
         const addressComponents = place.address_components;
 
-        // Initialize variables to store extracted info
         let city = "";
         let state = "";
         let country = "";
@@ -190,29 +188,6 @@ const RegistrationForm = () => {
     };
   }, []);
 
-  // const getLatLong = async (zipCode) => {
-  //   if (!zipCode) {
-  //     console.error("ZIP code is required.");
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await fetch(
-  //       `https://maps.googleapis.com/maps/api/geocode/json?address=dk-${zipCode}&key=AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y`
-  //     );
-  //     const data = await response.json();
-
-  //     if (data.results && data.results.length > 0) {
-  //       const { lat, lng } = data.results[0].geometry.location;
-  //       return { latitude: lat, longitude: lng };
-  //     } else {
-  //       return null;
-  //     }
-  //   } catch (error) {
-  //     return null;
-  //   }
-  // };
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -226,7 +201,7 @@ const RegistrationForm = () => {
     setImages((prevImages) => prevImages.concat(imageUrls));
     setFormData({
       ...formData,
-      images: files, // Set the selected files
+      images: files,
     });
   };
 
@@ -285,7 +260,6 @@ const RegistrationForm = () => {
     setVideos((prevVideos) => prevVideos.filter((_, i) => i !== index));
   };
 
-  // Handle image removal
   const handleRemoveImage = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
@@ -298,14 +272,11 @@ const RegistrationForm = () => {
           `http://192.168.18.74:800/api/auth/interests`
         );
 
-        // Check if the data is in the expected format
         if (response.data && Array.isArray(response.data.data.interests)) {
           setInterest(response.data.data.interests);
         } else {
           console.error("Unexpected data format:", response.data);
         }
-
-        console.log("interest", response.data.data.interests);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -329,8 +300,7 @@ const RegistrationForm = () => {
 
     let validationErrors = {};
 
-    if (!formData.city || !formData.country)
-      return toast.error("Zip code field is not valid.");
+    if (!formData.country) return toast.error("Zip code field is not valid.");
     if (!formData.name) validationErrors.name = "Name is required";
     if (!formData.email) validationErrors.email = "Email is required";
     if (!formData.password) validationErrors.password = "Password is required";
@@ -344,7 +314,7 @@ const RegistrationForm = () => {
     if (!formData.age) validationErrors.age = "Age is required";
     if (!formData.height) validationErrors.height = "Height is required";
     if (!formData.burst) validationErrors.burst = "Burst size is required";
-    if (!videos?.length) validationErrors.videos = "Video is required";
+    // if (!videos?.length) validationErrors.videos = "Video is required";
     if (!images?.length) validationErrors.images = "Image is required";
     if (!mainImage) validationErrors.mainImage = "Main Image is required";
 
@@ -467,7 +437,7 @@ const RegistrationForm = () => {
                 style={{ border: errors.name ? "1px solid red" : "" }}
                 value={formData.name}
                 onChange={handleChange}
-                placeholder={language === "en" ? "Your Name" : "Dit navn"}
+                placeholder={language === "en" ? "Your Name" : "Navn"}
                 className="input input-bordered input-primary"
               />
               {errors.name && <p className="error-text">{errors.name}</p>}
@@ -489,7 +459,7 @@ const RegistrationForm = () => {
                 style={{ border: errors.phone_number ? "1px solid red" : "" }}
                 value={formData.phone_number}
                 onChange={handleChange}
-                placeholder={language === "en" ? "Email" : "Telefonnummer"}
+                placeholder={language === "en" ? "Phone" : "Telefonnummer"}
                 className="input input-bordered input-primary"
               />
               {errors.phone_number && (
@@ -591,7 +561,7 @@ const RegistrationForm = () => {
                 value={formData.age}
                 style={{ border: errors.age ? "1px solid red" : "" }}
                 onChange={handleChange}
-                placeholder={language === "en" ? "Your Age" : "Din alder"}
+                placeholder={language === "en" ? "Your Age" : "Alder"}
                 className="input input-bordered input-primary"
               />
               {errors.age && <p className="error-text">{errors.age}</p>}
@@ -603,7 +573,7 @@ const RegistrationForm = () => {
                 value={formData.hair_color}
                 onChange={handleChange}
                 placeholder={
-                  language === "en" ? "Enter Hair Color" : "Indtast hårfarve"
+                  language === "en" ? "Enter Hair Color" : " hårfarve"
                 }
                 className="input input-bordered input-primary"
               />
@@ -633,7 +603,7 @@ const RegistrationForm = () => {
                 value={formData.height}
                 onChange={handleChange}
                 placeholder={
-                  language === "en" ? " Your Height (CM)" : "Din højde (CM)"
+                  language === "en" ? " Your Height (CM)" : "højde (CM)"
                 }
                 className="input input-bordered input-primary"
               />
@@ -645,9 +615,7 @@ const RegistrationForm = () => {
                 value={formData.burst}
                 style={{ border: errors.burst ? "1px solid red" : "" }}
                 onChange={handleChange}
-                placeholder={
-                  language === "en" ? "Burst Size" : "Burst størrelse"
-                }
+                placeholder={language === "en" ? "Burst Size" : "Bryst Size"}
                 className="input input-bordered input-primary"
               />
               {errors.burst && <p className="error-text">{errors.burst}</p>}
@@ -672,7 +640,7 @@ const RegistrationForm = () => {
                 value={formData.weight}
                 onChange={handleChange}
                 placeholder={
-                  language === "en" ? "Your Weight (IB)" : "Din vægt (IB)"
+                  language === "en" ? "Your Weight (KG)" : "vægt (KG)"
                 }
                 className="input input-bordered input-primary"
               />
@@ -687,7 +655,7 @@ const RegistrationForm = () => {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder={
-                    language === "en" ? "Enter Password" : "Indtast adgangskode"
+                    language === "en" ? "Enter Password" : " adgangskode"
                   }
                   className=""
                 />
@@ -714,7 +682,7 @@ const RegistrationForm = () => {
                 placeholder={
                   language === "en"
                     ? "Enter Confirm Password"
-                    : "Indtast Bekræft adgangskode"
+                    : " Bekræft adgangskode"
                 }
                 className="input input-bordered input-primary"
               />
@@ -763,12 +731,14 @@ const RegistrationForm = () => {
           <div className="upload-container">
             <h1 style={{ fontFamily: "Recoleta-Regular" }}>
               {language === "en"
-                ? "Main Image Upload"
-                : "Upload af hovedbillede"}
+                ? "Upload Main Image"
+                : "Upload Profile Billede"}
             </h1>
             <label className="upload-label" htmlFor="mainImage">
               <div className="upload-area">
-                <p>Upload Main Image</p>
+                <p> {language === "en"
+                ? "Upload Main Image"
+                : "Upload Profile Billede"}</p>
               </div>
               <input
                 id="mainImage"
@@ -794,28 +764,33 @@ const RegistrationForm = () => {
             <div className="uploaded-images">
               <div className="uploaded-image-container">
                 {mainImage && (
-                  <img
-                    src={mainImage}
-                    alt="Main Upload"
-                    className="uploaded-image"
-                  />
+                  <>
+                    <img
+                      src={mainImage}
+                      alt="Main Upload"
+                      className="uploaded-image"
+                    />
+                    <button
+                      onClick={() => setMainImage(null)}
+                      className="remove-button mt-1"
+                    >
+                      {language === "en" ? "   Remove" : "Fjern"}
+                    </button>
+                  </>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Multiple Images Upload Section */}
           <div className="upload-container">
             <h1 style={{ fontFamily: "Recoleta-Regular" }}>
-              {language === "en" ? "UPLOAD SHOTS" : "UPLOAD SKUD"}
+              {language === "en" ? "UPLOAD IMAGES SHOTS" : "UPLOAD BILLEDER"}
             </h1>
             <div className=" upload-header">
               <label className="upload-label" htmlFor="uploadimages">
                 <div className="upload-area">
                   <p style={{ fontFamily: "Recoleta-Regular" }}>
-                    Drag & Drop To Upload
-                    <br />
-                    Or Browse
+                    {language === "en" ? "UPLOAD IMAGES SHOTS" : "UPLOAD BILLEDER"}
                   </p>
                 </div>
                 <input
@@ -849,7 +824,7 @@ const RegistrationForm = () => {
                   />
                   <button
                     onClick={() => handleRemoveImage(index)}
-                    className="remove-button"
+                    className="remove-button mt-1"
                   >
                     Remove
                   </button>
@@ -861,12 +836,12 @@ const RegistrationForm = () => {
           <div className="upload-container">
             <h1>
               {language === "en"
-                ? "Video Upload (30 seconds max)"
-                : "Videoupload (maks. 30 sekunder)"}
+                ? "Upload Videos  (30 seconds max)"
+                : "Upload Videoer (maks. 30 sekunder)"}
             </h1>
             <label className="upload-label" htmlFor="videos">
               <div className="upload-area">
-                <p>Upload Videos</p>
+                <p>{language === "en" ? "Upload Videos" : "Upload Videoer"}</p>
               </div>
               <input
                 id="videos"
@@ -893,9 +868,10 @@ const RegistrationForm = () => {
                   ></video>
                   <button
                     type="button"
+                    className="mt-1"
                     onClick={() => handleRemoveVideo(index)}
                   >
-                    Remove
+                    {language === "en" ? "   Remove" : "Fjern"}
                   </button>
                 </div>
               ))}

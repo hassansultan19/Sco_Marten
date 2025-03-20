@@ -239,17 +239,17 @@ const Detail = () => {
               <div className="profile-image">
                 <img
                   style={{
-                    width: "640px",
+                    width: "100%",
                     height: "auto",
                     objectFit: "contain",
                   }}
-                  src={modelDetail?.main_image}
+                  src={`http://192.168.18.74:800/${modelDetail?.main_image}`}
                   alt="Profile"
                   className="rounded-lg mx-auto"
                 />
                 <Flower />
               </div>
-              <div className="profile-info flex justify-between mt-6 profile">
+              <div className="profile-info flex justify-between mt-6 profile px-2">
                 <div className="one">
                   <div>
                     <strong>{language === "en" ? "AGE" : "ALDER"}</strong>{" "}
@@ -277,7 +277,7 @@ const Detail = () => {
                 </div>
                 <div className="sec">
                   <div>
-                    <strong>{language === "en" ? "BURST" : "BRÆST"}</strong>
+                    <strong>{language === "en" ? "BURST" : "BRYST"}</strong>
                     <br /> {modelDetail?.burst !== "" ? modelDetail?.burst : ""}
                   </div>
                   <div>
@@ -304,24 +304,26 @@ const Detail = () => {
                 </div>
               </div>
               <div className="image-gallery flex justify-center flex-wrap items-center gap-10">
-                {modelDetail?.images?.map((item, index) => (
-                  <img
-                    key={index}
-                    src={item?.original_url}
-                    alt={`Image ${index + 1}`}
-                    className="rounded-lg cursor-pointer"
-                    onClick={() => openModal(index)}
-                  />
-                ))}
-                {modelDetail?.videos?.map((video, index) => (
-                  <a key={index} target="_blank" href={video.original_url}>
-                    <video
-                      src={"video.original_url"}
-                      controls
-                      width="200"
-                    ></video>
-                  </a>
-                ))}
+                {modelDetail?.images &&
+                  JSON.parse(modelDetail?.images)?.map((item, index) => (
+                    <img
+                      key={index}
+                      src={`http://192.168.18.74:800/${item}`}
+                      alt={`Image ${index + 1}`}
+                      className="rounded-lg cursor-pointer"
+                      onClick={() => openModal(index)}
+                    />
+                  ))}
+                {modelDetail?.videos &&
+                  JSON.parse(modelDetail?.videos)?.map((video, index) => (
+                    <a key={index} target="_blank" href={video}>
+                      <video
+                        src={`http://192.168.18.74:800/${video}`}
+                        controls
+                        width="200"
+                      ></video>
+                    </a>
+                  ))}
               </div>
               <Flowerright />
               {isModalOpen && (

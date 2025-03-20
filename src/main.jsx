@@ -19,8 +19,6 @@ import PackagesMain from "./pages/PackagesMain.jsx";
 import Success from "./pages/Success.jsx";
 import PaymentRejected from "./pages/Reject.jsx";
 
-// import Login from './pages/Login.jsx'
-
 const ScrollManager = ({ children }) => {
   const location = useLocation();
 

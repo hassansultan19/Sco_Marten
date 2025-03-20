@@ -45,12 +45,8 @@ function App() {
           );
           const jsonData = await response.json();
 
-          if (jsonData.status) {
-            setTotalPages(jsonData.data.pagination.total_pages);
-            setCardAllData(jsonData.data.escorts);
-          } else {
-            console.error("Error fetching data:", jsonData.message);
-          }
+          setCardAllData(jsonData?.data?.escorts);
+          setTotalPages(jsonData?.data?.pagination?.total_pages);
         } catch (error) {
           console.error("Error fetching data:", error);
         } finally {

@@ -13,10 +13,6 @@ const createBackendServer = (baseURL) => {
     timeout: 60 * 1000,
   });
 
-  const localStoragedata = JSON.parse(localStorage.getItem("data"));
-  const RealUserId = localStoragedata?.id;
-
-  // Add a request interceptor
   api.interceptors.request.use(
     (config) => {
       const user_token = localStorage.getItem("authToken");
