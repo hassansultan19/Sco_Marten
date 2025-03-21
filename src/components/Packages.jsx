@@ -12,7 +12,8 @@ const Packages = () => {
   const fetchBrands = async (page = 1) => {
     try {
       const response = await fetch(
-        `http://192.168.18.74:800/api/admin/packages?page=${page}`
+        `
+https://escortnights.dk/backend-martin/public/api/admin/packages?page=${page}`
       );
       const data = await response.json();
       if (data.status && data.data?.packages) {
@@ -36,7 +37,8 @@ const Packages = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `http://192.168.18.74:800/api/admin/paypal/create-payment?id=${packageId}`
+        `
+https://escortnights.dk/backend-martin/public/api/admin/paypal/create-payment?id=${packageId}`
       );
 
       if (response.data.status === "success") {

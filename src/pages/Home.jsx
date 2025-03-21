@@ -32,7 +32,8 @@ const Home = () => {
     setsLoading(true);
     try {
       const response = await fetch(
-        `http://192.168.18.74:800/api/escort/search?sex=${sex}&age=${age}&address=${address}&interests=${filterInterest}&zip_code=${zipcode}&page=${page}&page_size=9`,
+        `
+https://escortnights.dk/backend-martin/public/api/escort/search?sex=${sex}&age=${age}&address=${address}&interests=${filterInterest}&zip_code=${zipcode}&page=${page}&page_size=9`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -75,7 +76,8 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.18.74:800/api/auth/interests`
+          `
+https://escortnights.dk/backend-martin/public/api/auth/interests`
         );
 
         if (response.data && Array.isArray(response.data.data.interests)) {
@@ -91,7 +93,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://192.168.18.74:800/api/escort/featured"
+          "https://escortnights.dk/backend-martin/public/api/escort/featured"
         );
         const jsonData = await response.json();
 
@@ -112,7 +114,7 @@ const Home = () => {
     const fetchAllNormalData = async () => {
       try {
         const response = await fetch(
-          "http://192.168.18.74:800/api/escort/normal?page_size=100"
+          "https://escortnights.dk/backend-martin/public/api/escort/normal?page_size=100"
         );
         const jsonData = await response.json();
 
@@ -171,7 +173,8 @@ const Home = () => {
                   to={`/details?guid=${item.guid}`}
                   className="carousel-item bg-1 "
                   style={{
-                    backgroundImage: `url(http://192.168.18.74:800/${backgroundUrl})`,
+                    backgroundImage: `url(
+https://escortnights.dk/backend-martin/public/${backgroundUrl})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}
@@ -335,7 +338,8 @@ const Home = () => {
                     <img
                       className="w-full h-72 object-cover"
                       title={escort.name}
-                      src={`http://192.168.18.74:800/${escort?.main_image}`}
+                      src={`
+https://escortnights.dk/backend-martin/public/${escort?.main_image}`}
                       alt={escort.name}
                       name={`img${index + 1}`}
                     />
@@ -433,7 +437,8 @@ const Home = () => {
                 >
                   <figure>
                     <img
-                      src={`http://192.168.18.74:800/${escort?.main_image}`}
+                      src={`
+https://escortnights.dk/backend-martin/public/${escort?.main_image}`}
                       title={escort.name}
                       alt={escort.name}
                       name={`img${index + 1}`}

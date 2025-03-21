@@ -33,7 +33,8 @@ const Detail = () => {
         {cardAllData.map((item, index) => (
           <Link to={`/details?guid=${item.guid}`} key={item.id}>
             <Images
-              src={`http://192.168.18.74:800/${escort.main_image}`}
+              src={`
+https://escortnights.dk/backend-martin/public/${escort.main_image}`}
               title={item.name}
               guid={item.guid}
               name={`img${index + 1}`}

@@ -11,7 +11,7 @@ function Checkout({ price, package_id, onClose }) {
       const userId = localStorage.getItem("userId");
       const token = orderData.id;
       await axios.post(
-        "http://192.168.18.74:800/api/admin/paypal/capture-payment",
+        "https://escortnights.dk/backend-martin/public/api/admin/paypal/capture-payment",
         {
           token: token,
           package_id: Number(package_id),

@@ -269,7 +269,8 @@ const RegistrationForm = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.18.74:800/api/auth/interests`
+          `
+https://escortnights.dk/backend-martin/public/api/auth/interests`
         );
 
         if (response.data && Array.isArray(response.data.data.interests)) {
@@ -736,9 +737,12 @@ const RegistrationForm = () => {
             </h1>
             <label className="upload-label" htmlFor="mainImage">
               <div className="upload-area">
-                <p> {language === "en"
-                ? "Upload Main Image"
-                : "Upload Profile Billede"}</p>
+                <p>
+                  {" "}
+                  {language === "en"
+                    ? "Upload Main Image"
+                    : "Upload Profile Billede"}
+                </p>
               </div>
               <input
                 id="mainImage"
@@ -790,7 +794,9 @@ const RegistrationForm = () => {
               <label className="upload-label" htmlFor="uploadimages">
                 <div className="upload-area">
                   <p style={{ fontFamily: "Recoleta-Regular" }}>
-                    {language === "en" ? "UPLOAD IMAGES SHOTS" : "UPLOAD BILLEDER"}
+                    {language === "en"
+                      ? "UPLOAD IMAGES SHOTS"
+                      : "UPLOAD BILLEDER"}
                   </p>
                 </div>
                 <input
@@ -832,7 +838,6 @@ const RegistrationForm = () => {
               ))}
             </div>
           </div>
-          {/* Multiple videos Upload Section */}
           <div className="upload-container">
             <h1>
               {language === "en"

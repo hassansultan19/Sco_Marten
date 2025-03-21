@@ -45,7 +45,8 @@ const Detail = () => {
     if (guid) {
       try {
         const response = await axios.get(
-          `http://192.168.18.74:800/api/escort/getById/${guid}`
+          `
+https://escortnights.dk/backend-martin/public/api/escort/getById/${guid}`
         );
         console.log("response", response.data.data.escort);
         setModelDetail(response.data.data.escort);
@@ -63,7 +64,8 @@ const Detail = () => {
   const fetchAllData = async () => {
     try {
       const response = await fetch(
-        `http://192.168.18.74:800/api/escort/getRelated/${guid}`
+        `
+https://escortnights.dk/backend-martin/public/api/escort/getRelated/${guid}`
       );
       const jsonData = await response.json();
       console.log(jsonData); // Log the full response for debugging
@@ -125,7 +127,7 @@ const Detail = () => {
 
     try {
       const response = await axios.post(
-        "http://192.168.18.74:800/api/feedback/store",
+        "https://escortnights.dk/backend-martin/public/api/feedback/store",
         payload
       );
       if (response.data && response.data.status) {
@@ -167,7 +169,8 @@ const Detail = () => {
     const fetchTestimonials = async () => {
       try {
         const response = await fetch(
-          `http://192.168.18.74:800/api/feedback/user/${modelDetailId}`
+          `
+https://escortnights.dk/backend-martin/public/api/feedback/user/${modelDetailId}`
         );
         const data = await response.json();
         if (data.status && data.data.feedbacks) {
@@ -243,7 +246,8 @@ const Detail = () => {
                     height: "auto",
                     objectFit: "contain",
                   }}
-                  src={`http://192.168.18.74:800/${modelDetail?.main_image}`}
+                  src={`
+https://escortnights.dk/backend-martin/public/${modelDetail?.main_image}`}
                   alt="Profile"
                   className="rounded-lg mx-auto"
                 />
@@ -308,7 +312,7 @@ const Detail = () => {
                   JSON.parse(modelDetail?.images)?.map((item, index) => (
                     <img
                       key={index}
-                      src={`http://192.168.18.74:800/${item}`}
+                      src={`https://escortnights.dk/backend-martin/public/${item}`}
                       alt={`Image ${index + 1}`}
                       className="rounded-lg cursor-pointer"
                       onClick={() => openModal(index)}
@@ -318,7 +322,8 @@ const Detail = () => {
                   JSON.parse(modelDetail?.videos)?.map((video, index) => (
                     <a key={index} target="_blank" href={video}>
                       <video
-                        src={`http://192.168.18.74:800/${video}`}
+                        src={`
+https://escortnights.dk/backend-martin/public/${video}`}
                         controls
                         width="200"
                       ></video>

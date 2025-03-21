@@ -14,8 +14,10 @@ const OtpScreen = () => {
   const [resendTimer, setResendTimer] = useState(60); // 60 seconds countdown
   const inputRefs = useRef([]);
   const { email } = useParams(); // Extract email from the URL
-  const VERIFY_API_URL = "http://192.168.18.74:800/api/auth/verify-otp";
-  const RESEND_API_URL = "http://192.168.18.74:800/api/auth/send-otp";
+  const VERIFY_API_URL =
+    "https://escortnights.dk/backend-martin/public/api/auth/verify-otp";
+  const RESEND_API_URL =
+    "https://escortnights.dk/backend-martin/public/api/auth/send-otp";
   const [formData, setFormData] = useState({
     otp: "",
     password: "",

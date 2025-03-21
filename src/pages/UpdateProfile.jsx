@@ -41,7 +41,7 @@ const UpdateProfile = () => {
       try {
         const token = localStorage.getItem("authToken");
         const response = await axios.get(
-          "http://192.168.18.74:800/api/admin/packages",
+          "https://escortnights.dk/backend-martin/public/api/admin/packages",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -76,7 +76,7 @@ const UpdateProfile = () => {
     const fetchInterests = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.18.74:800/api/auth/interests"
+          "https://escortnights.dk/backend-martin/public/api/auth/interests"
         );
         if (response.data && Array.isArray(response.data.data.interests)) {
           setAllInterests(response.data.data.interests);
@@ -97,7 +97,10 @@ const UpdateProfile = () => {
     const guid = localStorage.getItem("userId");
     if (guid) {
       axios
-        .get(`http://192.168.18.74:800/api/escort/get-user-id/${guid}`)
+        .get(
+          `
+https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
+        )
         .then((response) => {
           const escortData = response?.data?.data?.user;
           console.log("escortData", escortData);
@@ -290,7 +293,7 @@ const UpdateProfile = () => {
 
     try {
       const response = await axios.post(
-        "http://192.168.18.74:800/api/escort/update-profile",
+        "https://escortnights.dk/backend-martin/public/api/escort/update-profile",
         formData,
         {
           headers: {
@@ -333,7 +336,7 @@ const UpdateProfile = () => {
     if (showDays === true) {
       try {
         const response = await axios.post(
-          "http://192.168.18.74:800/api/escort/update-featured",
+          "https://escortnights.dk/backend-martin/public/api/escort/update-featured",
           { days: selectedDay }, // Payload for the API
           {
             headers: {
@@ -710,7 +713,8 @@ const UpdateProfile = () => {
                   src={
                     mainImage.startsWith("http")
                       ? mainImage
-                      : `http://192.168.18.74:800/${mainImage}`
+                      : `
+https://escortnights.dk/backend-martin/public/${mainImage}`
                   }
                   alt="Main Upload"
                   className="uploaded-image"
@@ -726,7 +730,8 @@ const UpdateProfile = () => {
                       src={
                         typeof image === "string" && image.startsWith("http")
                           ? image
-                          : `http://192.168.18.74:800/${image}`
+                          : `
+https://escortnights.dk/backend-martin/public/${image}`
                       }
                       alt={`Gallery ${index + 1}`}
                     />
@@ -768,7 +773,8 @@ const UpdateProfile = () => {
                   src={
                     typeof image === "string" && image.startsWith("http")
                       ? image
-                      : `http://192.168.18.74:800/${image}`
+                      : `
+https://escortnights.dk/backend-martin/public/${image}`
                   }
                   alt={`Gallery ${index + 1}`}
                 />
@@ -808,7 +814,8 @@ const UpdateProfile = () => {
                   src={
                     typeof video === "string" && video.startsWith("http")
                       ? video
-                      : `http://192.168.18.74:800/${video}`
+                      : `
+https://escortnights.dk/backend-martin/public/${video}`
                   }
                   controls
                   width="200"

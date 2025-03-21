@@ -1,21 +1,20 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
-import "./Login.css"; // Assuming your CSS is in a separate file called Login.css
+import "./Login.css";
 import { useNavigate } from "react-router-dom";
 
 const Forget = () => {
-  const FORGET_API_URL = "http://192.168.18.74:800/api/auth/send-otp";
-  const [email, setEmail] = useState(""); // State to manage email input
-  const [loading, setLoading] = useState(false); // State to manage loading state
+  const FORGET_API_URL =
+    "https://escortnights.dk/backend-martin/public/api/auth/send-otp";
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate(); // Initialize navigate for routing
+  const navigate = useNavigate();
 
-  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    // Prepare API body
     const requestBody = {
       email,
       type: 1, // 1 for forgot password
