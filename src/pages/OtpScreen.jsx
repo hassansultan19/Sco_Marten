@@ -144,7 +144,7 @@ const OtpScreen = () => {
 
           {/* Centered Login Form */}
           <div className="login-box">
-            <h1>Verify</h1>
+            <h1>Verify Your Account</h1>
             <form onSubmit={handleSubmit}>
               <div className="otp-inputs">
                 <OTPInput

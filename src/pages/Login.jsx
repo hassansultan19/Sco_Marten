@@ -52,7 +52,11 @@ const Login = () => {
 
       navigate("/dashboard");
     } catch (error) {
-      console.log("error", error);
+      if (error.response.data.message == "OTP Not Verified.") {
+        setTimeout(() => {
+          navigate(`/otpscreen/${email}`);
+        }, 2000);
+      }
       setLoading(false);
       Swal.fire({
         title: "An Error Occurred",
@@ -91,9 +95,8 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Centered Login Form */}
           <div className="login-box">
-            <h1>Login</h1>
+            <h1>{language === "en" ? " Login" : "Log ind"}</h1>
             <form onSubmit={handleSubmit}>
               <input
                 type="email"

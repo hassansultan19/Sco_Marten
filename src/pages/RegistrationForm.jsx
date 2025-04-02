@@ -302,6 +302,7 @@ https://escortnights.dk/backend-martin/public/api/auth/interests`
     let validationErrors = {};
 
     if (!formData.country) return toast.error("Zip code field is not valid.");
+    if (!formData.sex) validationErrors.sex = "Sex  is required.";
     if (!formData.name) validationErrors.name = "Name is required";
     if (!formData.email) validationErrors.email = "Email is required";
     if (!formData.password) validationErrors.password = "Password is required";
@@ -312,6 +313,8 @@ https://escortnights.dk/backend-martin/public/api/auth/interests`
     if (!formData.hair_color)
       validationErrors.hair_color = "Hair Color is required";
     if (!formData.zip_code) validationErrors.zip_code = "ZIP Code is required";
+    if (!formData.eye_color)
+      validationErrors.eye_color = "Eye color is required";
     if (!formData.age) validationErrors.age = "Age is required";
     if (!formData.height) validationErrors.height = "Height is required";
     if (!formData.burst) validationErrors.burst = "Burst size is required";
@@ -473,7 +476,7 @@ https://escortnights.dk/backend-martin/public/api/auth/interests`
                 style={{ border: errors.zip_code ? "1px solid red" : "" }}
                 value={formData.zip_code}
                 onChange={handleChange}
-                placeholder={language === "en" ? "ZIP Code" : "postnummer"}
+                placeholder={language === "en" ? "ZIP Code" : "Postnummer"}
                 className="input input-bordered input-primary"
               />
               {errors.zip_code && (
@@ -574,7 +577,7 @@ https://escortnights.dk/backend-martin/public/api/auth/interests`
                 value={formData.hair_color}
                 onChange={handleChange}
                 placeholder={
-                  language === "en" ? "Enter Hair Color" : " hårfarve"
+                  language === "en" ? "Enter Hair Color" : " Hårfarve"
                 }
                 className="input input-bordered input-primary"
               />
@@ -604,7 +607,7 @@ https://escortnights.dk/backend-martin/public/api/auth/interests`
                 value={formData.height}
                 onChange={handleChange}
                 placeholder={
-                  language === "en" ? " Your Height (CM)" : "højde (CM)"
+                  language === "en" ? " Your Height (CM)" : "Højde (CM)"
                 }
                 className="input input-bordered input-primary"
               />
@@ -616,7 +619,9 @@ https://escortnights.dk/backend-martin/public/api/auth/interests`
                 value={formData.burst}
                 style={{ border: errors.burst ? "1px solid red" : "" }}
                 onChange={handleChange}
-                placeholder={language === "en" ? "Burst Size" : "Bryst Size"}
+                placeholder={
+                  language === "en" ? "Burst Size" : "Bryst Størrelse"
+                }
                 className="input input-bordered input-primary"
               />
               {errors.burst && <p className="error-text">{errors.burst}</p>}
@@ -634,6 +639,27 @@ https://escortnights.dk/backend-martin/public/api/auth/interests`
                 <p className="error-text">{errors.eye_color}</p>
               )}
 
+              <select
+                name="sex"
+                value={formData.sex || ""}
+                className="input input-bordered input-primary"
+                onChange={handleChange}
+              >
+                <option value="">
+                  {language === "en" ? "Select Sex" : "Vælg Køn"}
+                </option>
+                  <option value="Woman">
+                    {language === "en" ? "Woman" : "Kvinde"}
+                  </option>
+                  <option value="Man">
+                    {language === "en" ? "Man" : "Mand"}
+                  </option>
+                  <option value="Trans">
+                    {language === "en" ? "Trans" : "Trans"}
+                  </option>
+              </select>
+
+              {errors.sex && <p className="error-text">{errors.sex}</p>}
               <input
                 type="text"
                 name="weight"
@@ -641,7 +667,7 @@ https://escortnights.dk/backend-martin/public/api/auth/interests`
                 value={formData.weight}
                 onChange={handleChange}
                 placeholder={
-                  language === "en" ? "Your Weight (KG)" : "vægt (KG)"
+                  language === "en" ? "Your Weight (KG)" : "Vægt (KG)"
                 }
                 className="input input-bordered input-primary"
               />
@@ -656,7 +682,7 @@ https://escortnights.dk/backend-martin/public/api/auth/interests`
                   value={formData.password}
                   onChange={handleChange}
                   placeholder={
-                    language === "en" ? "Enter Password" : " adgangskode"
+                    language === "en" ? "Enter Password" : " Adgangskode"
                   }
                   className=""
                 />
@@ -832,7 +858,7 @@ https://escortnights.dk/backend-martin/public/api/auth/interests`
                     onClick={() => handleRemoveImage(index)}
                     className="remove-button mt-1"
                   >
-                    Remove
+                    {language === "en" ? "   Remove" : "Fjern"}
                   </button>
                 </div>
               ))}
@@ -865,12 +891,14 @@ https://escortnights.dk/backend-martin/public/api/auth/interests`
             </label>
             <div className="uploaded-videos">
               {videos.map((video, index) => (
-                <div key={index} className="video-preview-container">
-                  <video
-                    src={URL.createObjectURL(video)}
-                    controls
-                    width="200"
-                  ></video>
+                <div>
+                  <div key={index} className="video-preview-container">
+                    <video
+                      src={URL.createObjectURL(video)}
+                      controls
+                      width="200"
+                    ></video>
+                  </div>
                   <button
                     type="button"
                     className="mt-1"
@@ -887,11 +915,11 @@ https://escortnights.dk/backend-martin/public/api/auth/interests`
             <button type="submit" className=" " disabled={loading}>
               {language === "en"
                 ? loading
-                  ? "Submitting..."
-                  : "Submit"
+                  ? "Creating..."
+                  : "Create"
                 : loading
-                ? "Indsend..."
-                : "Indsend"}
+                ? "Opret..."
+                : "Opret"}
             </button>
           </div>
 

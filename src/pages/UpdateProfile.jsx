@@ -10,32 +10,27 @@ import { useUser } from "../store/useUser";
 import { useLanguage } from "../LanguageContext";
 
 const UpdateProfile = () => {
-  const [packages, setPackages] = useState([]); // Store packages data
-  const [selectedPackage, setSelectedPackage] = useState(null); // Store selected package
+  const [packages, setPackages] = useState([]);
   const [userData, setUserData] = useState({});
   const [allInterests, setAllInterests] = useState([]);
   const [selectedInterests, setSelectedInterests] = useState([]);
-  const [mainImage, setMainImage] = useState(null); // Store the File object for main image
+  const [mainImage, setMainImage] = useState(null); // Store the URL/path for main image
+  const [mainImageFile, setMainImageFile] = useState(null); // Store the File object for main image
+  const [isMainImageChanged, setIsMainImageChanged] = useState(false); // Track if main image was changed
   const [mediaImages, setMediaImages] = useState([]); // Store File objects for media images
   const [mediaVideos, setMediaVideos] = useState([]); // Store File objects for media images
-  const [mediaImagePreviews, setMediaImagePreviews] = useState([]); // Store previews of media images
   const [deletedFiles, setDeletedFiles] = useState([]);
   const [deletedVideosFiles, setDeletedVideoFiles] = useState([]);
   const addressInputRef = useRef(null);
   const [showDays, setShowDays] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
-  const [mainImageFile, setMainImageFile] = useState(null); // Actual file
   const [mediaFiles, setMediaFiles] = useState([]); // Actual files
   const [mediaVideosFiles, setMediaVideosFiles] = useState([]); // Actual files
   const [loading, setLoading] = useState(false);
 
-  const handleCheckboxChange = (e) => {
-    setShowDays(e.target.checked); // Show or hide days based on checkbox
-  };
   const handleDayClick = (day) => {
-    setSelectedDay(day); // Update selected day
+    setSelectedDay(day);
   };
-  // Fetch packages
   useEffect(() => {
     const fetchPackages = async () => {
       try {
@@ -56,7 +51,6 @@ const UpdateProfile = () => {
 
     fetchPackages();
   }, []);
-  // Fetch all interests
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -65,10 +59,9 @@ const UpdateProfile = () => {
         text: "Please log in to update your profile.",
         icon: "warning",
         confirmButtonText: "OK",
-        allowOutsideClick: false, // Prevent closing on outside click
+        allowOutsideClick: false,
       }).then(() => {
-        // Redirect to the login page
-        window.location.href = "/login"; // Change '/login' to your actual login page route
+        window.location.href = "/login";
       });
       return;
     }
@@ -90,9 +83,7 @@ const UpdateProfile = () => {
     fetchInterests();
   }, []);
   const [mediaImageIds, setMediaImageIds] = useState([]);
-  const [mediaVideosIds, setMediaVideosIds] = useState([]);
 
-  // Fetch user data and saved interests
   useEffect(() => {
     const guid = localStorage.getItem("userId");
     if (guid) {
@@ -106,10 +97,11 @@ https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
           console.log("escortData", escortData);
           setUserData(escortData);
 
+          // Reset the change tracker when loading initial data
+          setIsMainImageChanged(false);
           setMainImageFile(escortData?.main_image);
           setMainImage(escortData?.main_image);
 
-          // Parse images from JSON string if needed
           let imagesArray = [];
           try {
             if (typeof escortData?.images === "string") {
@@ -121,11 +113,9 @@ https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
             console.error("Error parsing images:", e);
           }
 
-          // Set media images
           setMediaImages(imagesArray);
-          setMediaImageIds(imagesArray.map((_, index) => index));
+          setMediaImageIds(imagesArray?.map((_, index) => index));
 
-          // Parse videos from JSON string if needed
           let videosArray = [];
           try {
             if (typeof escortData?.videos === "string") {
@@ -137,11 +127,9 @@ https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
             console.error("Error parsing videos:", e);
           }
 
-          // Set media videos
           setMediaVideos(videosArray);
-          setMediaVideosIds(videosArray.map((_, index) => index));
 
-          const userInterests = escortData?.user_interest.map(
+          const userInterests = escortData?.user_interest?.map(
             (item) => item.interest_id
           );
           setSelectedInterests(userInterests);
@@ -151,14 +139,17 @@ https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
         });
     }
   }, []);
-
-  // Initialize Google Places Autocomplete
   useEffect(() => {
+    if (!window.google || !window.google.maps || !window.google.maps.places) {
+      console.error("Google Maps script not loaded");
+      return;
+    }
+
     const autocomplete = new window.google.maps.places.Autocomplete(
       addressInputRef.current,
       {
-        types: ["(regions)"], // Restrict input to regions (or modify as needed)
-        componentRestrictions: { country: ["us"] }, // Adjust as per your requirement
+        types: ["(regions)"],
+        componentRestrictions: { country: ["us"] },
       }
     );
 
@@ -196,6 +187,7 @@ https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
       }
     });
   }, []);
+  console.log("mainImage", mainImage);
   const { language } = useLanguage();
   const handleInterestChange = (interestId) => {
     setSelectedInterests((prevSelected) =>
@@ -204,56 +196,124 @@ https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
         : [...prevSelected, interestId]
     );
   };
+
   const handleMainImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const preview = URL.createObjectURL(file); // For display purposes
-      setMainImageFile(file); // Store the actual file
-      setMainImage(preview); // Store the preview for display
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setMainImage(reader.result);
+        setMainImageFile(file);
+        setIsMainImageChanged(true);
+      };
+      reader.readAsDataURL(file);
     }
+    e.target.value = null;
+  };
+
+  const handleRemoveMainImage = () => {
+    setMainImage(null);
+    setMainImageFile(null);
+    setIsMainImageChanged(true);
   };
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
-    const previews = files.map((file) => URL.createObjectURL(file)); // Generate previews for new files
+    if (files.length === 0) return;
 
-    // Append new files and their previews to the existing ones
-    setMediaImages((prev) => [...prev, ...previews]);
-    setMediaFiles((prev) => [...prev, ...files]);
+    const newMediaFiles = [...mediaFiles];
+    const newMediaImages = [...mediaImages];
+    const newMediaImageIds = [...mediaImageIds];
+
+    files.forEach((file) => {
+      const preview = URL.createObjectURL(file);
+      newMediaFiles.push(file);
+      newMediaImages.push(preview);
+      newMediaImageIds.push(
+        `new-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`
+      );
+    });
+
+    setMediaFiles(newMediaFiles);
+    setMediaImages(newMediaImages);
+    setMediaImageIds(newMediaImageIds);
+
+    // Reset the input value to allow selecting the same file again
+    e.target.value = null;
   };
 
   const handleVideosFileChange = (e) => {
     const files = Array.from(e.target.files);
-    const previews = files.map((file) => URL.createObjectURL(file)); // Generate previews for new files
+    if (files.length === 0) return;
 
-    // Append new files and their previews to the existing ones
-    setMediaVideos((prev) => [...prev, ...previews]);
-    setMediaVideosFiles((prev) => [...prev, ...files]);
+    // Create new preview URLs for the files and add them to state
+    const newMediaVideosFiles = [...mediaVideosFiles];
+    const newMediaVideos = [...mediaVideos];
+
+    files.forEach((file) => {
+      const preview = URL.createObjectURL(file);
+      newMediaVideosFiles.push(file);
+      newMediaVideos.push(preview);
+    });
+
+    setMediaVideosFiles(newMediaVideosFiles);
+    setMediaVideos(newMediaVideos);
+
+    // Reset the input value to allow selecting the same file again
+    e.target.value = null;
   };
 
   const handleRemoveImage = (index) => {
-    setDeletedFiles((prev) => [...prev, mediaImageIds[index]]);
+    // Store the actual image ID or URL for deletion on the server
+    if (mediaImages[index]) {
+      // If it's an existing image from the server (not a newly added one)
+      if (
+        typeof mediaImages[index] === "string" &&
+        !mediaImages[index].startsWith("blob:")
+      ) {
+        setDeletedFiles((prev) => [...prev, mediaImageIds[index]]);
+      }
+    }
 
+    // Remove from preview array
     setMediaImages((prev) => prev.filter((_, i) => i !== index));
 
+    // Remove from files array if it's a new file
+    setMediaFiles((prev) => prev.filter((_, i) => i !== index));
+
+    // Remove from IDs array
     setMediaImageIds((prev) => prev.filter((_, i) => i !== index));
   };
-  const handleRemoveVideos = (index) => {
-    setDeletedVideoFiles((prev) => [...prev, mediaVideosIds[index]]);
 
+  const handleRemoveVideo = (index) => {
+    // Store the actual video URL for deletion on the server
+    if (mediaVideos[index]) {
+      // If it's an existing video from the server (not a newly added one)
+      if (
+        typeof mediaVideos[index] === "string" &&
+        !mediaVideos[index].startsWith("blob:")
+      ) {
+        setDeletedVideoFiles((prev) => [...prev, index]);
+      }
+    }
+
+    // Remove from preview array
     setMediaVideos((prev) => prev.filter((_, i) => i !== index));
 
-    setMediaVideosIds((prev) => prev.filter((_, i) => i !== index));
+    // Remove from files array if it's a new file
+    setMediaVideosFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   const [loader, setLoader] = useState(false);
 
+  // Update the handleUpdateProfile function with better main image handling
   const handleUpdateProfile = async () => {
     setLoader(true);
     const token = localStorage.getItem("authToken");
     if (!token) return alert("Please log in to update your profile");
 
     const formData = new FormData();
+    formData.append("about", userData.about || "");
     formData.append("name", userData.name || "");
     formData.append("phone_code", userData.phone_code || "+92");
     formData.append("phone_number", userData.phone_number || "");
@@ -266,24 +326,61 @@ https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
     formData.append("sex", userData.sex || "");
     formData.append("hair_color", userData.hair_color || "");
 
-    // Append the main image
-    if (mainImageFile) {
-      // Append the new main image if user updated it
-      formData.append("main_image", mainImageFile);
-    } else if (mainImage) {
-      // Fetch and append the existing main image as binary data
-      try {
-        const response = await fetch(mainImage);
-        const blob = await response.blob();
-        formData.append("main_image", blob, "main_image.jpg");
-      } catch (error) {
-        console.error("Failed to fetch existing main image:", error);
+    // Improved main image handling for API submission
+    if (isMainImageChanged) {
+      if (mainImageFile instanceof File) {
+        // If a new file was uploaded
+        formData.append("main_image", mainImageFile);
+      } else if (mainImage) {
+        // If using an existing image from the server
+        try {
+          const response = await fetch(mainImage);
+          const blob = await response.blob();
+          formData.append("main_image", blob, "main_image.jpg");
+        } catch (error) {
+          console.error("Failed to fetch existing main image:", error);
+        }
+      } else {
+        // If main image was removed
+        formData.append("main_image_removed", "true");
       }
+    } else if (mainImage) {
+      // If main image wasn't changed but exists
+      formData.append("main_image_unchanged", "true");
     }
-    // Append all media files
+
+    // For existing images that weren't deleted
+    const existingImages = mediaImages.filter(
+      (img, index) =>
+        typeof img === "string" &&
+        !img.startsWith("blob:") &&
+        !deletedFiles.includes(mediaImageIds[index])
+    );
+
+    // Append existing images data
+    if (existingImages.length > 0) {
+      formData.append("existing_images", JSON.stringify(existingImages));
+    }
+
+    // Append new media files
     mediaFiles.forEach((file, index) => {
       formData.append(`images[${index}]`, file);
     });
+
+    // For existing videos that weren't deleted
+    const existingVideos = mediaVideos.filter(
+      (vid, index) =>
+        typeof vid === "string" &&
+        !vid.startsWith("blob:") &&
+        !deletedVideosFiles.includes(index)
+    );
+
+    // Append existing videos data
+    if (existingVideos.length > 0) {
+      formData.append("existing_videos", JSON.stringify(existingVideos));
+    }
+
+    // Append new video files
     mediaVideosFiles.forEach((file, index) => {
       formData.append(`videos[${index}]`, file);
     });
@@ -315,7 +412,8 @@ https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
           confirmButton: "swal-confirm-button",
         },
       }).then(() => {
-        // Perform any additional actions here, such as reloading data or redirecting
+        // Reset the change tracker after successful update
+        setIsMainImageChanged(false);
       });
     } catch (error) {
       Swal.fire({
@@ -333,6 +431,7 @@ https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
     } finally {
       setLoader(false);
     }
+
     if (showDays === true) {
       try {
         const response = await axios.post(
@@ -359,8 +458,7 @@ https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
     }
   };
   const { userPackages } = useUser();
-  console.log("mediaVideos", mediaVideos);
-
+  console.log("mainImage", mainImage);
   return (
     <>
       <div className="container mx-auto">
@@ -555,13 +653,13 @@ https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
               }
             />
             <label htmlFor="weight">
-              {language === "en" ? "Burst Size" : "Bryst Size"}
+              {language === "en" ? "Burst Size" : "Bryst Størrelse"}
             </label>
             <input
               type="text"
               name="burst"
               value={userData.burst || ""}
-              placeholder={language === "en" ? "Burst Size" : "Bryst Size"}
+              placeholder={language === "en" ? "Burst Size" : "Bryst Størrelse"}
               className="input input-bordered input-primary"
               onChange={(e) =>
                 setUserData({ ...userData, burst: e.target.value })
@@ -577,9 +675,16 @@ https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
                 setUserData({ ...userData, sex: e.target.value })
               }
             >
-              <option value="">Select Sex</option>
-              <option value="man">Man</option>
-              <option value="woman">Woman</option>
+              <option value="">
+                {language === "en" ? "Select Sex" : "Vælg Køn"}
+              </option>
+              <option value="Woman">
+                {language === "en" ? "Woman" : "Kvinde"}
+              </option>
+              <option value="Man">{language === "en" ? "Man" : "Mand"}</option>
+              <option value="Trans">
+                {language === "en" ? "Trans" : "Trans"}
+              </option>
             </select>
 
             {/* City Autocomplete */}
@@ -633,7 +738,7 @@ https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
           <div className="checkbox-container">
             <div className="checkbox-group">
               <div className="checkbox-group">
-                {allInterests.map((interest) => (
+                {allInterests?.map((interest) => (
                   <label key={interest.id}>
                     <input
                       type="checkbox"
@@ -661,7 +766,7 @@ https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
         {showDays && (
           <div className="field-container">
             <div className="checkbox-container">
-              {packages.map((day, index) => (
+              {packages?.map((day, index) => (
                 <span
                   key={index}
                   className={selectedDay === day.id ? "active-day" : ""}
@@ -706,43 +811,37 @@ https://escortnights.dk/backend-martin/public/api/escort/get-user-id/${guid}`
               style={{ display: "none" }}
             />
           </label>
-          {mainImage ? (
-            <div className="uploaded-images">
-              <div className="uploaded-image-container">
-                <img
-                  src={
-                    mainImage.startsWith("http")
-                      ? mainImage
-                      : `
-https://escortnights.dk/backend-martin/public/${mainImage}`
-                  }
-                  alt="Main Upload"
-                  className="uploaded-image"
-                />
-              </div>
-            </div>
-          ) : (
-            <>
-              {mediaImages?.slice(0, 1).map((image, index) => (
-                <div className="uploaded-images" key={index}>
+
+          <div className="uploaded-images">
+            <div className="uploaded-image-container">
+              {
+                <div className="uploaded-images">
                   <div className="uploaded-image-container">
                     <img
                       src={
-                        typeof image === "string" && image.startsWith("http")
-                          ? image
-                          : `
-https://escortnights.dk/backend-martin/public/${image}`
+                        typeof mainImage === "string" &&
+                        mainImage.startsWith("/uploads")
+                          ? `https://escortnights.dk/backend-martin/public/${mainImage}`
+                          : mainImage
                       }
-                      alt={`Gallery ${index + 1}`}
+                      alt="Main Upload"
+                      className="uploaded-image"
+                      onError={(e) => {
+                        if (
+                          !mainImage.startsWith("blob:") &&
+                          !mainImage.includes("backend-martin/public/")
+                        ) {
+                          e.target.src = `https://escortnights.dk/backend-martin/public/${mainImage}`;
+                        }
+                      }}
                     />
                   </div>
                 </div>
-              ))}
-            </>
-          )}
+              }
+            </div>
+          </div>
         </div>
 
-        {/* Multiple Images Upload Section */}
         <div className="upload-container">
           <h1>
             {" "}
@@ -770,15 +869,28 @@ https://escortnights.dk/backend-martin/public/${image}`
             {mediaImages?.map((image, index) => (
               <div key={index} className="gallery-item">
                 <img
-                  src={
-                    typeof image === "string" && image.startsWith("http")
-                      ? image
-                      : `
-https://escortnights.dk/backend-martin/public/${image}`
-                  }
+                  src={image || "/placeholder.svg"}
                   alt={`Gallery ${index + 1}`}
+                  onError={(e) => {
+                    if (
+                      !image.startsWith("blob:") &&
+                      !image.includes("backend-martin/public/")
+                    ) {
+                      e.target.src = `https://escortnights.dk/backend-martin/public/${image}`;
+                    }
+                  }}
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "200px",
+                    objectFit: "contain",
+                  }}
                 />
-                <button onClick={() => handleRemoveImage(index)}>Remove</button>
+                <button
+                  className="mt-1"
+                  onClick={() => handleRemoveImage(index)}
+                >
+                  {language === "en" ? "   Remove" : "Fjern"}
+                </button>
               </div>
             ))}
           </div>
@@ -808,22 +920,29 @@ https://escortnights.dk/backend-martin/public/${image}`
             />
           </label>
           <div className="uploaded-images">
-            {mediaVideos.map((video, index) => (
+            {mediaVideos?.map((video, index) => (
               <div key={index} className="gallery-item">
                 <video
-                  src={
-                    typeof video === "string" && video.startsWith("http")
-                      ? video
-                      : `
-https://escortnights.dk/backend-martin/public/${video}`
-                  }
+                  src={video}
                   controls
                   width="200"
+                  onError={(e) => {
+                    if (
+                      !video.startsWith("blob:") &&
+                      !video.includes("backend-martin/public/")
+                    ) {
+                      e.target.src = `https://escortnights.dk/backend-martin/public/${video}`;
+                    }
+                  }}
                 ></video>
+                <button onClick={() => handleRemoveVideo(index)}>
+                  {" "}
+                  {language === "en" ? "   Remove" : "Fjern"}
+                </button>
               </div>
             ))}
             {/* <div className="uploaded-images">
-  {mediaImageIds.map((id, index) => (
+  {mediaImageIds?.map((id, index) => (
     <div key={id} className="uploaded-image-container">
       <p>Image ID: {id}</p>
       <img

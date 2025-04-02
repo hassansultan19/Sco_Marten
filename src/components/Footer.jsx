@@ -35,7 +35,7 @@ const Footer = () => {
               type="submit"
               style={{ color: "white", backgroundColor: "#990000" }}
             >
-              {language === "en" ? "Submit" : "Indsend"}
+              {language === "en" ? "Submit" : "Opret"}
             </button>
           </form>
         </div> */}

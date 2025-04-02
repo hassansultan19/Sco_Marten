@@ -106,7 +106,7 @@ const Forget = () => {
                 className="login-btn all-btn-hover"
                 disabled={loading}
               >
-                {loading ? "Sending..." : "Send OTP"}
+                {loading ? "Submitting..." : "Submit"}
               </button>
             </form>
           </div>

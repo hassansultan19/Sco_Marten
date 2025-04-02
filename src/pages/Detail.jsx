@@ -96,75 +96,22 @@ https://escortnights.dk/backend-martin/public/api/escort/getRelated/${guid}`
 
   const showNextImage = () => {
     setCurrentImageIndex((prevIndex) =>
-      prevIndex === modelDetail.media.length - 1 ? 0 : prevIndex + 1
+      prevIndex === JSON.parse(modelDetail?.images)?.length - 1
+        ? 0
+        : prevIndex + 1
     );
   };
 
   const showPreviousImage = () => {
     setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? modelDetail.media.length - 1 : prevIndex - 1
+      prevIndex === 0
+        ? JSON.parse(modelDetail?.images)?.length - 1
+        : prevIndex - 1
     );
-  };
-
-  // Handle form input change
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-  const handleRatingChange = (rating) => {
-    setFormData({ ...formData, rating });
-  };
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const payload = {
-      user_id: modelDetail.id,
-      name: formData.name,
-      message: formData.message,
-      rating: formData.rating,
-    };
-
-    try {
-      const response = await axios.post(
-        "https://escortnights.dk/backend-martin/public/api/feedback/store",
-        payload
-      );
-      if (response.data && response.data.status) {
-        Swal.fire({
-          title: "Feedback Submitted!",
-          text: "Thank you for your feedback.",
-          icon: "success",
-          confirmButtonText: "OK",
-          customClass: {
-            popup: "swal-popup",
-            title: "swal-title",
-            content: "swal-content",
-            confirmButton: "swal-confirm-button",
-          },
-        });
-      } else {
-        Swal.fire({
-          title: "Submission Failed",
-          text: "Please try again.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      }
-    } catch (error) {
-      console.error("Error submitting feedback:", error);
-      Swal.fire({
-        title: "An Error Occurred",
-        text: "An error occurred while submitting the feedback.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-    }
   };
 
   const [testimonials, setTestimonials] = useState([]);
 
-  // Fetch testimonials from API
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
@@ -320,7 +267,11 @@ https://escortnights.dk/backend-martin/public/${modelDetail?.main_image}`}
                   ))}
                 {modelDetail?.videos &&
                   JSON.parse(modelDetail?.videos)?.map((video, index) => (
-                    <a key={index} target="_blank" href={video}>
+                    <a
+                      key={index}
+                      target="_blank"
+                      href={`https://escortnights.dk/backend-martin/public/${video}`}
+                    >
                       <video
                         src={`
 https://escortnights.dk/backend-martin/public/${video}`}
@@ -340,7 +291,12 @@ https://escortnights.dk/backend-martin/public/${video}`}
                     />
                     <div className="modelimagepopup">
                       <img
-                        src={modelDetail.media[currentImageIndex]?.original_url}
+                        src={
+                          JSON.parse(modelDetail?.images) &&
+                          `https://escortnights.dk/backend-martin/public/${
+                            JSON.parse(modelDetail?.images)?.[currentImageIndex]
+                          }`
+                        }
                         alt={`Image ${currentImageIndex + 1}`}
                         className="rounded-lg w-full h-auto"
                       />

@@ -311,7 +311,7 @@ https://escortnights.dk/backend-martin/public/${backgroundUrl})`,
                 ) : language === "en" ? (
                   "Submit"
                 ) : (
-                  "Indsend"
+                  "Opret"
                 )}
               </button>
             </div>
